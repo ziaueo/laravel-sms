@@ -6,20 +6,18 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('assessment_types', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('school_id')->constrained('schools')->cascadeOnDelete();
+            $table->string('name');
+            $table->decimal('weight', 5, 2)->default(0);
+            $table->smallInteger('order')->default(0);
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('assessment_types');

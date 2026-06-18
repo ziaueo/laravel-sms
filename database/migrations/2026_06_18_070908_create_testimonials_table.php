@@ -6,20 +6,20 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('testimonials', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('school_id')->constrained('schools')->cascadeOnDelete();
+            $table->string('name');
+            $table->string('role')->nullable();
+            $table->text('content');
+            $table->string('photo')->nullable();
+            $table->boolean('is_published')->default(false);
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('testimonials');

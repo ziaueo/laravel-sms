@@ -6,20 +6,20 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('device_user_pins', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('device_id')->constrained('attendance_devices')->cascadeOnDelete();
+            $table->string('pin');
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->smallInteger('role_context');
             $table->timestamps();
+
+            $table->unique(['device_id', 'pin']);
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('device_user_pins');

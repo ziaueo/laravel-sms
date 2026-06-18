@@ -6,20 +6,22 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('attendance_device_logs', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('device_id')->constrained('attendance_devices')->cascadeOnDelete();
+            $table->string('pin');
+            $table->timestamp('punch_time');
+            $table->smallInteger('type');
+            $table->smallInteger('role_context')->nullable();
+            $table->boolean('is_processed')->default(false);
+            $table->timestamp('processed_at')->nullable();
+            $table->unsignedBigInteger('reference_id')->nullable();
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('attendance_device_logs');
