@@ -1,0 +1,115 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  /* ── Primary Colors ── */
+  --color-primary:          #2d6a4f;
+  --color-primary-dark:     #1b4332;
+  --color-primary-darker:   #0f2d1e;
+  --color-primary-light:    #52b788;
+  --color-primary-lighter:  #95d5b2;
+  --color-primary-soft:     #d8f3dc;
+  --color-primary-muted:    #e0f2e9;
+
+  /* ── Background ── */
+  --color-bg-page:          #e8f0eb;
+  --color-bg-card:          #ffffff;
+  --color-bg-soft:          #f0f9f4;
+
+  /* ── Text ── */
+  --color-text-primary:     #1b2e24;
+  --color-text-secondary:   #6c8f7a;
+  --color-text-muted:       #95b5a4;
+  --color-text-white:       #ffffff;
+
+  /* ── Border ── */
+  --color-border:           rgba(200,221,212,0.5);
+  --color-border-solid:     #b8ddc8;
+
+  /* ── Status ── */
+  --color-success:          #2d6a4f;
+  --color-success-bg:       #d8f3dc;
+  --color-info:             #1e40af;
+  --color-info-bg:          #dbeafe;
+  --color-warning:          #92400e;
+  --color-warning-bg:       #fef3c7;
+  --color-danger:           #991b1b;
+  --color-danger-bg:        #fee2e2;
+
+  /* ── Gradients ── */
+  --grad-primary:           linear-gradient(135deg, #2d6a4f, #52b788);
+  --grad-primary-dark:      linear-gradient(135deg, #1b4332, #2d6a4f);
+  --grad-primary-darker:    linear-gradient(135deg, #0f2d1e, #1b4332);
+  --grad-sidebar:           linear-gradient(170deg, #0f2d1e 0%, #1b4332 40%, #2d6a4f 100%);
+  --grad-soft:              linear-gradient(135deg, #f0f9f4, #e0f2e9);
+  --grad-success:           linear-gradient(135deg, #d8f3dc, #b7e4c7);
+  --grad-info:              linear-gradient(135deg, #dbeafe, #bfdbfe);
+  --grad-warning:           linear-gradient(135deg, #fef3c7, #fde68a);
+  --grad-danger:            linear-gradient(135deg, #fee2e2, #fecaca);
+
+  /* ── Shadows ── */
+  --shadow-sm:              0 1px 6px rgba(45,106,79,0.06);
+  --shadow-md:              0 4px 12px rgba(45,106,79,0.12);
+  --shadow-lg:              0 8px 24px rgba(45,106,79,0.16);
+  --shadow-primary:         0 4px 14px rgba(45,106,79,0.35);
+  --shadow-card:            0 2px 10px rgba(45,106,79,0.06);
+
+  /* ── Typography ── */
+  --font-family:            'Plus Jakarta Sans', sans-serif;
+  --font-size-xs:           10px;
+  --font-size-sm:           11px;
+  --font-size-base:         12px;
+  --font-size-md:           13px;
+  --font-size-lg:           16px;
+  --font-size-xl:           20px;
+  --font-size-2xl:          24px;
+  --font-size-3xl:          30px;
+
+  /* ── Border Radius ── */
+  --radius-sm:              8px;
+  --radius-md:              10px;
+  --radius-lg:              13px;
+  --radius-xl:              14px;
+  --radius-pill:            20px;
+  --radius-full:            50%;
+
+  /* ── Layout ── */
+  --sidebar-width:          220px;
+  --sidebar-collapsed:      58px;
+  --navbar-height:          58px;
+  --content-padding:        20px;
+  --card-padding:           16px;
+  --gap-sm:                 8px;
+  --gap-md:                 12px;
+  --gap-lg:                 16px;
+
+  /* ── Transitions ── */
+  --transition-fast:        all 0.15s ease;
+  --transition-base:        all 0.2s ease;
+  --transition-sidebar:     width 0.25s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* ── Global Reset ── */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background: var(--color-bg-page);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-base);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  text-decoration: none;
+  color: var(--color-primary);
+  transition: var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-primary-dark);
+}
