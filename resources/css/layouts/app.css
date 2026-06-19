@@ -183,3 +183,184 @@
   opacity: 0.4;
   cursor: not-allowed;
 }
+
+/* ── TABS ── */
+.tabs-wrap {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+
+.tab-item {
+  padding: 8px 16px;
+  border-radius: var(--radius-pill);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  background: var(--color-bg-card);
+  border: 0.5px solid var(--color-border);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  transition: var(--transition-base);
+}
+
+.tab-item:hover {
+  background: var(--grad-soft);
+  color: var(--color-primary-dark);
+}
+
+.tab-item.active {
+  background: var(--grad-primary);
+  color: #fff;
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.tab-count {
+  background: rgba(255,255,255,0.25);
+  padding: 1px 7px;
+  border-radius: 20px;
+  font-size: 10px;
+}
+
+.tab-item:not(.active) .tab-count {
+  background: var(--color-bg-soft);
+  color: var(--color-text-muted);
+}
+
+/* ── MODAL ── */
+.modal-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15,45,30,0.45);
+  z-index: 999;
+  backdrop-filter: blur(3px);
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.modal-backdrop.show {
+  display: flex;
+}
+
+.modal-box {
+  background: #fff;
+  border-radius: 18px;
+  width: 100%;
+  max-width: 460px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.25);
+  animation: modalPop 0.2s ease;
+}
+
+@keyframes modalPop {
+  from { transform: scale(0.96); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 0.5px solid var(--color-border);
+}
+
+.modal-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.modal-title i {
+  color: var(--color-primary);
+}
+
+.modal-close {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: var(--color-bg-soft);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-secondary);
+}
+
+.modal-close:hover {
+  background: var(--grad-danger);
+  color: var(--color-danger);
+}
+
+.modal-body {
+  padding: 18px 20px;
+  overflow-y: auto;
+}
+
+.modal-footer {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  padding: 14px 20px;
+  border-top: 0.5px solid var(--color-border);
+}
+
+/* ── CHECKBOX GROUP ── */
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 160px;
+  overflow-y: auto;
+  border: 1px solid var(--color-border-solid);
+  border-radius: var(--radius-md);
+  padding: 10px;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--color-text-primary);
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.checkbox-item input {
+  accent-color: var(--color-primary);
+  width: 15px;
+  height: 15px;
+}
+
+/* ── INFO BOX ── */
+.info-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background: var(--grad-info);
+  color: #1e40af;
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  font-size: 11.5px;
+  line-height: 1.5;
+}
+
+.info-box i {
+  font-size: 15px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}

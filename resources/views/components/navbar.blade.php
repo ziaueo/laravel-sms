@@ -42,14 +42,14 @@
     <div class="nb-divider"></div>
 
     {{-- Notifikasi --}}
-    <button class="nb-icon-btn" aria-label="Notifikasi" onclick="window.location='{{ route('notifications.index') }}'">
-      <i class="ti ti-bell" style="font-size:17px;"></i>
-      @php
+    <button class="nb-icon-btn" aria-label="Notifikasi">
+    <i class="ti ti-bell" style="font-size:17px;"></i>
+    @php
         $unreadCount = auth()->user()->notifications()->where('is_read', false)->count();
-      @endphp
-      @if($unreadCount > 0)
+    @endphp
+    @if($unreadCount > 0)
         <div class="nb-notif-dot"></div>
-      @endif
+    @endif
     </button>
 
     <div class="nb-divider"></div>
