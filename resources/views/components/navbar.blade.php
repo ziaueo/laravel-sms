@@ -52,6 +52,11 @@
     @endif
     </button>
 
+    {{-- Dark Mode Toggle --}}
+    <button class="nb-icon-btn" id="themeToggle" aria-label="Ganti Tema">
+    <i class="ti ti-moon" id="themeIcon" style="font-size:17px;"></i>
+    </button>
+
     <div class="nb-divider"></div>
 
     {{-- Avatar --}}

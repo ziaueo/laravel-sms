@@ -9,13 +9,13 @@
   font-weight: 600;
 }
 
-.badge-green   { background: var(--grad-success); color: var(--color-primary-dark); }
+.badge-green   { background: var(--grad-success); color: var(--color-success); }
 .badge-blue    { background: var(--grad-info);    color: var(--color-info); }
 .badge-amber   { background: var(--grad-warning); color: var(--color-warning); }
 .badge-red     { background: var(--grad-danger);  color: var(--color-danger); }
 
 /* Status Absensi */
-.badge-hadir   { background: var(--grad-success); color: var(--color-primary-dark); }
+.badge-hadir   { background: var(--grad-success); color: var(--color-success); }
 .badge-sakit   { background: var(--grad-info);    color: var(--color-info); }
 .badge-izin    { background: var(--grad-warning); color: var(--color-warning); }
 .badge-alpa    { background: var(--grad-danger);  color: var(--color-danger); }
@@ -23,11 +23,11 @@
 /* Status PPDB */
 .badge-pending    { background: var(--grad-warning); color: var(--color-warning); }
 .badge-verifikasi { background: var(--grad-info);    color: var(--color-info); }
-.badge-diterima   { background: var(--grad-success); color: var(--color-primary-dark); }
+.badge-diterima   { background: var(--grad-success); color: var(--color-success); }
 .badge-ditolak    { background: var(--grad-danger);  color: var(--color-danger); }
 
 /* Icon color helper */
-.icon-green { background: var(--grad-success); color: var(--color-primary-dark); }
+.icon-green { background: var(--grad-success); color: var(--color-success); }
 .icon-blue  { background: var(--grad-info);    color: var(--color-info); }
 .icon-amber { background: var(--grad-warning); color: var(--color-warning); }
 .icon-red   { background: var(--grad-danger);  color: var(--color-danger); }

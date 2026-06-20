@@ -88,6 +88,59 @@
   --transition-sidebar:     width 0.25s cubic-bezier(0.4,0,0.2,1);
 }
 
+/* ── DARK MODE ── */
+[data-theme="dark"] {
+  --color-bg-page:          #131a16;
+  --color-bg-card:          #1a231d;
+  --color-bg-soft:          #1c3829;
+
+  --color-text-primary:     #eafaf1;
+  --color-text-secondary:   #7da890;
+  --color-text-muted:       #5a7a68;
+  --color-text-white:       #ffffff;
+
+  --color-border:           #25342a;
+  --color-border-solid:     #2f4536;
+
+  --color-primary:          #52b788;
+  --color-primary-dark:     #95d5b2;
+  --color-primary-light:    #52b788;
+  --color-primary-lighter:  #2f4536;
+  --color-primary-soft:     #1c3829;
+  --color-primary-muted:    #1a231d;
+
+  --color-success:          #95d5b2;
+  --color-success-bg:       #1c3829;
+  --color-info:             #a8c8f5;
+  --color-info-bg:          #1c2c45;
+  --color-warning:          #f5d28a;
+  --color-warning-bg:       #3d2f15;
+  --color-danger:           #f5a3a3;
+  --color-danger-bg:        #3d1d1d;
+
+  --grad-primary:           linear-gradient(135deg, #2d6a4f, #52b788);
+  --grad-primary-dark:      linear-gradient(135deg, #15261c, #1a231d);
+  --grad-primary-darker:    linear-gradient(135deg, #0d1611, #131a16);
+  --grad-sidebar:           linear-gradient(170deg, #0d1611 0%, #131a16 40%, #1a231d 100%);
+  --grad-soft:              linear-gradient(135deg, #1c3829, #1a231d);
+  --grad-success:           linear-gradient(135deg, #1c3829, #20402c);
+  --grad-info:              linear-gradient(135deg, #1c2c45, #233655);
+  --grad-warning:           linear-gradient(135deg, #3d2f15, #4a3a1c);
+  --grad-danger:            linear-gradient(135deg, #3d1d1d, #4a2424);
+
+  --shadow-sm:              0 1px 6px rgba(0,0,0,0.25);
+  --shadow-md:              0 4px 12px rgba(0,0,0,0.35);
+  --shadow-lg:              0 8px 24px rgba(0,0,0,0.45);
+  --shadow-primary:         0 4px 14px rgba(82,183,136,0.25);
+  --shadow-card:            0 2px 10px rgba(0,0,0,0.2);
+}
+
+/* Smooth transition saat switch tema */
+body, .card, .nb, .sb-menu-card, .sb-user-card, .sb-school-card,
+.stat-card, .qa-card, .form-control, .modal-box, .tab-item {
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
 /* ── Global Reset ── */
 * {
   box-sizing: border-box;

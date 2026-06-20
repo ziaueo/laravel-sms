@@ -1,18 +1,27 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="csrf-token" content="{{ csrf_token() }}">
-  <title>@yield('title', 'Dashboard') — {{ active_school()?->name ?? config('app.name') }}</title>
+    <script>
+        (function() {
+            const saved = localStorage.getItem('theme');
+            const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (saved === 'dark' || (!saved && systemDark)) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>@yield('title', 'Dashboard') — {{ active_school()?->name ?? config('app.name') }}</title>
 
-  {{-- Tabler Icons --}}
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.44.0/dist/tabler-icons.min.css">
+    {{-- Tabler Icons --}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.44.0/dist/tabler-icons.min.css">
 
-  {{-- Vite CSS --}}
-  @vite(['resources/css/app.css'])
+    {{-- Vite CSS --}}
+    @vite(['resources/css/app.css'])
 
-  @stack('styles')
+    @stack('styles')
 </head>
 <body>
 

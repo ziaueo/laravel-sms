@@ -47,7 +47,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/announcements', $placeholder)->name('announcements.index');
         Route::get('/ppdb', $placeholder)->name('ppdb.index');
         Route::get('/cms', $placeholder)->name('cms.index');
-        Route::get('/master-data', $placeholder)->name('master.index');
         Route::get('/settings', $placeholder)->name('settings.index');
         Route::get('/notifications', $placeholder)->name('notifications.index');
 
@@ -59,7 +58,27 @@ Route::middleware(['auth'])->group(function () {
             Route::patch('/{user}/toggle-active', [\App\Http\Controllers\Web\SuperAdmin\UserController::class, 'toggleActive'])->name('toggle-active');
             Route::patch('/{user}/reset-password', [\App\Http\Controllers\Web\SuperAdmin\UserController::class, 'resetPassword'])->name('reset-password');
             Route::delete('/{user}', [\App\Http\Controllers\Web\SuperAdmin\UserController::class, 'destroy'])->name('destroy');
+            Route::get('/trash', [\App\Http\Controllers\Web\SuperAdmin\UserController::class, 'trash'])->name('trash');
+            Route::patch('/{id}/restore', [\App\Http\Controllers\Web\SuperAdmin\UserController::class, 'restore'])->name('restore');
+            Route::delete('/{id}/force-delete', [\App\Http\Controllers\Web\SuperAdmin\UserController::class, 'forceDelete'])->name('force-delete');
         });
+
+        // ── MASTER DATA: SEKOLAH ────────────────────────────────
+        Route::prefix('master-data/schools')->name('master.schools.')->group(function () {
+            Route::get('/', [\App\Http\Controllers\Web\SuperAdmin\SchoolController::class, 'index'])->name('index');
+            Route::post('/', [\App\Http\Controllers\Web\SuperAdmin\SchoolController::class, 'store'])->name('store');
+            Route::put('/{school}', [\App\Http\Controllers\Web\SuperAdmin\SchoolController::class, 'update'])->name('update');
+            Route::patch('/{school}/toggle-active', [\App\Http\Controllers\Web\SuperAdmin\SchoolController::class, 'toggleActive'])->name('toggle-active');
+            Route::delete('/{school}', [\App\Http\Controllers\Web\SuperAdmin\SchoolController::class, 'destroy'])->name('destroy');
+            Route::get('/trash', [\App\Http\Controllers\Web\SuperAdmin\SchoolController::class, 'trash'])->name('trash');
+            Route::patch('/{id}/restore', [\App\Http\Controllers\Web\SuperAdmin\SchoolController::class, 'restore'])->name('restore');
+            Route::delete('/{id}/force-delete', [\App\Http\Controllers\Web\SuperAdmin\SchoolController::class, 'forceDelete'])->name('force-delete');
+        });
+
+        // Redirect master.index ke master.schools.index (untuk sidebar)
+        Route::get('/master-data', function () {
+            return redirect()->route('master.schools.index');
+        })->name('master.index');
     });
 
 });

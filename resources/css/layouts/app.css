@@ -237,7 +237,7 @@
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(15,45,30,0.45);
+  background: rgba(0,0,0,0.5);
   z-index: 999;
   backdrop-filter: blur(3px);
   align-items: center;
@@ -250,14 +250,14 @@
 }
 
 .modal-box {
-  background: #fff;
+  background: var(--color-bg-card);
   border-radius: 18px;
   width: 100%;
   max-width: 460px;
   max-height: 90vh;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 25px 60px rgba(0,0,0,0.25);
+  box-shadow: var(--shadow-lg);
   animation: modalPop 0.2s ease;
 }
 
@@ -308,6 +308,7 @@
 .modal-body {
   padding: 18px 20px;
   overflow-y: auto;
+  color: var(--color-text-primary);
 }
 
 .modal-footer {
@@ -328,6 +329,7 @@
   border: 1px solid var(--color-border-solid);
   border-radius: var(--radius-md);
   padding: 10px;
+  background: var(--color-bg-card);
 }
 
 .checkbox-item {
@@ -363,4 +365,149 @@
   font-size: 15px;
   flex-shrink: 0;
   margin-top: 1px;
+}
+
+/* ── SCHOOL CARD GRID ── */
+.school-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.school-card {
+  background: var(--color-bg-card);
+  border-radius: var(--radius-xl);
+  border: 0.5px solid var(--color-border);
+  padding: 16px;
+  box-shadow: var(--shadow-card);
+  transition: var(--transition-base);
+}
+
+.school-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.school-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.school-card-logo {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-lg);
+  background: var(--grad-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: var(--color-primary);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.school-card-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.school-card-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 2px;
+}
+
+.school-card-type {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.school-card-address {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.school-card-stats {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 14px;
+  padding-bottom: 14px;
+  border-bottom: 0.5px solid var(--color-border);
+}
+
+.school-stat-item {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 500;
+}
+
+.school-card-actions {
+  display: flex;
+  gap: 6px;
+}
+
+/* ── MODAL TABS ── */
+.modal-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 10px 20px 0;
+  border-bottom: 0.5px solid var(--color-border);
+}
+
+.modal-tab-btn {
+  padding: 9px 14px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-family);
+  transition: var(--transition-fast);
+}
+
+.modal-tab-btn:hover {
+  color: var(--color-primary);
+}
+
+.modal-tab-btn.active {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+}
+
+.modal-tab-content {
+  display: none;
+}
+
+.modal-tab-content.active {
+  display: block;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1100px) {
+  .school-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 700px) {
+  .school-grid { grid-template-columns: 1fr; }
 }

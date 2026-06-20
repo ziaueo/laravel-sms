@@ -153,8 +153,8 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $name = $user->name;
-        $user->userSchools()->delete();
         $user->delete();
+        $user->update(['is_active' => false]);
 
         return back()->with('success', "User \"{$name}\" berhasil dihapus.");
     }
@@ -186,5 +186,46 @@ class UserController extends Controller
         }
 
         return $counts;
+    }
+
+    public function trash(Request $request)
+    {
+        $activeTab = (int) $request->get('tab', \App\Constants\RoleConstant::KEPALA_SEKOLAH);
+
+        $query = User::onlyTrashed()
+            ->whereHas('userSchools', fn($q) => $q->where('role', $activeTab))
+            ->with(['userSchools' => function ($q) use ($activeTab) {
+                $q->where('role', $activeTab)->with('school');
+            }]);
+
+        if (!auth()->user()->hasRole('super_admin')) {
+            $schoolIds = $this->getAccessibleSchools()->pluck('id');
+            $query->whereHas('userSchools', function ($q) use ($schoolIds, $activeTab) {
+                $q->where('role', $activeTab)->whereIn('school_id', $schoolIds);
+            });
+        }
+
+        $users = $query->orderBy('deleted_at', 'desc')->paginate(10)->withQueryString();
+
+        return view('super-admin.users.trash', compact('users', 'activeTab'));
+    }
+
+    public function restore($id)
+    {
+        $user = User::onlyTrashed()->findOrFail($id);
+        $user->restore();
+        $user->update(['is_active' => true]);
+
+        return back()->with('success', "User \"{$user->name}\" berhasil dipulihkan.");
+    }
+
+    public function forceDelete($id)
+    {
+        $user = User::onlyTrashed()->findOrFail($id);
+        $name = $user->name;
+        $user->userSchools()->delete();
+        $user->forceDelete();
+
+        return back()->with('success', "User \"{$name}\" berhasil dihapus permanen.");
     }
 }

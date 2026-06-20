@@ -5,18 +5,21 @@
 @section('content')
 
 <div class="page-header">
-  <div>
-    <div class="page-breadcrumb">
-      <i class="ti ti-home" style="font-size:11px;"></i> Beranda <span>/ Manajemen User</span>
+    <div>
+        <div class="page-breadcrumb">
+            <i class="ti ti-home" style="font-size:11px;"></i> Beranda <span>/ Manajemen User</span>
+        </div>
+        <div class="page-title">Manajemen User</div>
+        <div class="page-subtitle">Kelola akun Kepala Sekolah, Guru, Staff, Siswa, dan Orang Tua</div>
     </div>
-    <div class="page-title">Manajemen User</div>
-    <div class="page-subtitle">Kelola akun Kepala Sekolah, Guru, Staff, Siswa, dan Orang Tua</div>
-  </div>
-  <div class="page-actions">
-    <button class="btn btn-primary" onclick="openModal('modalAddUser')">
-      <i class="ti ti-plus"></i> Tambah User
-    </button>
-  </div>
+    <div class="page-actions">
+        <a href="{{ route('users.trash', ['tab' => $activeTab]) }}" class="btn btn-outline">
+            <i class="ti ti-trash"></i> Sampah
+        </a>
+        <button class="btn btn-primary" onclick="openModal('modalAddUser')">
+            <i class="ti ti-plus"></i> Tambah User
+        </button>
+        </div>
 </div>
 
 {{-- TABS --}}
@@ -283,7 +286,7 @@
       <button type="button" class="modal-close" onclick="closeModal('modalResetPassword')"><i class="ti ti-x"></i></button>
     </div>
     <div class="modal-body">
-      <p style="font-size:12.5px;color:#4a7c6a;">
+      <p style="font-size:12.5px;color:var(--color-text-secondary);">
         Reset password untuk <strong id="resetUserName"></strong> ke default
         <strong>P@ssw0rd</strong>? User wajib mengganti password saat login berikutnya.
       </p>
@@ -308,7 +311,7 @@
       <button type="button" class="modal-close" onclick="closeModal('modalDeleteUser')"><i class="ti ti-x"></i></button>
     </div>
     <div class="modal-body">
-      <p style="font-size:12.5px;color:#4a7c6a;">
+      <p style="font-size:12.5px;color:var(--color-text-secondary);">
         Apakah kamu yakin ingin menghapus <strong id="deleteUserName"></strong>?
         Tindakan ini tidak dapat dibatalkan.
       </p>
