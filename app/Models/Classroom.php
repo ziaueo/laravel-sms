@@ -49,4 +49,9 @@ class Classroom extends Model
     {
         return $this->hasMany(Attendance::class);
     }
+
+    public function major()
+    {
+        return $this->belongsTo(Major::class);
+    }
 }

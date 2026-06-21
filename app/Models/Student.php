@@ -115,4 +115,14 @@ class Student extends Model
     {
         return initials($this->full_name);
     }
+
+    public function major()
+    {
+        return $this->belongsTo(Major::class);
+    }
+
+    public function smpSmaDetail()
+    {
+        return $this->hasOne(StudentSmpSmaDetail::class);
+    }
 }

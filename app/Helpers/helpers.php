@@ -226,3 +226,9 @@ if (!function_exists('time_ago')) {
         return \Carbon\Carbon::parse($date)->diffForHumans();
     }
 }
+
+if (!function_exists('school_has_majors')) {
+    function school_has_majors(int $schoolTypeId): bool {
+        return \App\Constants\SchoolTypeConstant::hasMajors($schoolTypeId);
+    }
+}

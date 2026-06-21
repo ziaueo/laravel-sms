@@ -31,4 +31,9 @@ class Subject extends Model
     {
         return $this->hasMany(Score::class);
     }
+
+    public function major()
+    {
+        return $this->belongsTo(Major::class);
+    }
 }
