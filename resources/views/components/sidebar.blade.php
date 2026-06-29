@@ -96,6 +96,14 @@
     </a>
     @endcan
 
+    @can('students.view')
+    <a href="{{ route('extracurriculars.index') }}"
+       class="sb-menu-item {{ request()->routeIs('extracurriculars.*') ? 'active' : '' }}">
+      <i class="ti ti-ball-football"></i>
+      <span class="sb-menu-label">Ekstrakurikuler</span>
+    </a>
+    @endcan
+
     @canany(['announcements.view', 'ppdb.view', 'cms.view'])
     <div class="sb-section">Manajemen</div>
     @endcanany
@@ -141,6 +149,14 @@
        class="sb-menu-item {{ request()->routeIs('users.*') ? 'active' : '' }}">
       <i class="ti ti-users-group"></i>
       <span class="sb-menu-label">Manajemen User</span>
+    </a>
+    @endcan
+
+    @can('users.view')
+    <a href="{{ route('registrations.index') }}"
+       class="sb-menu-item {{ request()->routeIs('registrations.*') ? 'active' : '' }}">
+      <i class="ti ti-user-check"></i>
+      <span class="sb-menu-label">Verifikasi Pendaftaran</span>
     </a>
     @endcan
 
