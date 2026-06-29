@@ -37,7 +37,6 @@ Route::middleware(['auth'])->group(function () {
             </div>';
         };
 
-        Route::get('/announcements', $placeholder)->name('announcements.index');
         Route::get('/ppdb', $placeholder)->name('ppdb.index');
         Route::get('/cms', $placeholder)->name('cms.index');
         Route::get('/settings', $placeholder)->name('settings.index');
@@ -132,6 +131,17 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/{student}/assign-classroom', [\App\Http\Controllers\Web\School\StudentController::class, 'assignClassroom'])->name('assign-classroom');
             Route::post('/{student}/parents', [\App\Http\Controllers\Web\School\StudentController::class, 'storeParent'])->name('parents.store');
             Route::delete('/parents/{parent}', [\App\Http\Controllers\Web\School\StudentController::class, 'destroyParent'])->name('parents.destroy');
+        });
+
+        // ── PENGUMUMAN ───────────────────────────────────────
+        Route::prefix('announcements')->name('announcements.')->group(function () {
+            Route::get('/', [\App\Http\Controllers\Web\School\AnnouncementController::class, 'index'])->name('index');
+            Route::get('/create', [\App\Http\Controllers\Web\School\AnnouncementController::class, 'create'])->name('create');
+            Route::post('/', [\App\Http\Controllers\Web\School\AnnouncementController::class, 'store'])->name('store');
+            Route::get('/{announcement}/edit', [\App\Http\Controllers\Web\School\AnnouncementController::class, 'edit'])->name('edit');
+            Route::put('/{announcement}', [\App\Http\Controllers\Web\School\AnnouncementController::class, 'update'])->name('update');
+            Route::post('/{announcement}/toggle-publish', [\App\Http\Controllers\Web\School\AnnouncementController::class, 'togglePublish'])->name('toggle-publish');
+            Route::delete('/{announcement}', [\App\Http\Controllers\Web\School\AnnouncementController::class, 'destroy'])->name('destroy');
         });
 
         // ── RAPOT ────────────────────────────────────────────
