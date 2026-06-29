@@ -37,7 +37,6 @@ Route::middleware(['auth'])->group(function () {
             </div>';
         };
 
-        Route::get('/report-cards', $placeholder)->name('report-cards.index');
         Route::get('/announcements', $placeholder)->name('announcements.index');
         Route::get('/ppdb', $placeholder)->name('ppdb.index');
         Route::get('/cms', $placeholder)->name('cms.index');
@@ -133,6 +132,16 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/{student}/assign-classroom', [\App\Http\Controllers\Web\School\StudentController::class, 'assignClassroom'])->name('assign-classroom');
             Route::post('/{student}/parents', [\App\Http\Controllers\Web\School\StudentController::class, 'storeParent'])->name('parents.store');
             Route::delete('/parents/{parent}', [\App\Http\Controllers\Web\School\StudentController::class, 'destroyParent'])->name('parents.destroy');
+        });
+
+        // ── RAPOT ────────────────────────────────────────────
+        Route::prefix('report-cards')->name('report-cards.')->group(function () {
+            Route::get('/', [\App\Http\Controllers\Web\School\ReportCardController::class, 'index'])->name('index');
+            Route::post('/generate', [\App\Http\Controllers\Web\School\ReportCardController::class, 'generate'])->name('generate');
+            Route::get('/{reportCard}', [\App\Http\Controllers\Web\School\ReportCardController::class, 'show'])->name('show');
+            Route::get('/{reportCard}/pdf', [\App\Http\Controllers\Web\School\ReportCardController::class, 'exportPdf'])->name('pdf');
+            Route::post('/{reportCard}/toggle-publish', [\App\Http\Controllers\Web\School\ReportCardController::class, 'togglePublish'])->name('toggle-publish');
+            Route::put('/{reportCard}/notes', [\App\Http\Controllers\Web\School\ReportCardController::class, 'updateNotes'])->name('update-notes');
         });
 
         // ── PENILAIAN ────────────────────────────────────────
