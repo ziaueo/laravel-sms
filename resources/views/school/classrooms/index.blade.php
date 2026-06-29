@@ -14,7 +14,7 @@
     <div class="page-subtitle">Kelola rombongan belajar per tahun ajaran</div>
   </div>
   <div class="page-actions">
-    <a href="{{ route('master.classrooms.create') }}" class="btn btn-primary">
+    <a href="{{ route('classrooms.create') }}" class="btn btn-primary">
       <i class="ti ti-plus"></i> Tambah Kelas
     </a>
   </div>
@@ -23,11 +23,11 @@
 {{-- FILTER TAHUN AJARAN --}}
 <div class="card">
   <div class="card-body" style="padding:14px 16px;">
-    <form method="GET" action="{{ route('master.classrooms.index') }}"
+    <form method="GET" action="{{ route('classrooms.index') }}"
           style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
       <div style="font-size:12px;font-weight:600;color:var(--color-text-secondary);">Tahun Ajaran:</div>
       @foreach($schoolYears as $sy)
-        <a href="{{ route('master.classrooms.index', ['school_year_id' => $sy->id]) }}"
+        <a href="{{ route('classrooms.index', ['school_year_id' => $sy->id]) }}"
            class="tab-item {{ $activeYearId == $sy->id ? 'active' : '' }}"
            style="padding:5px 12px;">
           {{ $sy->year }} Sem {{ $sy->semester }}
@@ -74,7 +74,7 @@
       </div>
 
       <div class="school-card-actions">
-        <a href="{{ route('master.classrooms.edit', $classroom->id) }}"
+        <a href="{{ route('classrooms.edit', $classroom->id) }}"
            class="btn btn-sm btn-outline" style="flex:1;justify-content:center;">
           <i class="ti ti-edit" style="font-size:13px;"></i> Edit
         </a>
@@ -89,7 +89,7 @@
       <i class="ti ti-door-off" style="font-size:32px;display:block;margin-bottom:10px;"></i>
       Belum ada kelas untuk tahun ajaran ini
       <br>
-      <a href="{{ route('master.classrooms.create') }}" class="btn btn-primary" style="margin-top:14px;">
+      <a href="{{ route('classrooms.create') }}" class="btn btn-primary" style="margin-top:14px;">
         <i class="ti ti-plus"></i> Tambah Kelas Sekarang
       </a>
     </div>
@@ -132,7 +132,7 @@ function closeModal(id) { document.getElementById(id).classList.remove('show'); 
 
 function openDeleteModal(id, name) {
   document.getElementById('deleteClassName').textContent = name;
-  document.getElementById('formDeleteClassroom').action = `/master-data/classrooms/${id}`;
+  document.getElementById('formDeleteClassroom').action = `/classrooms/${id}`;
   openModal('modalDeleteClassroom');
 }
 

@@ -13,7 +13,7 @@
     <div class="page-subtitle">Kelola tahun ajaran, tingkat kelas, mata pelajaran, dan KKM</div>
   </div>
   <div class="page-actions">
-    <a href="{{ route('master.classrooms.index') }}" class="btn btn-outline">
+    <a href="{{ route('classrooms.index') }}" class="btn btn-outline">
       <i class="ti ti-door"></i> Kelola Kelas
     </a>
     @switch($activeTab)

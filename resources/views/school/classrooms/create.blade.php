@@ -9,7 +9,7 @@
     <div class="page-breadcrumb">
       <i class="ti ti-home" style="font-size:11px;"></i> Beranda
       <span>/ <a href="{{ route('master.index') }}" style="color:var(--color-primary);">Master Data</a>
-      / <a href="{{ route('master.classrooms.index') }}" style="color:var(--color-primary);">Kelas</a>
+      / <a href="{{ route('classrooms.index') }}" style="color:var(--color-primary);">Kelas</a>
       / Tambah</span>
     </div>
     <div class="page-title">Tambah Kelas Baru</div>
@@ -19,7 +19,7 @@
 
 <div class="card" style="max-width:600px;">
   <div class="card-body">
-    <form method="POST" action="{{ route('master.classrooms.store') }}">
+    <form method="POST" action="{{ route('classrooms.store') }}">
       @csrf
 
       <div class="form-group">
@@ -81,7 +81,7 @@
       @endif
 
       <div style="display:flex;gap:10px;margin-top:20px;">
-        <a href="{{ route('master.classrooms.index') }}" class="btn btn-outline">
+        <a href="{{ route('classrooms.index') }}" class="btn btn-outline">
           <i class="ti ti-arrow-left"></i> Batal
         </a>
         <button type="submit" class="btn btn-primary">

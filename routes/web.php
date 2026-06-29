@@ -153,16 +153,6 @@ Route::middleware(['auth'])->group(function () {
                 Route::delete('/{subjectKkm}', [\App\Http\Controllers\Web\School\MasterDataController::class, 'destroyKkm'])->name('destroy');
             });
 
-            // ── Kelas (halaman terpisah) ──
-            Route::prefix('classrooms')->name('classrooms.')->group(function () {
-                Route::get('/', [\App\Http\Controllers\Web\School\ClassroomController::class, 'index'])->name('index');
-                Route::get('/create', [\App\Http\Controllers\Web\School\ClassroomController::class, 'create'])->name('create');
-                Route::post('/', [\App\Http\Controllers\Web\School\ClassroomController::class, 'store'])->name('store');
-                Route::get('/{classroom}/edit', [\App\Http\Controllers\Web\School\ClassroomController::class, 'edit'])->name('edit');
-                Route::put('/{classroom}', [\App\Http\Controllers\Web\School\ClassroomController::class, 'update'])->name('update');
-                Route::delete('/{classroom}', [\App\Http\Controllers\Web\School\ClassroomController::class, 'destroy'])->name('destroy');
-            });
-
             // ── Sekolah (Super Admin) ──
             Route::prefix('schools')->name('schools.')->group(function () {
                 Route::get('/', [\App\Http\Controllers\Web\SuperAdmin\SchoolController::class, 'index'])->name('index');
@@ -286,10 +276,15 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('/assignments/{assignment}', [\App\Http\Controllers\Web\School\TeacherController::class, 'destroyAssignment'])->name('assignments.destroy');
         });
 
-        // Alias untuk sidebar (classrooms & master)
-        Route::get('/classrooms', function () {
-            return redirect()->route('master.classrooms.index');
-        })->name('classrooms.index');
+        // ── KELAS ────────────────────────────────────────────
+        Route::prefix('classrooms')->name('classrooms.')->group(function () {
+            Route::get('/', [\App\Http\Controllers\Web\School\ClassroomController::class, 'index'])->name('index');
+            Route::get('/create', [\App\Http\Controllers\Web\School\ClassroomController::class, 'create'])->name('create');
+            Route::post('/', [\App\Http\Controllers\Web\School\ClassroomController::class, 'store'])->name('store');
+            Route::get('/{classroom}/edit', [\App\Http\Controllers\Web\School\ClassroomController::class, 'edit'])->name('edit');
+            Route::put('/{classroom}', [\App\Http\Controllers\Web\School\ClassroomController::class, 'update'])->name('update');
+            Route::delete('/{classroom}', [\App\Http\Controllers\Web\School\ClassroomController::class, 'destroy'])->name('destroy');
+        });
 
     });
 
