@@ -37,7 +37,6 @@ Route::middleware(['auth'])->group(function () {
             </div>';
         };
 
-        Route::get('/ppdb', $placeholder)->name('ppdb.index');
         Route::get('/cms', $placeholder)->name('cms.index');
         Route::get('/settings', $placeholder)->name('settings.index');
         Route::get('/notifications', $placeholder)->name('notifications.index');
@@ -131,6 +130,16 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/{student}/assign-classroom', [\App\Http\Controllers\Web\School\StudentController::class, 'assignClassroom'])->name('assign-classroom');
             Route::post('/{student}/parents', [\App\Http\Controllers\Web\School\StudentController::class, 'storeParent'])->name('parents.store');
             Route::delete('/parents/{parent}', [\App\Http\Controllers\Web\School\StudentController::class, 'destroyParent'])->name('parents.destroy');
+        });
+
+        // ── PPDB ─────────────────────────────────────────────
+        Route::prefix('ppdb')->name('ppdb.')->group(function () {
+            Route::get('/', [\App\Http\Controllers\Web\School\PpdbController::class, 'index'])->name('index');
+            Route::post('/periods', [\App\Http\Controllers\Web\School\PpdbController::class, 'storePeriod'])->name('periods.store');
+            Route::post('/periods/{period}/toggle', [\App\Http\Controllers\Web\School\PpdbController::class, 'togglePeriod'])->name('periods.toggle');
+            Route::delete('/periods/{period}', [\App\Http\Controllers\Web\School\PpdbController::class, 'destroyPeriod'])->name('periods.destroy');
+            Route::get('/{registration}', [\App\Http\Controllers\Web\School\PpdbController::class, 'show'])->name('show');
+            Route::put('/{registration}/status', [\App\Http\Controllers\Web\School\PpdbController::class, 'updateStatus'])->name('update-status');
         });
 
         // ── PENGUMUMAN ───────────────────────────────────────
