@@ -37,7 +37,6 @@ Route::middleware(['auth'])->group(function () {
             </div>';
         };
 
-        Route::get('/scores', $placeholder)->name('scores.index');
         Route::get('/report-cards', $placeholder)->name('report-cards.index');
         Route::get('/announcements', $placeholder)->name('announcements.index');
         Route::get('/ppdb', $placeholder)->name('ppdb.index');
@@ -134,6 +133,14 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/{student}/assign-classroom', [\App\Http\Controllers\Web\School\StudentController::class, 'assignClassroom'])->name('assign-classroom');
             Route::post('/{student}/parents', [\App\Http\Controllers\Web\School\StudentController::class, 'storeParent'])->name('parents.store');
             Route::delete('/parents/{parent}', [\App\Http\Controllers\Web\School\StudentController::class, 'destroyParent'])->name('parents.destroy');
+        });
+
+        // ── PENILAIAN ────────────────────────────────────────
+        Route::prefix('scores')->name('scores.')->group(function () {
+            Route::get('/', [\App\Http\Controllers\Web\School\ScoreController::class, 'index'])->name('index');
+            Route::post('/', [\App\Http\Controllers\Web\School\ScoreController::class, 'store'])->name('store');
+            Route::post('/assessment-types', [\App\Http\Controllers\Web\School\ScoreController::class, 'storeAssessmentType'])->name('assessment-types.store');
+            Route::delete('/assessment-types/{assessmentType}', [\App\Http\Controllers\Web\School\ScoreController::class, 'destroyAssessmentType'])->name('assessment-types.destroy');
         });
 
         // ── ABSENSI ──────────────────────────────────────────
