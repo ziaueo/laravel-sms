@@ -37,7 +37,6 @@ Route::middleware(['auth'])->group(function () {
             </div>';
         };
 
-        Route::get('/students', $placeholder)->name('students.index');
         Route::get('/schedules', $placeholder)->name('schedules.index');
         Route::get('/attendances', $placeholder)->name('attendances.index');
         Route::get('/scores', $placeholder)->name('scores.index');
@@ -122,6 +121,21 @@ Route::middleware(['auth'])->group(function () {
                 Route::delete('/{id}/force-delete', [\App\Http\Controllers\Web\SuperAdmin\SchoolController::class, 'forceDelete'])->name('force-delete');
             });
 
+        });
+
+        // ── KESISWAAN ────────────────────────────────────────
+        Route::prefix('students')->name('students.')->group(function () {
+            Route::get('/', [\App\Http\Controllers\Web\School\StudentController::class, 'index'])->name('index');
+            Route::get('/create', [\App\Http\Controllers\Web\School\StudentController::class, 'create'])->name('create');
+            Route::post('/', [\App\Http\Controllers\Web\School\StudentController::class, 'store'])->name('store');
+            Route::get('/{student}', [\App\Http\Controllers\Web\School\StudentController::class, 'show'])->name('show');
+            Route::get('/{student}/edit', [\App\Http\Controllers\Web\School\StudentController::class, 'edit'])->name('edit');
+            Route::put('/{student}', [\App\Http\Controllers\Web\School\StudentController::class, 'update'])->name('update');
+            Route::delete('/{student}', [\App\Http\Controllers\Web\School\StudentController::class, 'destroy'])->name('destroy');
+            Route::post('/{student}/create-account', [\App\Http\Controllers\Web\School\StudentController::class, 'createAccount'])->name('create-account');
+            Route::post('/{student}/assign-classroom', [\App\Http\Controllers\Web\School\StudentController::class, 'assignClassroom'])->name('assign-classroom');
+            Route::post('/{student}/parents', [\App\Http\Controllers\Web\School\StudentController::class, 'storeParent'])->name('parents.store');
+            Route::delete('/parents/{parent}', [\App\Http\Controllers\Web\School\StudentController::class, 'destroyParent'])->name('parents.destroy');
         });
 
         // ── KEPEGAWAIAN ──────────────────────────────────────

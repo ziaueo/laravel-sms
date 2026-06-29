@@ -131,6 +131,13 @@ if (!function_exists('mutation_status_label')) {
     }
 }
 
+// ── PARENT RELATION ───────────────────────────────
+if (!function_exists('parent_relation_label')) {
+    function parent_relation_label(int $value): string {
+        return \App\Constants\ParentRelationConstant::getLabel($value);
+    }
+}
+
 // ── CURRICULUM ────────────────────────────────────
 if (!function_exists('curriculum_label')) {
     function curriculum_label(int $value): string {
