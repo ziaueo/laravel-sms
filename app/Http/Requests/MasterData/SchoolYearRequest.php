@@ -3,6 +3,7 @@
 namespace App\Http\Requests\MasterData;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class SchoolYearRequest extends FormRequest
 {
@@ -11,15 +12,25 @@ class SchoolYearRequest extends FormRequest
     public function rules(): array
     {
         $schoolId = active_school()?->id;
-        $id = $this->route('school_year');
-        $uniqueRule = "unique:school_years,year,{$id},id,school_id,{$schoolId},semester," . $this->semester;
+
+        // Ambil ID dengan aman — null saat store, object/int saat update
+        $routeParam = $this->route('schoolYear');
+        $ignoreId   = is_object($routeParam) ? $routeParam->id : ($routeParam ?: null);
 
         return [
             'curriculum_id' => 'required|exists:curriculums,id',
-            'year'          => ['required', 'regex:/^\d{4}\/\d{4}$/', $uniqueRule],
-            'semester'      => 'required|in:1,2',
-            'start_date'    => 'required|date',
-            'end_date'      => 'required|date|after:start_date',
+            'year'          => [
+                'required',
+                'string',
+                'regex:/^\d{4}\/\d{4}$/',
+                Rule::unique('school_years')
+                    ->where('school_id', $schoolId)
+                    ->where('semester', (int) $this->semester)
+                    ->when($ignoreId, fn($rule) => $rule->ignore($ignoreId)),
+            ],
+            'semester'   => 'required|in:1,2',
+            'start_date' => 'required|date',
+            'end_date'   => 'required|date|after:start_date',
         ];
     }
 

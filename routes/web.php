@@ -38,7 +38,6 @@ Route::middleware(['auth'])->group(function () {
         };
 
         Route::get('/students', $placeholder)->name('students.index');
-        Route::get('/teachers', $placeholder)->name('teachers.index');
         Route::get('/schedules', $placeholder)->name('schedules.index');
         Route::get('/attendances', $placeholder)->name('attendances.index');
         Route::get('/scores', $placeholder)->name('scores.index');
@@ -123,6 +122,21 @@ Route::middleware(['auth'])->group(function () {
                 Route::delete('/{id}/force-delete', [\App\Http\Controllers\Web\SuperAdmin\SchoolController::class, 'forceDelete'])->name('force-delete');
             });
 
+        });
+
+        // ── KEPEGAWAIAN ──────────────────────────────────────
+        Route::prefix('teachers')->name('teachers.')->group(function () {
+            Route::get('/', [\App\Http\Controllers\Web\School\TeacherController::class, 'index'])->name('index');
+            Route::get('/create', [\App\Http\Controllers\Web\School\TeacherController::class, 'create'])->name('create');
+            Route::post('/', [\App\Http\Controllers\Web\School\TeacherController::class, 'store'])->name('store');
+            Route::get('/{teacher}', [\App\Http\Controllers\Web\School\TeacherController::class, 'show'])->name('show');
+            Route::get('/{teacher}/edit', [\App\Http\Controllers\Web\School\TeacherController::class, 'edit'])->name('edit');
+            Route::put('/{teacher}', [\App\Http\Controllers\Web\School\TeacherController::class, 'update'])->name('update');
+            Route::patch('/{teacher}/toggle-active', [\App\Http\Controllers\Web\School\TeacherController::class, 'toggleActive'])->name('toggle-active');
+            Route::delete('/{teacher}', [\App\Http\Controllers\Web\School\TeacherController::class, 'destroy'])->name('destroy');
+            Route::post('/{teacher}/create-account', [\App\Http\Controllers\Web\School\TeacherController::class, 'createAccount'])->name('create-account');
+            Route::post('/{teacher}/assignments', [\App\Http\Controllers\Web\School\TeacherController::class, 'storeAssignment'])->name('assignments.store');
+            Route::delete('/assignments/{assignment}', [\App\Http\Controllers\Web\School\TeacherController::class, 'destroyAssignment'])->name('assignments.destroy');
         });
 
         // Alias untuk sidebar (classrooms & master)

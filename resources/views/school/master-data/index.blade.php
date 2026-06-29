@@ -673,6 +673,6 @@ document.querySelectorAll('.modal-backdrop').forEach(modal => {
   modal.addEventListener('click', (e) => {
     if (e.target === modal) modal.classList.remove('show');
   });
-});
+});z
 </script>
 @endpush
