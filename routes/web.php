@@ -10,6 +10,19 @@ Route::get('/', function () {
     return redirect()->route('auth.login');
 });
 
+// ── WEBSITE PUBLIK SEKOLAH (by slug) ───────────────────
+use App\Http\Controllers\Web\Public\PublicController;
+Route::prefix('s/{slug}')->name('public.')->group(function () {
+    Route::get('/', [PublicController::class, 'home'])->name('home');
+    Route::get('/profil', [PublicController::class, 'profil'])->name('profil');
+    Route::get('/berita', [PublicController::class, 'berita'])->name('berita');
+    Route::get('/berita/{postSlug}', [PublicController::class, 'beritaDetail'])->name('berita.detail');
+    Route::get('/galeri', [PublicController::class, 'galeri'])->name('galeri');
+    Route::get('/kontak', [PublicController::class, 'kontak'])->name('kontak');
+    Route::get('/ppdb', [PublicController::class, 'ppdb'])->name('ppdb');
+    Route::post('/ppdb', [PublicController::class, 'ppdbStore'])->name('ppdb.store');
+});
+
 // ── AUTH ROUTES ─────────────────────────────────────────
 Route::prefix('auth')->name('auth.')->group(function () {
     Route::get('/login', [LoginController::class, 'index'])->name('login');
@@ -37,7 +50,6 @@ Route::middleware(['auth'])->group(function () {
             </div>';
         };
 
-        Route::get('/cms', $placeholder)->name('cms.index');
         Route::get('/settings', $placeholder)->name('settings.index');
         Route::get('/notifications', $placeholder)->name('notifications.index');
 
@@ -130,6 +142,32 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/{student}/assign-classroom', [\App\Http\Controllers\Web\School\StudentController::class, 'assignClassroom'])->name('assign-classroom');
             Route::post('/{student}/parents', [\App\Http\Controllers\Web\School\StudentController::class, 'storeParent'])->name('parents.store');
             Route::delete('/parents/{parent}', [\App\Http\Controllers\Web\School\StudentController::class, 'destroyParent'])->name('parents.destroy');
+        });
+
+        // ── WEBSITE / CMS ────────────────────────────────────
+        Route::prefix('cms')->name('cms.')->group(function () {
+            Route::get('/', [\App\Http\Controllers\Web\School\CmsController::class, 'index'])->name('index');
+            Route::get('/profile', [\App\Http\Controllers\Web\School\CmsController::class, 'profile'])->name('profile');
+            Route::put('/profile', [\App\Http\Controllers\Web\School\CmsController::class, 'profileUpdate'])->name('profile.update');
+
+            Route::get('/posts', [\App\Http\Controllers\Web\School\CmsController::class, 'posts'])->name('posts');
+            Route::get('/posts/create', [\App\Http\Controllers\Web\School\CmsController::class, 'postCreate'])->name('posts.create');
+            Route::post('/posts', [\App\Http\Controllers\Web\School\CmsController::class, 'postStore'])->name('posts.store');
+            Route::get('/posts/{post}/edit', [\App\Http\Controllers\Web\School\CmsController::class, 'postEdit'])->name('posts.edit');
+            Route::put('/posts/{post}', [\App\Http\Controllers\Web\School\CmsController::class, 'postUpdate'])->name('posts.update');
+            Route::delete('/posts/{post}', [\App\Http\Controllers\Web\School\CmsController::class, 'postDestroy'])->name('posts.destroy');
+            Route::post('/categories', [\App\Http\Controllers\Web\School\CmsController::class, 'categoryStore'])->name('categories.store');
+
+            Route::get('/banners', [\App\Http\Controllers\Web\School\CmsController::class, 'banners'])->name('banners');
+            Route::post('/banners', [\App\Http\Controllers\Web\School\CmsController::class, 'bannerStore'])->name('banners.store');
+            Route::delete('/banners/{banner}', [\App\Http\Controllers\Web\School\CmsController::class, 'bannerDestroy'])->name('banners.destroy');
+
+            Route::get('/galleries', [\App\Http\Controllers\Web\School\CmsController::class, 'galleries'])->name('galleries');
+            Route::post('/galleries', [\App\Http\Controllers\Web\School\CmsController::class, 'galleryStore'])->name('galleries.store');
+            Route::get('/galleries/{gallery}', [\App\Http\Controllers\Web\School\CmsController::class, 'galleryShow'])->name('galleries.show');
+            Route::delete('/galleries/{gallery}', [\App\Http\Controllers\Web\School\CmsController::class, 'galleryDestroy'])->name('galleries.destroy');
+            Route::post('/galleries/{gallery}/items', [\App\Http\Controllers\Web\School\CmsController::class, 'galleryItemStore'])->name('galleries.items.store');
+            Route::delete('/gallery-items/{item}', [\App\Http\Controllers\Web\School\CmsController::class, 'galleryItemDestroy'])->name('galleries.items.destroy');
         });
 
         // ── PPDB ─────────────────────────────────────────────
