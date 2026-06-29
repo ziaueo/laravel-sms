@@ -13,6 +13,18 @@
       <div class="auth-subtitle">Masuk ke akun kamu untuk melanjutkan</div>
     </div>
 
+    @if(session('success'))
+      <div class="alert alert-success" style="margin-bottom:16px;">
+        <i class="ti ti-circle-check" style="font-size:18px;"></i>
+        <span>{{ session('success') }}</span>
+      </div>
+    @endif
+    @if(session('error'))
+      <div class="alert alert-error" style="margin-bottom:16px;">
+        <i class="ti ti-alert-circle" style="font-size:18px;"></i>
+        <span>{{ session('error') }}</span>
+      </div>
+    @endif
     @if($errors->any())
       <div class="alert alert-error" style="margin-bottom:16px;">
         <i class="ti ti-alert-circle" style="font-size:18px;"></i>
@@ -40,7 +52,7 @@
           <input type="checkbox" name="remember" style="accent-color:#2d6a4f;">
           Ingat saya
         </label>
-        <a href="#" style="font-size:12px;color:#2d6a4f;font-weight:600;">Lupa password?</a>
+        <a href="{{ route('password.request') }}" style="font-size:12px;color:#2d6a4f;font-weight:600;">Lupa password?</a>
       </div>
 
       <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:11px;">
@@ -50,7 +62,7 @@
 
     <div class="auth-footer">
       Belum punya akun?
-      <a href="#">Daftar sebagai Siswa/Orang Tua</a>
+      <a href="{{ route('auth.register') }}">Daftar sebagai Siswa/Orang Tua</a>
     </div>
   </div>
 </div>

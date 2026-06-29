@@ -28,6 +28,24 @@ Route::prefix('auth')->name('auth.')->group(function () {
     Route::get('/login', [LoginController::class, 'index'])->name('login');
     Route::post('/login', [LoginController::class, 'login']);
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+    // Registrasi mandiri (siswa & orang tua)
+    Route::get('/register', [\App\Http\Controllers\Web\Auth\RegisterController::class, 'show'])->name('register');
+    Route::post('/register', [\App\Http\Controllers\Web\Auth\RegisterController::class, 'register']);
+
+    // Ganti password (wajib / dari paksaan login pertama)
+    Route::middleware('auth')->group(function () {
+        Route::get('/change-password', [\App\Http\Controllers\Web\Auth\ChangePasswordController::class, 'show'])->name('change-password');
+        Route::put('/change-password', [\App\Http\Controllers\Web\Auth\ChangePasswordController::class, 'update'])->name('change-password.update');
+    });
+});
+
+// ── LUPA / RESET PASSWORD ───────────────────────────────
+Route::controller(\App\Http\Controllers\Web\Auth\PasswordResetController::class)->group(function () {
+    Route::get('/forgot-password', 'showForgot')->name('password.request');
+    Route::post('/forgot-password', 'sendLink')->name('password.email');
+    Route::get('/reset-password/{token}', 'showReset')->name('password.reset');
+    Route::post('/reset-password', 'reset')->name('password.update');
 });
 
 // ── AUTHENTICATED ROUTES ────────────────────────────────
@@ -38,7 +56,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/select-school', [SchoolSwitchController::class, 'store']);
 
     // Dashboard
-    Route::middleware(['check.school.access'])->group(function () {
+    Route::middleware(['check.school.access', 'must.change.password'])->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
         // ── PLACEHOLDER ROUTES ──────────────────────────────
@@ -87,6 +105,13 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/trash', [\App\Http\Controllers\Web\SuperAdmin\UserController::class, 'trash'])->name('trash');
             Route::patch('/{id}/restore', [\App\Http\Controllers\Web\SuperAdmin\UserController::class, 'restore'])->name('restore');
             Route::delete('/{id}/force-delete', [\App\Http\Controllers\Web\SuperAdmin\UserController::class, 'forceDelete'])->name('force-delete');
+        });
+
+        // ── VERIFIKASI PENDAFTARAN ───────────────────────────
+        Route::prefix('registrations')->name('registrations.')->group(function () {
+            Route::get('/', [\App\Http\Controllers\Web\SuperAdmin\UserRegistrationController::class, 'index'])->name('index');
+            Route::post('/{registration}/approve', [\App\Http\Controllers\Web\SuperAdmin\UserRegistrationController::class, 'approve'])->name('approve');
+            Route::post('/{registration}/reject', [\App\Http\Controllers\Web\SuperAdmin\UserRegistrationController::class, 'reject'])->name('reject');
         });
 
         // ── MASTER DATA ──────────────────────────────────────
