@@ -50,8 +50,31 @@ Route::middleware(['auth'])->group(function () {
             </div>';
         };
 
-        Route::get('/settings', $placeholder)->name('settings.index');
-        Route::get('/notifications', $placeholder)->name('notifications.index');
+        // ── PENGATURAN ───────────────────────────────────────
+        Route::prefix('settings')->name('settings.')->group(function () {
+            Route::get('/', [\App\Http\Controllers\Web\SettingsController::class, 'index'])->name('index');
+            Route::put('/profile', [\App\Http\Controllers\Web\SettingsController::class, 'updateProfile'])->name('profile');
+            Route::put('/password', [\App\Http\Controllers\Web\SettingsController::class, 'updatePassword'])->name('password');
+        });
+
+        // ── NOTIFIKASI ───────────────────────────────────────
+        Route::prefix('notifications')->name('notifications.')->group(function () {
+            Route::get('/', [\App\Http\Controllers\Web\NotificationController::class, 'index'])->name('index');
+            Route::post('/read-all', [\App\Http\Controllers\Web\NotificationController::class, 'markAllRead'])->name('read-all');
+            Route::post('/{notification}/read', [\App\Http\Controllers\Web\NotificationController::class, 'markRead'])->name('read');
+            Route::delete('/{notification}', [\App\Http\Controllers\Web\NotificationController::class, 'destroy'])->name('destroy');
+        });
+
+        // ── EKSTRAKURIKULER ──────────────────────────────────
+        Route::prefix('extracurriculars')->name('extracurriculars.')->group(function () {
+            Route::get('/', [\App\Http\Controllers\Web\School\ExtracurricularController::class, 'index'])->name('index');
+            Route::post('/', [\App\Http\Controllers\Web\School\ExtracurricularController::class, 'store'])->name('store');
+            Route::get('/{extracurricular}', [\App\Http\Controllers\Web\School\ExtracurricularController::class, 'show'])->name('show');
+            Route::put('/{extracurricular}', [\App\Http\Controllers\Web\School\ExtracurricularController::class, 'update'])->name('update');
+            Route::delete('/{extracurricular}', [\App\Http\Controllers\Web\School\ExtracurricularController::class, 'destroy'])->name('destroy');
+            Route::post('/{extracurricular}/members', [\App\Http\Controllers\Web\School\ExtracurricularController::class, 'addMember'])->name('members.add');
+            Route::delete('/members/{member}', [\App\Http\Controllers\Web\School\ExtracurricularController::class, 'removeMember'])->name('members.remove');
+        });
 
         // ── USER MANAGEMENT ─────────────────────────────────
         Route::prefix('users')->name('users.')->group(function () {
