@@ -15,14 +15,14 @@
     <div class="page-subtitle">{{ $teacher->position?->name ?? 'Belum ada jabatan' }}</div>
   </div>
   <div class="page-actions">
-    <form method="POST" action="{{ route('teachers.toggle-active', $teacher->id) }}" style="display:inline;">
+    <form method="POST" action="{{ route('teachers.toggle-active', hid($teacher)) }}" style="display:inline;">
       @csrf @method('PATCH')
       <button type="submit" class="btn btn-outline">
         <i class="ti {{ $teacher->is_active ? 'ti-toggle-right' : 'ti-toggle-left' }}"></i>
         {{ $teacher->is_active ? 'Nonaktifkan' : 'Aktifkan' }}
       </button>
     </form>
-    <a href="{{ route('teachers.edit', $teacher->id) }}" class="btn btn-outline">
+    <a href="{{ route('teachers.edit', hid($teacher)) }}" class="btn btn-outline">
       <i class="ti ti-edit"></i> Edit
     </a>
   </div>
@@ -100,7 +100,7 @@
               @endif
             </div>
             @if($teacher->email)
-              <form method="POST" action="{{ route('teachers.create-account', $teacher->id) }}">
+              <form method="POST" action="{{ route('teachers.create-account', hid($teacher)) }}">
                 @csrf
                 <button type="submit" class="btn btn-primary btn-sm">
                   <i class="ti ti-user-plus"></i> Buat Akun Login
@@ -202,7 +202,7 @@
                 {{ $assign->classroom->gradeLevel->name }} — {{ $assign->classroom->name }}
               </div>
             </div>
-            <form method="POST" action="{{ route('teachers.assignments.destroy', $assign->id) }}">
+            <form method="POST" action="{{ route('teachers.assignments.destroy', hid($assign)) }}">
               @csrf @method('DELETE')
               <button type="submit" class="btn btn-sm btn-icon btn-danger" title="Hapus">
                 <i class="ti ti-trash" style="font-size:12px;"></i>
@@ -229,7 +229,7 @@
         <i class="ti ti-x"></i>
       </button>
     </div>
-    <form method="POST" action="{{ route('teachers.assignments.store', $teacher->id) }}">
+    <form method="POST" action="{{ route('teachers.assignments.store', hid($teacher)) }}">
       @csrf
       <div class="modal-body">
         <div class="form-group">

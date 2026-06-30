@@ -86,33 +86,32 @@ class PpdbController extends Controller
         return back()->with('success', 'Gelombang PPDB berhasil dibuat.');
     }
 
-    public function togglePeriod(PpdbPeriod $period)
+    public function togglePeriod(string $period)
     {
-        $this->authorizeSchool($period);
+        $period = $this->findPeriod($period);
         $period->update(['is_active' => !$period->is_active]);
         return back()->with('success', 'Status gelombang diperbarui.');
     }
 
-    public function destroyPeriod(PpdbPeriod $period)
+    public function destroyPeriod(string $period)
     {
-        $this->authorizeSchool($period);
+        $period = $this->findPeriod($period);
         $period->delete();
         return back()->with('success', 'Gelombang PPDB dihapus.');
     }
 
-    public function show(PpdbRegistration $registration)
+    public function show(string $registration)
     {
+        $registration = $this->findRegistration($registration);
         $school = active_school();
-        abort_if(!$school || $registration->school_id !== $school->id, 403);
 
         $registration->load(['ppdbPeriod', 'schoolYear', 'reviewedBy']);
         return view('school.ppdb.show', compact('registration', 'school'));
     }
 
-    public function updateStatus(Request $request, PpdbRegistration $registration)
+    public function updateStatus(Request $request, string $registration)
     {
-        $school = active_school();
-        abort_if(!$school || $registration->school_id !== $school->id, 403);
+        $registration = $this->findRegistration($registration);
 
         $request->validate([
             'status' => 'required|integer|in:1,2,3,4',
@@ -172,6 +171,21 @@ class PpdbController extends Controller
             'address'    => $reg->parent_address,
             'is_primary' => true,
         ]);
+    }
+
+    protected function findPeriod(string $hash): PpdbPeriod
+    {
+        $period = PpdbPeriod::findOrFail(hashid_decode_or_404($hash, PpdbPeriod::class));
+        $this->authorizeSchool($period);
+        return $period;
+    }
+
+    protected function findRegistration(string $hash): PpdbRegistration
+    {
+        $registration = PpdbRegistration::findOrFail(hashid_decode_or_404($hash, PpdbRegistration::class));
+        $school = active_school();
+        abort_if(!$school || $registration->school_id !== $school->id, 403);
+        return $registration;
     }
 
     protected function authorizeSchool(PpdbPeriod $period): void

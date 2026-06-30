@@ -9,7 +9,7 @@
     <div class="page-breadcrumb">
       <i class="ti ti-home" style="font-size:11px;"></i> Beranda
       <span>/ <a href="{{ route('teachers.index') }}" style="color:var(--color-primary);">Guru & Staff</a>
-      / <a href="{{ route('teachers.show', $teacher->id) }}" style="color:var(--color-primary);">{{ $teacher->full_name }}</a>
+      / <a href="{{ route('teachers.show', hid($teacher)) }}" style="color:var(--color-primary);">{{ $teacher->full_name }}</a>
       / Edit</span>
     </div>
     <div class="page-title">Edit Data Guru</div>
@@ -17,7 +17,7 @@
   </div>
 </div>
 
-<form method="POST" action="{{ route('teachers.update', $teacher->id) }}"
+<form method="POST" action="{{ route('teachers.update', hid($teacher)) }}"
       enctype="multipart/form-data">
   @csrf @method('PUT')
 
@@ -221,7 +221,7 @@
 
       {{-- Tombol --}}
       <div style="display:flex;gap:10px;">
-        <a href="{{ route('teachers.show', $teacher->id) }}" class="btn btn-outline">
+        <a href="{{ route('teachers.show', hid($teacher)) }}" class="btn btn-outline">
           <i class="ti ti-arrow-left"></i> Batal
         </a>
         <button type="submit" class="btn btn-primary">

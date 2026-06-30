@@ -44,7 +44,7 @@
       </div>
 
       <div class="school-card-actions">
-        <form method="POST" action="{{ route('master.schools.restore', $school->id) }}" style="flex:1;">
+        <form method="POST" action="{{ route('master.schools.restore', hid($school)) }}" style="flex:1;">
           @csrf @method('PATCH')
           <button type="submit" class="btn btn-sm btn-outline" style="width:100%;justify-content:center;">
             <i class="ti ti-restore" style="font-size:13px;"></i> Pulihkan
@@ -52,7 +52,7 @@
         </form>
 
         <button class="btn btn-sm btn-danger" style="flex:1;justify-content:center;"
-                onclick="openForceDeleteModal({{ $school->id }}, '{{ $school->name }}')">
+                onclick="openForceDeleteModal('{{ hid($school) }}', '{{ $school->name }}')">
           <i class="ti ti-trash-x" style="font-size:13px;"></i> Hapus Permanen
         </button>
       </div>

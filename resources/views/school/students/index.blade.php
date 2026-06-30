@@ -118,14 +118,14 @@
               </td>
               <td style="text-align:right;">
                 <div style="display:inline-flex;gap:5px;">
-                  <a href="{{ route('students.show', $student->id) }}" class="btn btn-sm btn-outline btn-icon" title="Detail">
+                  <a href="{{ route('students.show', hid($student)) }}" class="btn btn-sm btn-outline btn-icon" title="Detail">
                     <i class="ti ti-eye" style="font-size:13px;"></i>
                   </a>
-                  <a href="{{ route('students.edit', $student->id) }}" class="btn btn-sm btn-outline btn-icon" title="Edit">
+                  <a href="{{ route('students.edit', hid($student)) }}" class="btn btn-sm btn-outline btn-icon" title="Edit">
                     <i class="ti ti-edit" style="font-size:13px;"></i>
                   </a>
                   <button class="btn btn-sm btn-danger btn-icon" title="Hapus"
-                          onclick="openDeleteModal({{ $student->id }}, '{{ $student->full_name }}')">
+                          onclick="openDeleteModal('{{ hid($student) }}', '{{ $student->full_name }}')">
                     <i class="ti ti-trash" style="font-size:13px;"></i>
                   </button>
                 </div>

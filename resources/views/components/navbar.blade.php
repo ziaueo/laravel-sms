@@ -6,15 +6,15 @@
     </button>
 
     {{-- Logo --}}
-    <div class="nb-logo">
-      @if(active_school()?->logo)
-        <img src="{{ asset(active_school()->logo) }}"
-             alt="Logo"
+    @if(active_school()?->logo)
+      <div class="nb-logo">
+        <img src="{{ asset(active_school()->logo) }}" alt="Logo"
              style="width:100%;height:100%;object-fit:cover;border-radius:9px;">
-      @else
-        <span>SMS</span>
-      @endif
-    </div>
+      </div>
+    @else
+      <img src="{{ asset('images/logo_sms.png') }}" alt="{{ config('app.name') }}"
+           style="height:36px;width:auto;max-width:150px;object-fit:contain;display:block;flex-shrink:0;">
+    @endif
 
     {{-- School Name --}}
     <div>

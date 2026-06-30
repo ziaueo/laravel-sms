@@ -15,7 +15,7 @@
 <div class="card">
   <div class="card-header"><div class="card-title"><i class="ti ti-upload"></i> Tambah Foto</div></div>
   <div class="card-body">
-    <form method="POST" action="{{ route('cms.galleries.items.store', $gallery->id) }}" enctype="multipart/form-data" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+    <form method="POST" action="{{ route('cms.galleries.items.store', hid($gallery)) }}" enctype="multipart/form-data" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
       @csrf
       <input type="file" name="images[]" class="form-control" accept="image/*" multiple required style="flex:1;min-width:220px;">
       <button class="btn btn-primary"><i class="ti ti-upload"></i> Upload</button>
@@ -29,7 +29,7 @@
     <div class="card">
       <img src="{{ asset($item->file_path) }}" style="width:100%;height:130px;object-fit:cover;">
       <div class="card-body" style="text-align:center;padding:8px;">
-        <form method="POST" action="{{ route('cms.galleries.items.destroy', $item->id) }}" onsubmit="return confirm('Hapus foto?')">
+        <form method="POST" action="{{ route('cms.galleries.items.destroy', hid($item)) }}" onsubmit="return confirm('Hapus foto?')">
           @csrf @method('DELETE')<button class="btn btn-sm btn-danger" style="width:100%;justify-content:center;"><i class="ti ti-trash" style="font-size:13px;"></i> Hapus</button>
         </form>
       </div>

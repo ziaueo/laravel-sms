@@ -101,15 +101,16 @@
             <td>
               <div style="display:flex;gap:6px;justify-content:flex-end;">
                 @if(!$sy->is_active)
-                  <form method="POST" action="{{ route('master.school-years.set-active', $sy->id) }}">
+                  <form method="POST" action="{{ route('master.school-years.set-active', hid($sy)) }}">
                     @csrf @method('PATCH')
                     <button type="submit" class="btn btn-sm btn-outline" title="Jadikan Aktif">
                       <i class="ti ti-check" style="font-size:12px;"></i> Set Aktif
                     </button>
                   </form>
                 @endif
+                @php $syPayload = $sy->only(['curriculum_id', 'year', 'semester', 'start_date', 'end_date']); @endphp
                 <button class="btn btn-sm btn-icon btn-outline" title="Edit"
-                        onclick='openEditSchoolYearModal(@json($sy))'>
+                        onclick='openEditSchoolYearModal(@json($syPayload), "{{ hid($sy) }}")'>
                   <i class="ti ti-edit" style="font-size:13px;"></i>
                 </button>
                 @if(!$sy->is_active)
@@ -118,7 +119,7 @@
                     <i class="ti ti-trash" style="font-size:13px;"></i>
                   </button>
                   <form id="formDeleteSY{{ $sy->id }}" method="POST"
-                        action="{{ route('master.school-years.destroy', $sy->id) }}" style="display:none;">
+                        action="{{ route('master.school-years.destroy', hid($sy)) }}" style="display:none;">
                     @csrf @method('DELETE')
                   </form>
                 @endif
@@ -158,8 +159,9 @@
             <td><strong>{{ $gl->name }}</strong></td>
             <td>
               <div style="display:flex;gap:6px;justify-content:flex-end;">
+                @php $glPayload = $gl->only(['name', 'order']); @endphp
                 <button class="btn btn-sm btn-icon btn-outline" title="Edit"
-                        onclick='openEditGradeLevelModal(@json($gl))'>
+                        onclick='openEditGradeLevelModal(@json($glPayload), "{{ hid($gl) }}")'>
                   <i class="ti ti-edit" style="font-size:13px;"></i>
                 </button>
                 <button class="btn btn-sm btn-icon btn-danger" title="Hapus"
@@ -167,7 +169,7 @@
                   <i class="ti ti-trash" style="font-size:13px;"></i>
                 </button>
                 <form id="formDeleteGL{{ $gl->id }}" method="POST"
-                      action="{{ route('master.grade-levels.destroy', $gl->id) }}" style="display:none;">
+                      action="{{ route('master.grade-levels.destroy', hid($gl)) }}" style="display:none;">
                   @csrf @method('DELETE')
                 </form>
               </div>
@@ -218,8 +220,9 @@
             </td>
             <td>
               <div style="display:flex;gap:6px;justify-content:flex-end;">
+                @php $subjectPayload = $subject->only(['grade_level_id', 'name', 'code', 'is_active']); @endphp
                 <button class="btn btn-sm btn-icon btn-outline" title="Edit"
-                        onclick='openEditSubjectModal(@json($subject->load("gradeLevel")))'>
+                        onclick='openEditSubjectModal(@json($subjectPayload), "{{ hid($subject) }}")'>
                   <i class="ti ti-edit" style="font-size:13px;"></i>
                 </button>
                 <button class="btn btn-sm btn-icon btn-danger" title="Hapus"
@@ -227,7 +230,7 @@
                   <i class="ti ti-trash" style="font-size:13px;"></i>
                 </button>
                 <form id="formDeleteSub{{ $subject->id }}" method="POST"
-                      action="{{ route('master.subjects.destroy', $subject->id) }}" style="display:none;">
+                      action="{{ route('master.subjects.destroy', hid($subject)) }}" style="display:none;">
                   @csrf @method('DELETE')
                 </form>
               </div>
@@ -277,7 +280,7 @@
                   <i class="ti ti-trash" style="font-size:13px;"></i>
                 </button>
                 <form id="formDeleteKKM{{ $kkm->id }}" method="POST"
-                      action="{{ route('master.kkm.destroy', $kkm->id) }}" style="display:none;">
+                      action="{{ route('master.kkm.destroy', hid($kkm)) }}" style="display:none;">
                   @csrf @method('DELETE')
                 </form>
               </div>
@@ -640,31 +643,31 @@ document.getElementById('btnConfirmDelete').addEventListener('click', () => {
 });
 
 // Edit Tahun Ajaran
-function openEditSchoolYearModal(sy) {
+function openEditSchoolYearModal(sy, hash) {
   document.getElementById('editSYCurriculum').value = sy.curriculum_id;
   document.getElementById('editSYYear').value = sy.year;
   document.getElementById('editSYSemester').value = sy.semester;
   document.getElementById('editSYStartDate').value = sy.start_date;
   document.getElementById('editSYEndDate').value = sy.end_date;
-  document.getElementById('formEditSY').action = `/master-data/school-years/${sy.id}`;
+  document.getElementById('formEditSY').action = `/master-data/school-years/${hash}`;
   openModal('modalEditSchoolYear');
 }
 
 // Edit Tingkat Kelas
-function openEditGradeLevelModal(gl) {
+function openEditGradeLevelModal(gl, hash) {
   document.getElementById('editGLName').value = gl.name;
   document.getElementById('editGLOrder').value = gl.order;
-  document.getElementById('formEditGL').action = `/master-data/grade-levels/${gl.id}`;
+  document.getElementById('formEditGL').action = `/master-data/grade-levels/${hash}`;
   openModal('modalEditGradeLevel');
 }
 
 // Edit Mata Pelajaran
-function openEditSubjectModal(subject) {
+function openEditSubjectModal(subject, hash) {
   document.getElementById('editSubjectGL').value = subject.grade_level_id;
   document.getElementById('editSubjectName').value = subject.name;
   document.getElementById('editSubjectCode').value = subject.code || '';
   document.getElementById('editSubjectActive').checked = subject.is_active;
-  document.getElementById('formEditSubject').action = `/master-data/subjects/${subject.id}`;
+  document.getElementById('formEditSubject').action = `/master-data/subjects/${hash}`;
   openModal('modalEditSubject');
 }
 

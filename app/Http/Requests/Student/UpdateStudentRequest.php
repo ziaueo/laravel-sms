@@ -11,7 +11,7 @@ class UpdateStudentRequest extends FormRequest
 
     public function rules(): array
     {
-        $studentId = $this->route('student')->id ?? null;
+        $studentId = hashid_decode($this->route('student'), \App\Models\Student::class);
 
         return [
             'full_name'      => 'required|string|max:255',

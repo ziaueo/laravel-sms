@@ -62,7 +62,7 @@
             <td>{{ format_datetime($user->deleted_at) }}</td>
             <td>
               <div style="display:flex;gap:6px;justify-content:flex-end;">
-                <form method="POST" action="{{ route('users.restore', $user->id) }}" style="display:inline;">
+                <form method="POST" action="{{ route('users.restore', hid($user)) }}" style="display:inline;">
                   @csrf @method('PATCH')
                   <button type="submit" class="btn btn-sm btn-outline" title="Pulihkan">
                     <i class="ti ti-restore" style="font-size:13px;"></i> Pulihkan
@@ -70,7 +70,7 @@
                 </form>
 
                 <button class="btn btn-sm btn-danger" title="Hapus Permanen"
-                        onclick="openForceDeleteModal({{ $user->id }}, '{{ $user->name }}')">
+                        onclick="openForceDeleteModal('{{ hid($user) }}', '{{ $user->name }}')">
                   <i class="ti ti-trash-x" style="font-size:13px;"></i> Hapus Permanen
                 </button>
               </div>

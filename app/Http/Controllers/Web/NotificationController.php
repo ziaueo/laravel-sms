@@ -16,9 +16,9 @@ class NotificationController extends Controller
         return view('notifications.index', compact('notifications'));
     }
 
-    public function markRead(Notification $notification)
+    public function markRead(string $notification)
     {
-        abort_if($notification->user_id !== auth()->id(), 403);
+        $notification = $this->findNotification($notification);
         $notification->update(['is_read' => true, 'read_at' => now()]);
         return back();
     }
@@ -30,10 +30,17 @@ class NotificationController extends Controller
         return back()->with('success', 'Semua notifikasi ditandai sudah dibaca.');
     }
 
-    public function destroy(Notification $notification)
+    public function destroy(string $notification)
     {
-        abort_if($notification->user_id !== auth()->id(), 403);
+        $notification = $this->findNotification($notification);
         $notification->delete();
         return back()->with('success', 'Notifikasi dihapus.');
+    }
+
+    protected function findNotification(string $hash): Notification
+    {
+        $notification = Notification::findOrFail(hashid_decode_or_404($hash, Notification::class));
+        abort_if($notification->user_id !== auth()->id(), 403);
+        return $notification;
     }
 }

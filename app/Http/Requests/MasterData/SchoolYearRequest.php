@@ -13,9 +13,8 @@ class SchoolYearRequest extends FormRequest
     {
         $schoolId = active_school()?->id;
 
-        // Ambil ID dengan aman — null saat store, object/int saat update
-        $routeParam = $this->route('schoolYear');
-        $ignoreId   = is_object($routeParam) ? $routeParam->id : ($routeParam ?: null);
+        // Decode hashid — null saat store, int saat update
+        $ignoreId = hashid_decode($this->route('schoolYear'), \App\Models\SchoolYear::class);
 
         return [
             'curriculum_id' => 'required|exists:curriculums,id',

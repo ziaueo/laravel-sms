@@ -97,8 +97,10 @@ class UserController extends Controller
         }
     }
 
-    public function update(UpdateUserRequest $request, User $user)
+    public function update(UpdateUserRequest $request, string $user)
     {
+        $user = $this->findUser($user);
+
         DB::beginTransaction();
         try {
             $user->update([
@@ -132,16 +134,18 @@ class UserController extends Controller
         }
     }
 
-    public function toggleActive(User $user)
+    public function toggleActive(string $user)
     {
+        $user = $this->findUser($user);
         $user->update(['is_active' => !$user->is_active]);
 
         $status = $user->is_active ? 'diaktifkan' : 'dinonaktifkan';
         return back()->with('success', "User \"{$user->name}\" berhasil {$status}.");
     }
 
-    public function resetPassword(User $user)
+    public function resetPassword(string $user)
     {
+        $user = $this->findUser($user);
         $user->update([
             'password'              => Hash::make(self::DEFAULT_PASSWORD),
             'must_change_password'  => true,
@@ -150,8 +154,9 @@ class UserController extends Controller
         return back()->with('success', "Password \"{$user->name}\" berhasil direset ke default: " . self::DEFAULT_PASSWORD);
     }
 
-    public function destroy(User $user)
+    public function destroy(string $user)
     {
+        $user = $this->findUser($user);
         $name = $user->name;
         $user->delete();
         $user->update(['is_active' => false]);
@@ -160,6 +165,11 @@ class UserController extends Controller
     }
 
     // ── Helper Methods ──────────────────────────────────
+    protected function findUser(string $hash): User
+    {
+        return User::findOrFail(hashid_decode_or_404($hash, User::class));
+    }
+
     protected function getAccessibleSchools()
     {
         if (auth()->user()->hasRole('super_admin')) {
@@ -210,18 +220,18 @@ class UserController extends Controller
         return view('super-admin.users.trash', compact('users', 'activeTab'));
     }
 
-    public function restore($id)
+    public function restore(string $id)
     {
-        $user = User::onlyTrashed()->findOrFail($id);
+        $user = User::onlyTrashed()->findOrFail(hashid_decode_or_404($id, User::class));
         $user->restore();
         $user->update(['is_active' => true]);
 
         return back()->with('success', "User \"{$user->name}\" berhasil dipulihkan.");
     }
 
-    public function forceDelete($id)
+    public function forceDelete(string $id)
     {
-        $user = User::onlyTrashed()->findOrFail($id);
+        $user = User::onlyTrashed()->findOrFail(hashid_decode_or_404($id, User::class));
         $name = $user->name;
         $user->userSchools()->delete();
         $user->forceDelete();

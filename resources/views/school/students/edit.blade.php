@@ -9,13 +9,13 @@
     <div class="page-breadcrumb">
       <i class="ti ti-home" style="font-size:11px;"></i> Beranda
       <span>/ <a href="{{ route('students.index') }}" style="color:var(--color-primary);">Data Siswa</a>
-      / <a href="{{ route('students.show', $student->id) }}" style="color:var(--color-primary);">{{ $student->full_name }}</a> / Edit</span>
+      / <a href="{{ route('students.show', hid($student)) }}" style="color:var(--color-primary);">{{ $student->full_name }}</a> / Edit</span>
     </div>
     <div class="page-title">Edit Data Siswa</div>
   </div>
 </div>
 
-<form method="POST" action="{{ route('students.update', $student->id) }}" enctype="multipart/form-data">
+<form method="POST" action="{{ route('students.update', hid($student)) }}" enctype="multipart/form-data">
   @csrf @method('PUT')
 
   <div class="form-page-grid">
@@ -172,7 +172,7 @@
       </div>
 
       <div style="display:flex;gap:10px;">
-        <a href="{{ route('students.show', $student->id) }}" class="btn btn-outline"><i class="ti ti-arrow-left"></i> Batal</a>
+        <a href="{{ route('students.show', hid($student)) }}" class="btn btn-outline"><i class="ti ti-arrow-left"></i> Batal</a>
         <button type="submit" class="btn btn-primary"><i class="ti ti-check"></i> Simpan Perubahan</button>
       </div>
 

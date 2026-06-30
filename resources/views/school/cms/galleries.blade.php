@@ -21,8 +21,8 @@
         <div style="font-weight:600;">{{ $g->title }}</div>
         <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:10px;">{{ $g->items_count }} foto</div>
         <div style="display:flex;gap:6px;">
-          <a href="{{ route('cms.galleries.show', $g->id) }}" class="btn btn-sm btn-outline" style="flex:1;justify-content:center;"><i class="ti ti-photo"></i> Kelola</a>
-          <form method="POST" action="{{ route('cms.galleries.destroy', $g->id) }}" onsubmit="return confirm('Hapus album ini beserta semua foto?')">
+          <a href="{{ route('cms.galleries.show', hid($g)) }}" class="btn btn-sm btn-outline" style="flex:1;justify-content:center;"><i class="ti ti-photo"></i> Kelola</a>
+          <form method="POST" action="{{ route('cms.galleries.destroy', hid($g)) }}" onsubmit="return confirm('Hapus album ini beserta semua foto?')">
             @csrf @method('DELETE')<button class="btn btn-sm btn-danger btn-icon"><i class="ti ti-trash" style="font-size:13px;"></i></button>
           </form>
         </div>

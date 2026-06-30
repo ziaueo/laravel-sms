@@ -239,3 +239,61 @@ if (!function_exists('school_has_majors')) {
         return \App\Constants\SchoolTypeConstant::hasMajors($schoolTypeId);
     }
 }
+
+// ── HASHID (PENYAMARAN ID DI URL) ─────────────────
+if (!function_exists('hashid_instance')) {
+    /**
+     * Instance Hashids per-konteks (mis. Student::class) yang di-cache.
+     * Setiap konteks punya salt berbeda sehingga ID #5 pada Student dan
+     * Teacher menghasilkan hash yang berbeda (mencegah korelasi antar-tabel).
+     */
+    function hashid_instance(string $context = ''): \Hashids\Hashids {
+        static $cache = [];
+        $key = $context === '' ? '_default' : class_basename($context);
+        if (!isset($cache[$key])) {
+            $base = (string) config('hashids.salt');
+            $cache[$key] = new \Hashids\Hashids(
+                $base . '\\' . $key,
+                (int) config('hashids.length', 12),
+                (string) config('hashids.alphabet', 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890')
+            );
+        }
+        return $cache[$key];
+    }
+}
+
+if (!function_exists('hashid_encode')) {
+    /** Encode ID numerik menjadi string hashid. */
+    function hashid_encode(int|string|null $id, string $context = ''): string {
+        return hashid_instance($context)->encode((int) $id);
+    }
+}
+
+if (!function_exists('hashid_decode')) {
+    /** Decode hashid menjadi ID numerik, atau null bila tidak valid. */
+    function hashid_decode(?string $hash, string $context = ''): ?int {
+        if ($hash === null || $hash === '') return null;
+        $decoded = hashid_instance($context)->decode($hash);
+        return isset($decoded[0]) ? (int) $decoded[0] : null;
+    }
+}
+
+if (!function_exists('hid')) {
+    /**
+     * Shortcut untuk encode sebuah model Eloquent menjadi hashid.
+     * Konteks diambil dari nama kelas model, sama dengan yang dipakai
+     * resolver di controller, sehingga hash-nya konsisten.
+     */
+    function hid(\Illuminate\Database\Eloquent\Model $model): string {
+        return hashid_encode($model->getKey(), get_class($model));
+    }
+}
+
+if (!function_exists('hashid_decode_or_404')) {
+    /** Decode hashid; bila tidak valid langsung abort 404. */
+    function hashid_decode_or_404(?string $hash, string $context = ''): int {
+        $id = hashid_decode($hash, $context);
+        abort_if($id === null, 404);
+        return $id;
+    }
+}

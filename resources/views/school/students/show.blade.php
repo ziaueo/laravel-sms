@@ -13,7 +13,7 @@
     <div class="page-title">{{ $student->full_name }}</div>
   </div>
   <div class="page-actions">
-    <a href="{{ route('students.edit', $student->id) }}" class="btn btn-outline"><i class="ti ti-edit"></i> Edit</a>
+    <a href="{{ route('students.edit', hid($student)) }}" class="btn btn-outline"><i class="ti ti-edit"></i> Edit</a>
   </div>
 </div>
 
@@ -51,7 +51,7 @@
           <p style="font-size:12px;color:var(--color-text-secondary);margin-bottom:10px;">
             Siswa belum punya akun login. Akun dibuat dari NIS/NISN.
           </p>
-          <form method="POST" action="{{ route('students.create-account', $student->id) }}">
+          <form method="POST" action="{{ route('students.create-account', hid($student)) }}">
             @csrf
             <button type="submit" class="btn btn-primary btn-sm" style="width:100%;justify-content:center;">
               <i class="ti ti-user-plus"></i> Buat Akun Login
@@ -89,7 +89,7 @@
       <div class="card-header"><div class="card-title"><i class="ti ti-door"></i> Penempatan Kelas</div></div>
       <div class="card-body">
         @if($activeYear)
-          <form method="POST" action="{{ route('students.assign-classroom', $student->id) }}"
+          <form method="POST" action="{{ route('students.assign-classroom', hid($student)) }}"
                 style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;">
             @csrf
             <input type="hidden" name="school_year_id" value="{{ $activeYear->id }}">
@@ -149,7 +149,7 @@
                 {{ $parent->job ?? '-' }} @if($parent->phone) · <i class="ti ti-phone"></i> {{ $parent->phone }}@endif
               </div>
             </div>
-            <form method="POST" action="{{ route('students.parents.destroy', $parent->id) }}"
+            <form method="POST" action="{{ route('students.parents.destroy', hid($parent)) }}"
                   onsubmit="return confirm('Hapus data orang tua/wali ini?')">
               @csrf @method('DELETE')
               <button class="btn btn-sm btn-danger btn-icon"><i class="ti ti-trash" style="font-size:13px;"></i></button>
@@ -167,7 +167,7 @@
 {{-- MODAL TAMBAH ORANG TUA --}}
 <div class="modal-backdrop" id="modalAddParent">
   <div class="modal-box" style="max-width:480px;">
-    <form method="POST" action="{{ route('students.parents.store', $student->id) }}">
+    <form method="POST" action="{{ route('students.parents.store', hid($student)) }}">
       @csrf
       <div class="modal-header">
         <div class="modal-title"><i class="ti ti-user-plus"></i> Tambah Orang Tua / Wali</div>

@@ -62,16 +62,16 @@ class AnnouncementController extends Controller
         return redirect()->route('announcements.index')->with('success', 'Pengumuman berhasil dibuat.');
     }
 
-    public function edit(Announcement $announcement)
+    public function edit(string $announcement)
     {
-        $this->authorizeSchool($announcement);
+        $announcement = $this->findAnnouncement($announcement);
         $school = active_school();
         return view('school.announcements.edit', compact('announcement', 'school'));
     }
 
-    public function update(Request $request, Announcement $announcement)
+    public function update(Request $request, string $announcement)
     {
-        $this->authorizeSchool($announcement);
+        $announcement = $this->findAnnouncement($announcement);
         $data = $this->validateData($request);
 
         $announcement->update([
@@ -93,9 +93,9 @@ class AnnouncementController extends Controller
         return redirect()->route('announcements.index')->with('success', 'Pengumuman berhasil diperbarui.');
     }
 
-    public function togglePublish(Announcement $announcement)
+    public function togglePublish(string $announcement)
     {
-        $this->authorizeSchool($announcement);
+        $announcement = $this->findAnnouncement($announcement);
         $announcement->update([
             'is_published' => !$announcement->is_published,
             'published_at' => !$announcement->is_published ? now() : $announcement->published_at,
@@ -103,9 +103,9 @@ class AnnouncementController extends Controller
         return back()->with('success', 'Status publikasi diperbarui.');
     }
 
-    public function destroy(Announcement $announcement)
+    public function destroy(string $announcement)
     {
-        $this->authorizeSchool($announcement);
+        $announcement = $this->findAnnouncement($announcement);
         FileHelper::delete($announcement->attachment);
         $announcement->delete();
         return redirect()->route('announcements.index')->with('success', 'Pengumuman berhasil dihapus.');
@@ -120,6 +120,13 @@ class AnnouncementController extends Controller
             'target_roles.*' => 'string',
             'attachment'     => 'nullable|file|max:5120',
         ]);
+    }
+
+    protected function findAnnouncement(string $hash): Announcement
+    {
+        $announcement = Announcement::findOrFail(hashid_decode_or_404($hash, Announcement::class));
+        $this->authorizeSchool($announcement);
+        return $announcement;
     }
 
     protected function authorizeSchool(Announcement $announcement): void

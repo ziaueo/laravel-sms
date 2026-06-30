@@ -110,17 +110,17 @@ class CmsController extends Controller
         return redirect()->route('cms.posts')->with('success', 'Berita berhasil dibuat.');
     }
 
-    public function postEdit(Post $post)
+    public function postEdit(string $post)
     {
-        $this->authorizePost($post);
+        $post = $this->findPost($post);
         $school = active_school();
         $categories = PostCategory::where('school_id', $school->id)->orderBy('name')->get();
         return view('school.cms.post-form', compact('school', 'categories', 'post'));
     }
 
-    public function postUpdate(Request $request, Post $post)
+    public function postUpdate(Request $request, string $post)
     {
-        $this->authorizePost($post);
+        $post = $this->findPost($post);
         $data = $this->validatePost($request);
 
         $post->update([
@@ -141,9 +141,9 @@ class CmsController extends Controller
         return redirect()->route('cms.posts')->with('success', 'Berita berhasil diperbarui.');
     }
 
-    public function postDestroy(Post $post)
+    public function postDestroy(string $post)
     {
-        $this->authorizePost($post);
+        $post = $this->findPost($post);
         FileHelper::delete($post->thumbnail);
         $post->delete();
         return back()->with('success', 'Berita berhasil dihapus.');
@@ -199,10 +199,9 @@ class CmsController extends Controller
         return back()->with('success', 'Banner ditambahkan.');
     }
 
-    public function bannerDestroy(Banner $banner)
+    public function bannerDestroy(string $banner)
     {
-        $school = active_school();
-        abort_if(!$school || $banner->school_id !== $school->id, 403);
+        $banner = $this->findBanner($banner);
         FileHelper::delete($banner->image);
         $banner->delete();
         return back()->with('success', 'Banner dihapus.');
@@ -233,18 +232,17 @@ class CmsController extends Controller
         return back()->with('success', 'Album galeri dibuat.');
     }
 
-    public function galleryShow(Gallery $gallery)
+    public function galleryShow(string $gallery)
     {
+        $gallery = $this->findGallery($gallery);
         $school = active_school();
-        abort_if(!$school || $gallery->school_id !== $school->id, 403);
         $gallery->load('items');
         return view('school.cms.gallery-show', compact('school', 'gallery'));
     }
 
-    public function galleryItemStore(Request $request, Gallery $gallery)
+    public function galleryItemStore(Request $request, string $gallery)
     {
-        $school = active_school();
-        abort_if(!$school || $gallery->school_id !== $school->id, 403);
+        $gallery = $this->findGallery($gallery);
         $request->validate(['images.*' => 'image|mimes:jpg,jpeg,png,webp|max:3072']);
 
         foreach ((array) $request->file('images', []) as $file) {
@@ -255,19 +253,17 @@ class CmsController extends Controller
         return back()->with('success', 'Foto ditambahkan ke galeri.');
     }
 
-    public function galleryItemDestroy(GalleryItem $item)
+    public function galleryItemDestroy(string $item)
     {
-        $school = active_school();
-        abort_if(!$school || $item->gallery->school_id !== $school->id, 403);
+        $item = $this->findGalleryItem($item);
         FileHelper::delete($item->file_path);
         $item->delete();
         return back()->with('success', 'Foto dihapus.');
     }
 
-    public function galleryDestroy(Gallery $gallery)
+    public function galleryDestroy(string $gallery)
     {
-        $school = active_school();
-        abort_if(!$school || $gallery->school_id !== $school->id, 403);
+        $gallery = $this->findGallery($gallery);
         foreach ($gallery->items as $item) FileHelper::delete($item->file_path);
         $gallery->delete();
         return redirect()->route('cms.galleries')->with('success', 'Album galeri dihapus.');
@@ -292,6 +288,37 @@ class CmsController extends Controller
             $slug = $base . '-' . $i++;
         }
         return $slug;
+    }
+
+    protected function findPost(string $hash): Post
+    {
+        $post = Post::findOrFail(hashid_decode_or_404($hash, Post::class));
+        $this->authorizePost($post);
+        return $post;
+    }
+
+    protected function findBanner(string $hash): Banner
+    {
+        $banner = Banner::findOrFail(hashid_decode_or_404($hash, Banner::class));
+        $school = active_school();
+        abort_if(!$school || $banner->school_id !== $school->id, 403);
+        return $banner;
+    }
+
+    protected function findGallery(string $hash): Gallery
+    {
+        $gallery = Gallery::findOrFail(hashid_decode_or_404($hash, Gallery::class));
+        $school = active_school();
+        abort_if(!$school || $gallery->school_id !== $school->id, 403);
+        return $gallery;
+    }
+
+    protected function findGalleryItem(string $hash): GalleryItem
+    {
+        $item = GalleryItem::with('gallery')->findOrFail(hashid_decode_or_404($hash, GalleryItem::class));
+        $school = active_school();
+        abort_if(!$school || !$item->gallery || $item->gallery->school_id !== $school->id, 403);
+        return $item;
     }
 
     protected function authorizePost(Post $post): void

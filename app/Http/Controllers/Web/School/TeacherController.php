@@ -96,7 +96,7 @@ class TeacherController extends Controller
 
             DB::commit();
 
-            return redirect()->route('teachers.show', $teacher->id)
+            return redirect()->route('teachers.show', hashid_encode($teacher->id, Teacher::class))
                 ->with('success', "Data guru \"{$teacher->full_name}\" berhasil ditambahkan.");
         } catch (\Exception $e) {
             DB::rollBack();
@@ -104,8 +104,9 @@ class TeacherController extends Controller
         }
     }
 
-    public function show(Teacher $teacher)
+    public function show(string $teacher)
     {
+        $teacher = $this->findTeacher($teacher);
         $teacher->load(['position', 'user', 'school']);
 
         $teachingAssignments = TeachingAssignment::where('teacher_id', $teacher->id)
@@ -136,16 +137,19 @@ class TeacherController extends Controller
         ));
     }
 
-    public function edit(Teacher $teacher)
+    public function edit(string $teacher)
     {
+        $teacher   = $this->findTeacher($teacher);
         $school    = active_school();
         $positions = Position::orderBy('name')->get();
 
         return view('school.teachers.edit', compact('teacher', 'positions', 'school'));
     }
 
-    public function update(UpdateTeacherRequest $request, Teacher $teacher)
+    public function update(UpdateTeacherRequest $request, string $teacher)
     {
+        $teacher = $this->findTeacher($teacher);
+
         DB::beginTransaction();
         try {
             $teacher->update([
@@ -174,7 +178,7 @@ class TeacherController extends Controller
 
             DB::commit();
 
-            return redirect()->route('teachers.show', $teacher->id)
+            return redirect()->route('teachers.show', hashid_encode($teacher->id, Teacher::class))
                 ->with('success', "Data guru \"{$teacher->full_name}\" berhasil diperbarui.");
         } catch (\Exception $e) {
             DB::rollBack();
@@ -182,15 +186,17 @@ class TeacherController extends Controller
         }
     }
 
-    public function toggleActive(Teacher $teacher)
+    public function toggleActive(string $teacher)
     {
+        $teacher = $this->findTeacher($teacher);
         $teacher->update(['is_active' => !$teacher->is_active]);
         $status = $teacher->is_active ? 'diaktifkan' : 'dinonaktifkan';
         return back()->with('success', "Guru \"{$teacher->full_name}\" berhasil {$status}.");
     }
 
-    public function destroy(Teacher $teacher)
+    public function destroy(string $teacher)
     {
+        $teacher = $this->findTeacher($teacher);
         $name = $teacher->full_name;
         FileHelper::delete($teacher->photo);
         $teacher->delete();
@@ -199,8 +205,10 @@ class TeacherController extends Controller
     }
 
     // ── Buat Akun Login ────────────────────────────────
-    public function createAccount(Teacher $teacher)
+    public function createAccount(string $teacher)
     {
+        $teacher = $this->findTeacher($teacher);
+
         if ($teacher->user_id) {
             return back()->with('error', 'Guru ini sudah memiliki akun login.');
         }
@@ -244,8 +252,10 @@ class TeacherController extends Controller
     }
 
     // ── Teaching Assignment ─────────────────────────────
-    public function storeAssignment(Request $request, Teacher $teacher)
+    public function storeAssignment(Request $request, string $teacher)
     {
+        $teacher = $this->findTeacher($teacher);
+
         $request->validate([
             'school_year_id' => 'required|exists:school_years,id',
             'classroom_id'   => 'required|exists:classrooms,id',
@@ -274,9 +284,29 @@ class TeacherController extends Controller
         return back()->with('success', 'Penugasan mengajar berhasil ditambahkan.');
     }
 
-    public function destroyAssignment(TeachingAssignment $assignment)
+    public function destroyAssignment(string $assignment)
     {
+        $assignment = $this->findAssignment($assignment);
         $assignment->delete();
         return back()->with('success', 'Penugasan mengajar berhasil dihapus.');
+    }
+
+    // ── Helper: decode hashid → Teacher milik sekolah aktif ─────
+    protected function findTeacher(string $hash): Teacher
+    {
+        $teacher = Teacher::findOrFail(hashid_decode_or_404($hash, Teacher::class));
+        $school = active_school();
+        abort_if(!$school || $teacher->school_id !== $school->id, 403, 'Guru ini bukan bagian dari sekolah aktif.');
+        return $teacher;
+    }
+
+    // ── Helper: decode hashid → TeachingAssignment milik sekolah aktif ─────
+    protected function findAssignment(string $hash): TeachingAssignment
+    {
+        $assignment = TeachingAssignment::with('teacher')
+            ->findOrFail(hashid_decode_or_404($hash, TeachingAssignment::class));
+        $school = active_school();
+        abort_if(!$school || !$assignment->teacher || $assignment->teacher->school_id !== $school->id, 403);
+        return $assignment;
     }
 }

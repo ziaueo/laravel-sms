@@ -32,11 +32,11 @@
         </div>
         <div style="display:flex;gap:5px;flex-shrink:0;">
           @if(!$n->is_read)
-            <form method="POST" action="{{ route('notifications.read', $n->id) }}">@csrf
+            <form method="POST" action="{{ route('notifications.read', hid($n)) }}">@csrf
               <button class="btn btn-sm btn-outline btn-icon" title="Tandai dibaca"><i class="ti ti-check" style="font-size:13px;"></i></button>
             </form>
           @endif
-          <form method="POST" action="{{ route('notifications.destroy', $n->id) }}">@csrf @method('DELETE')
+          <form method="POST" action="{{ route('notifications.destroy', hid($n)) }}">@csrf @method('DELETE')
             <button class="btn btn-sm btn-danger btn-icon"><i class="ti ti-trash" style="font-size:13px;"></i></button>
           </form>
         </div>

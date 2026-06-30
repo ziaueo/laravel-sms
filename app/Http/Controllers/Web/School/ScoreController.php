@@ -142,8 +142,9 @@ class ScoreController extends Controller
         return back()->with('success', 'Jenis penilaian berhasil ditambahkan.');
     }
 
-    public function destroyAssessmentType(AssessmentType $assessmentType)
+    public function destroyAssessmentType(string $assessmentType)
     {
+        $assessmentType = AssessmentType::findOrFail(hashid_decode_or_404($assessmentType, AssessmentType::class));
         $school = active_school();
         abort_if(!$school || $assessmentType->school_id !== $school->id, 403);
 

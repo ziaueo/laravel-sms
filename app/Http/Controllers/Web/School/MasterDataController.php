@@ -73,8 +73,10 @@ class MasterDataController extends Controller
         return back()->with('success', 'Tahun ajaran berhasil ditambahkan.')->withFragment('tahun-ajaran');
     }
 
-    public function updateSchoolYear(SchoolYearRequest $request, SchoolYear $schoolYear)
+    public function updateSchoolYear(SchoolYearRequest $request, string $schoolYear)
     {
+        $schoolYear = $this->findSchoolYear($schoolYear);
+
         $schoolYear->update([
             'curriculum_id' => $request->curriculum_id,
             'name'          => $request->year . ' - Semester ' . $request->semester,
@@ -87,8 +89,9 @@ class MasterDataController extends Controller
         return back()->with('success', 'Tahun ajaran berhasil diperbarui.');
     }
 
-    public function setActiveSchoolYear(SchoolYear $schoolYear)
+    public function setActiveSchoolYear(string $schoolYear)
     {
+        $schoolYear = $this->findSchoolYear($schoolYear);
         $school = active_school();
 
         DB::transaction(function () use ($school, $schoolYear) {
@@ -99,8 +102,9 @@ class MasterDataController extends Controller
         return back()->with('success', "Tahun ajaran \"{$schoolYear->name}\" sekarang aktif.");
     }
 
-    public function destroySchoolYear(SchoolYear $schoolYear)
+    public function destroySchoolYear(string $schoolYear)
     {
+        $schoolYear = $this->findSchoolYear($schoolYear);
         $schoolYear->delete();
         return back()->with('success', 'Tahun ajaran berhasil dihapus.');
     }
@@ -119,8 +123,10 @@ class MasterDataController extends Controller
         return back()->with('success', 'Tingkat kelas berhasil ditambahkan.');
     }
 
-    public function updateGradeLevel(GradeLevelRequest $request, GradeLevel $gradeLevel)
+    public function updateGradeLevel(GradeLevelRequest $request, string $gradeLevel)
     {
+        $gradeLevel = $this->findGradeLevel($gradeLevel);
+
         $gradeLevel->update([
             'name'  => $request->name,
             'order' => $request->order,
@@ -129,8 +135,9 @@ class MasterDataController extends Controller
         return back()->with('success', 'Tingkat kelas berhasil diperbarui.');
     }
 
-    public function destroyGradeLevel(GradeLevel $gradeLevel)
+    public function destroyGradeLevel(string $gradeLevel)
     {
+        $gradeLevel = $this->findGradeLevel($gradeLevel);
         $gradeLevel->delete();
         return back()->with('success', 'Tingkat kelas berhasil dihapus.');
     }
@@ -152,8 +159,10 @@ class MasterDataController extends Controller
         return back()->with('success', 'Mata pelajaran berhasil ditambahkan.');
     }
 
-    public function updateSubject(SubjectRequest $request, Subject $subject)
+    public function updateSubject(SubjectRequest $request, string $subject)
     {
+        $subject = $this->findSubject($subject);
+
         $subject->update([
             'grade_level_id' => $request->grade_level_id,
             'major_id'       => $request->major_id,
@@ -165,8 +174,9 @@ class MasterDataController extends Controller
         return back()->with('success', 'Mata pelajaran berhasil diperbarui.');
     }
 
-    public function destroySubject(Subject $subject)
+    public function destroySubject(string $subject)
     {
+        $subject = $this->findSubject($subject);
         $subject->delete();
         return back()->with('success', 'Mata pelajaran berhasil dihapus.');
     }
@@ -185,9 +195,43 @@ class MasterDataController extends Controller
         return back()->with('success', 'KKM berhasil disimpan.');
     }
 
-    public function destroyKkm(SubjectKkm $subjectKkm)
+    public function destroyKkm(string $subjectKkm)
     {
+        $subjectKkm = $this->findKkm($subjectKkm);
         $subjectKkm->delete();
         return back()->with('success', 'KKM berhasil dihapus.');
+    }
+
+    // ── Helpers: decode hashid + cek sekolah aktif ─────
+    protected function findSchoolYear(string $hash): SchoolYear
+    {
+        $schoolYear = SchoolYear::findOrFail(hashid_decode_or_404($hash, SchoolYear::class));
+        $school = active_school();
+        abort_if(!$school || $schoolYear->school_id !== $school->id, 403);
+        return $schoolYear;
+    }
+
+    protected function findGradeLevel(string $hash): GradeLevel
+    {
+        $gradeLevel = GradeLevel::findOrFail(hashid_decode_or_404($hash, GradeLevel::class));
+        $school = active_school();
+        abort_if(!$school || $gradeLevel->school_id !== $school->id, 403);
+        return $gradeLevel;
+    }
+
+    protected function findSubject(string $hash): Subject
+    {
+        $subject = Subject::findOrFail(hashid_decode_or_404($hash, Subject::class));
+        $school = active_school();
+        abort_if(!$school || $subject->school_id !== $school->id, 403);
+        return $subject;
+    }
+
+    protected function findKkm(string $hash): SubjectKkm
+    {
+        $kkm = SubjectKkm::with('subject')->findOrFail(hashid_decode_or_404($hash, SubjectKkm::class));
+        $school = active_school();
+        abort_if(!$school || !$kkm->subject || $kkm->subject->school_id !== $school->id, 403);
+        return $kkm;
     }
 }

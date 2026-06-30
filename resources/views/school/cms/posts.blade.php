@@ -30,8 +30,8 @@
               <td style="font-size:12px;">{{ format_date($post->published_at ?? $post->created_at) }}</td>
               <td style="text-align:right;">
                 <div style="display:inline-flex;gap:5px;">
-                  <a href="{{ route('cms.posts.edit', $post->id) }}" class="btn btn-sm btn-outline btn-icon"><i class="ti ti-edit" style="font-size:13px;"></i></a>
-                  <form method="POST" action="{{ route('cms.posts.destroy', $post->id) }}" onsubmit="return confirm('Hapus berita ini?')">
+                  <a href="{{ route('cms.posts.edit', hid($post)) }}" class="btn btn-sm btn-outline btn-icon"><i class="ti ti-edit" style="font-size:13px;"></i></a>
+                  <form method="POST" action="{{ route('cms.posts.destroy', hid($post)) }}" onsubmit="return confirm('Hapus berita ini?')">
                     @csrf @method('DELETE')
                     <button class="btn btn-sm btn-danger btn-icon"><i class="ti ti-trash" style="font-size:13px;"></i></button>
                   </form>

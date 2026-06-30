@@ -86,13 +86,37 @@
         @endif
       </div>
 
+      @php
+        $schoolPayload = [
+          'school_type_id' => $school->school_type_id,
+          'name'           => $school->name,
+          'npsn'           => $school->npsn,
+          'address'        => $school->address,
+          'phone'          => $school->phone,
+          'email'          => $school->email,
+          'accreditation'  => $school->accreditation,
+          'is_active'      => $school->is_active,
+          'profile'        => $school->profile ? [
+            'tagline'        => $school->profile->tagline,
+            'description'    => $school->profile->description,
+            'vision'         => $school->profile->vision,
+            'mission'        => $school->profile->mission,
+            'history'        => $school->profile->history,
+            'principal_name' => $school->profile->principal_name,
+            'founded_year'   => $school->profile->founded_year,
+            'facebook_url'   => $school->profile->facebook_url,
+            'instagram_url'  => $school->profile->instagram_url,
+            'youtube_url'    => $school->profile->youtube_url,
+          ] : null,
+        ];
+      @endphp
       <div class="school-card-actions">
         <button class="btn btn-sm btn-outline" style="flex:1;justify-content:center;"
-                onclick='openEditModal(@json($school->load("profile")))'>
+                onclick='openEditModal(@json($schoolPayload), "{{ hid($school) }}")'>
           <i class="ti ti-edit" style="font-size:13px;"></i> Edit
         </button>
 
-        <form method="POST" action="{{ route('master.schools.toggle-active', $school->id) }}" style="display:inline;">
+        <form method="POST" action="{{ route('master.schools.toggle-active', hid($school)) }}" style="display:inline;">
           @csrf @method('PATCH')
           <button type="submit" class="btn btn-sm btn-outline btn-icon" title="{{ $school->is_active ? 'Nonaktifkan' : 'Aktifkan' }}">
             <i class="ti {{ $school->is_active ? 'ti-toggle-right' : 'ti-toggle-left' }}" style="font-size:14px;"></i>
@@ -100,7 +124,7 @@
         </form>
 
         <button class="btn btn-sm btn-danger btn-icon" title="Hapus"
-                onclick="openDeleteModal({{ $school->id }}, '{{ $school->name }}')">
+                onclick="openDeleteModal('{{ hid($school) }}', '{{ $school->name }}')">
           <i class="ti ti-trash" style="font-size:13px;"></i>
         </button>
       </div>
@@ -373,7 +397,7 @@ function switchModalTab(tab) {
   document.getElementById(`tab-${tab}`).classList.add('active');
 }
 
-function openEditModal(school) {
+function openEditModal(school, hash) {
   // Reset ke tab pertama
   switchModalTab('dataDasar');
 
@@ -400,7 +424,7 @@ function openEditModal(school) {
   document.getElementById('editInstagram').value = profile.instagram_url || '';
   document.getElementById('editYoutube').value = profile.youtube_url || '';
 
-  document.getElementById('formEditSchool').action = `/master-data/schools/${school.id}`;
+  document.getElementById('formEditSchool').action = `/master-data/schools/${hash}`;
   openModal('modalEditSchool');
 }
 

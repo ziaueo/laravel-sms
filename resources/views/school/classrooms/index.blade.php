@@ -74,12 +74,12 @@
       </div>
 
       <div class="school-card-actions">
-        <a href="{{ route('classrooms.edit', $classroom->id) }}"
+        <a href="{{ route('classrooms.edit', hid($classroom)) }}"
            class="btn btn-sm btn-outline" style="flex:1;justify-content:center;">
           <i class="ti ti-edit" style="font-size:13px;"></i> Edit
         </a>
         <button class="btn btn-sm btn-danger btn-icon"
-                onclick="openDeleteModal({{ $classroom->id }}, '{{ $classroom->name }}')">
+                onclick="openDeleteModal('{{ hid($classroom) }}', '{{ $classroom->name }}')">
           <i class="ti ti-trash" style="font-size:13px;"></i>
         </button>
       </div>

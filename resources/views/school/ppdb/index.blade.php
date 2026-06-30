@@ -32,7 +32,7 @@
         </select>
       </div>
       @if($period)
-        <form method="POST" action="{{ route('ppdb.periods.toggle', $period->id) }}" style="display:inline;">
+        <form method="POST" action="{{ route('ppdb.periods.toggle', hid($period)) }}" style="display:inline;">
           @csrf
           <button class="btn btn-sm btn-outline">{{ $period->is_active ? 'Nonaktifkan' : 'Aktifkan' }}</button>
         </form>
@@ -89,7 +89,7 @@
               <td style="font-size:12px;">{{ $reg->parent_name }}<br><span style="color:var(--color-text-secondary);">{{ $reg->parent_phone }}</span></td>
               <td style="text-align:center;">{!! $reg->status_badge !!}</td>
               <td style="text-align:right;">
-                <a href="{{ route('ppdb.show', $reg->id) }}" class="btn btn-sm btn-outline"><i class="ti ti-eye" style="font-size:13px;"></i> Review</a>
+                <a href="{{ route('ppdb.show', hid($reg)) }}" class="btn btn-sm btn-outline"><i class="ti ti-eye" style="font-size:13px;"></i> Review</a>
               </td>
             </tr>
           @empty

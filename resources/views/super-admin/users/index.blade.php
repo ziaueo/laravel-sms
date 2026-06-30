@@ -79,6 +79,15 @@
       </thead>
       <tbody>
         @forelse($users as $user)
+          @php
+            $userPayload = [
+              'name'         => $user->name,
+              'email'        => $user->email,
+              'phone'        => $user->phone,
+              'is_active'    => $user->is_active,
+              'user_schools' => $user->userSchools->map(fn($us) => ['school_id' => $us->school_id])->values(),
+            ];
+          @endphp
           <tr>
             <td>
               <div class="td-user">
@@ -102,11 +111,11 @@
             <td>
               <div style="display:flex;gap:6px;justify-content:flex-end;">
                 <button class="btn btn-icon btn-outline" title="Edit"
-                        onclick='openEditModal(@json($user->load("userSchools")))'>
+                        onclick='openEditModal(@json($userPayload), "{{ hid($user) }}")'>
                   <i class="ti ti-edit" style="font-size:14px;"></i>
                 </button>
 
-                <form method="POST" action="{{ route('users.toggle-active', $user->id) }}" style="display:inline;">
+                <form method="POST" action="{{ route('users.toggle-active', hid($user)) }}" style="display:inline;">
                   @csrf @method('PATCH')
                   <button type="submit" class="btn btn-icon btn-outline" title="{{ $user->is_active ? 'Nonaktifkan' : 'Aktifkan' }}">
                     <i class="ti {{ $user->is_active ? 'ti-toggle-right' : 'ti-toggle-left' }}" style="font-size:14px;"></i>
@@ -114,12 +123,12 @@
                 </form>
 
                 <button class="btn btn-icon btn-outline" title="Reset Password"
-                        onclick="openResetModal({{ $user->id }}, '{{ $user->name }}')">
+                        onclick="openResetModal('{{ hid($user) }}', '{{ $user->name }}')">
                   <i class="ti ti-key" style="font-size:14px;"></i>
                 </button>
 
                 <button class="btn btn-icon btn-danger" title="Hapus"
-                        onclick="openDeleteModal({{ $user->id }}, '{{ $user->name }}')">
+                        onclick="openDeleteModal('{{ hid($user) }}', '{{ $user->name }}')">
                   <i class="ti ti-trash" style="font-size:14px;"></i>
                 </button>
               </div>
@@ -337,7 +346,7 @@ function closeModal(id) {
   document.getElementById(id).classList.remove('show');
 }
 
-function openEditModal(user) {
+function openEditModal(user, hash) {
   document.getElementById('editName').value = user.name;
   document.getElementById('editEmail').value = user.email;
   document.getElementById('editPhone').value = user.phone || '';
@@ -352,7 +361,7 @@ function openEditModal(user) {
     if (schoolIds.includes(parseInt(cb.value))) cb.checked = true;
   });
 
-  document.getElementById('formEditUser').action = `/users/${user.id}`;
+  document.getElementById('formEditUser').action = `/users/${hash}`;
   openModal('modalEditUser');
 }
 

@@ -36,8 +36,10 @@ class UserRegistrationController extends Controller
         return view('super-admin.registrations.index', compact('registrations'));
     }
 
-    public function approve(UserRegistration $registration)
+    public function approve(string $registration)
     {
+        $registration = $this->findRegistration($registration);
+
         if ($registration->status !== RegistrationConstant::PENDING) {
             return back()->with('error', 'Pendaftaran ini sudah diproses.');
         }
@@ -97,8 +99,10 @@ class UserRegistrationController extends Controller
         }
     }
 
-    public function reject(Request $request, UserRegistration $registration)
+    public function reject(Request $request, string $registration)
     {
+        $registration = $this->findRegistration($registration);
+
         $registration->update([
             'status'      => RegistrationConstant::REJECTED,
             'notes'       => $request->input('notes'),
@@ -107,5 +111,16 @@ class UserRegistrationController extends Controller
         ]);
 
         return back()->with('success', 'Pendaftaran ditolak.');
+    }
+
+    protected function findRegistration(string $hash): UserRegistration
+    {
+        $registration = UserRegistration::findOrFail(hashid_decode_or_404($hash, UserRegistration::class));
+        $school = active_school();
+        abort_if(
+            !auth()->user()->hasRole('super_admin') && (!$school || $registration->school_id !== $school->id),
+            403
+        );
+        return $registration;
     }
 }

@@ -6,9 +6,8 @@
 <div class="auth-wrapper">
   <div class="auth-card">
     <div class="auth-logo">
-      <div class="auth-logo-box">
-        <i class="ti ti-school" style="font-size:24px;color:#fff;"></i>
-      </div>
+      <img src="{{ asset('images/logo_sms.png') }}" alt="{{ config('app.name') }}"
+           style="height:72px;width:auto;max-width:180px;object-fit:contain;margin:0 auto 12px;display:block;">
       <div class="auth-title">{{ config('app.name') }}</div>
       <div class="auth-subtitle">Masuk ke akun kamu untuk melanjutkan</div>
     </div>

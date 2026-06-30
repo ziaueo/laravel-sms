@@ -12,6 +12,6 @@
   </div>
 </div>
 
-@include('school.announcements._form', ['action' => route('announcements.update', $announcement->id), 'announcement' => $announcement, 'method' => 'PUT'])
+@include('school.announcements._form', ['action' => route('announcements.update', hid($announcement)), 'announcement' => $announcement, 'method' => 'PUT'])
 
 @endsection

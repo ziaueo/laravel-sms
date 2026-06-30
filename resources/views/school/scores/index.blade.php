@@ -123,7 +123,7 @@
                   <td>{{ $type->name }}</td>
                   <td style="text-align:center;">{{ rtrim(rtrim($type->weight,'0'),'.') }}%</td>
                   <td style="text-align:right;">
-                    <form method="POST" action="{{ route('scores.assessment-types.destroy', $type->id) }}" onsubmit="return confirm('Hapus jenis penilaian ini? Nilai terkait ikut terhapus.')">
+                    <form method="POST" action="{{ route('scores.assessment-types.destroy', hid($type)) }}" onsubmit="return confirm('Hapus jenis penilaian ini? Nilai terkait ikut terhapus.')">
                       @csrf @method('DELETE')
                       <button class="btn btn-sm btn-danger btn-icon"><i class="ti ti-trash" style="font-size:12px;"></i></button>
                     </form>

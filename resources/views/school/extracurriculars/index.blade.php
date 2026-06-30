@@ -23,8 +23,8 @@
         </div>
         <div style="font-size:12.5px;color:var(--color-text-secondary);margin:8px 0;">{{ \Illuminate\Support\Str::limit($e->description, 80) ?: 'Tanpa deskripsi' }}</div>
         <div style="display:flex;gap:6px;">
-          <a href="{{ route('extracurriculars.show', $e->id) }}" class="btn btn-sm btn-outline" style="flex:1;justify-content:center;"><i class="ti ti-users"></i> Anggota</a>
-          <form method="POST" action="{{ route('extracurriculars.destroy', $e->id) }}" onsubmit="return confirm('Hapus ekskul ini?')">@csrf @method('DELETE')
+          <a href="{{ route('extracurriculars.show', hid($e)) }}" class="btn btn-sm btn-outline" style="flex:1;justify-content:center;"><i class="ti ti-users"></i> Anggota</a>
+          <form method="POST" action="{{ route('extracurriculars.destroy', hid($e)) }}" onsubmit="return confirm('Hapus ekskul ini?')">@csrf @method('DELETE')
             <button class="btn btn-sm btn-danger btn-icon"><i class="ti ti-trash" style="font-size:13px;"></i></button>
           </form>
         </div>

@@ -115,8 +115,9 @@ class ScheduleController extends Controller
         return back()->with('success', 'Jadwal berhasil ditambahkan.');
     }
 
-    public function destroy(Schedule $schedule)
+    public function destroy(string $schedule)
     {
+        $schedule = Schedule::findOrFail(hashid_decode_or_404($schedule, Schedule::class));
         $school = active_school();
         abort_if(!$school || $schedule->classroom->school_id !== $school->id, 403);
 

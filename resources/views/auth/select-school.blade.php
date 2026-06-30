@@ -6,9 +6,8 @@
 <div class="auth-wrapper">
   <div class="auth-card" style="max-width:480px;">
     <div class="auth-logo">
-      <div class="auth-logo-box">
-        <i class="ti ti-building-school" style="font-size:24px;color:#fff;"></i>
-      </div>
+      <img src="{{ asset('images/logo_sms.png') }}" alt="{{ config('app.name') }}"
+           style="height:64px;width:auto;max-width:160px;object-fit:contain;margin:0 auto 12px;display:block;">
       <div class="auth-title">Pilih Sekolah</div>
       <div class="auth-subtitle">Kamu memiliki akses ke lebih dari satu sekolah</div>
     </div>

@@ -150,17 +150,17 @@ class ReportCardController extends Controller
         }
     }
 
-    public function show(ReportCard $reportCard)
+    public function show(string $reportCard)
     {
-        $this->authorizeSchool($reportCard);
+        $reportCard = $this->findReportCard($reportCard);
         [$student, $school, $year, $finalScores] = $this->buildData($reportCard);
 
         return view('school.report-cards.show', compact('reportCard', 'student', 'school', 'year', 'finalScores'));
     }
 
-    public function exportPdf(ReportCard $reportCard)
+    public function exportPdf(string $reportCard)
     {
-        $this->authorizeSchool($reportCard);
+        $reportCard = $this->findReportCard($reportCard);
         [$student, $school, $year, $finalScores] = $this->buildData($reportCard);
 
         $pdf = Pdf::loadView('school.report-cards.pdf', compact('reportCard', 'student', 'school', 'year', 'finalScores'))
@@ -170,9 +170,9 @@ class ReportCardController extends Controller
         return $pdf->download($filename);
     }
 
-    public function togglePublish(ReportCard $reportCard)
+    public function togglePublish(string $reportCard)
     {
-        $this->authorizeSchool($reportCard);
+        $reportCard = $this->findReportCard($reportCard);
 
         $reportCard->update([
             'is_published' => !$reportCard->is_published,
@@ -183,9 +183,9 @@ class ReportCardController extends Controller
         return back()->with('success', "Rapot {$status}.");
     }
 
-    public function updateNotes(Request $request, ReportCard $reportCard)
+    public function updateNotes(Request $request, string $reportCard)
     {
-        $this->authorizeSchool($reportCard);
+        $reportCard = $this->findReportCard($reportCard);
         $request->validate([
             'homeroom_notes'  => 'nullable|string',
             'principal_notes' => 'nullable|string',
@@ -243,6 +243,13 @@ class ReportCardController extends Controller
             $score >= 70 => 'Cukup',
             default      => 'Perlu Bimbingan',
         };
+    }
+
+    protected function findReportCard(string $hash): ReportCard
+    {
+        $reportCard = ReportCard::findOrFail(hashid_decode_or_404($hash, ReportCard::class));
+        $this->authorizeSchool($reportCard);
+        return $reportCard;
     }
 
     protected function authorizeSchool(ReportCard $reportCard): void

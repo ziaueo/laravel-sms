@@ -72,8 +72,8 @@
               <td style="text-align:right;">
                 @if($rc)
                 <div style="display:inline-flex;gap:5px;">
-                  <a href="{{ route('report-cards.show', $rc->id) }}" class="btn btn-sm btn-outline btn-icon" title="Lihat"><i class="ti ti-eye" style="font-size:13px;"></i></a>
-                  <a href="{{ route('report-cards.pdf', $rc->id) }}" class="btn btn-sm btn-outline btn-icon" title="PDF"><i class="ti ti-file-type-pdf" style="font-size:13px;"></i></a>
+                  <a href="{{ route('report-cards.show', hid($rc)) }}" class="btn btn-sm btn-outline btn-icon" title="Lihat"><i class="ti ti-eye" style="font-size:13px;"></i></a>
+                  <a href="{{ route('report-cards.pdf', hid($rc)) }}" class="btn btn-sm btn-outline btn-icon" title="PDF"><i class="ti ti-file-type-pdf" style="font-size:13px;"></i></a>
                 </div>
                 @else
                   <span style="font-size:11px;color:var(--color-text-muted);">Klik Generate Rapot</span>

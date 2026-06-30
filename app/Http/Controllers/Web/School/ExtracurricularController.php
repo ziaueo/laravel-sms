@@ -42,9 +42,9 @@ class ExtracurricularController extends Controller
         return back()->with('success', 'Ekstrakurikuler ditambahkan.');
     }
 
-    public function update(Request $request, Extracurricular $extracurricular)
+    public function update(Request $request, string $extracurricular)
     {
-        $this->authorizeSchool($extracurricular);
+        $extracurricular = $this->findEkskul($extracurricular);
         $request->validate([
             'name'        => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -57,16 +57,16 @@ class ExtracurricularController extends Controller
         return back()->with('success', 'Ekstrakurikuler diperbarui.');
     }
 
-    public function destroy(Extracurricular $extracurricular)
+    public function destroy(string $extracurricular)
     {
-        $this->authorizeSchool($extracurricular);
+        $extracurricular = $this->findEkskul($extracurricular);
         $extracurricular->delete();
         return back()->with('success', 'Ekstrakurikuler dihapus.');
     }
 
-    public function show(Extracurricular $extracurricular)
+    public function show(string $extracurricular)
     {
-        $this->authorizeSchool($extracurricular);
+        $extracurricular = $this->findEkskul($extracurricular);
         $school = active_school();
         $activeYear = $school->activeSchoolYear;
 
@@ -90,9 +90,9 @@ class ExtracurricularController extends Controller
         return view('school.extracurriculars.show', compact('school', 'extracurricular', 'members', 'students', 'activeYear'));
     }
 
-    public function addMember(Request $request, Extracurricular $extracurricular)
+    public function addMember(Request $request, string $extracurricular)
     {
-        $this->authorizeSchool($extracurricular);
+        $extracurricular = $this->findEkskul($extracurricular);
         $school = active_school();
         $activeYear = $school->activeSchoolYear;
         if (!$activeYear) return back()->with('error', 'Belum ada tahun ajaran aktif.');
@@ -108,10 +108,27 @@ class ExtracurricularController extends Controller
         return back()->with('success', 'Anggota ditambahkan.');
     }
 
-    public function removeMember(StudentExtracurricular $member)
+    public function removeMember(string $member)
     {
+        $member = $this->findMember($member);
         $member->delete();
         return back()->with('success', 'Anggota dihapus.');
+    }
+
+    protected function findEkskul(string $hash): Extracurricular
+    {
+        $ekskul = Extracurricular::findOrFail(hashid_decode_or_404($hash, Extracurricular::class));
+        $this->authorizeSchool($ekskul);
+        return $ekskul;
+    }
+
+    protected function findMember(string $hash): StudentExtracurricular
+    {
+        $member = StudentExtracurricular::with('extracurricular')
+            ->findOrFail(hashid_decode_or_404($hash, StudentExtracurricular::class));
+        $school = active_school();
+        abort_if(!$school || !$member->extracurricular || $member->extracurricular->school_id !== $school->id, 403);
+        return $member;
     }
 
     protected function authorizeSchool(Extracurricular $ekskul): void

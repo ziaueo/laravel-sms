@@ -19,7 +19,7 @@
       <img src="{{ asset($b->image) }}" style="width:100%;height:160px;object-fit:cover;">
       <div class="card-body" style="display:flex;justify-content:space-between;align-items:center;">
         <div><div style="font-weight:600;">{{ $b->title ?? 'Tanpa judul' }}</div><div style="font-size:12px;color:var(--color-text-secondary);">{{ $b->subtitle }}</div></div>
-        <form method="POST" action="{{ route('cms.banners.destroy', $b->id) }}" onsubmit="return confirm('Hapus banner?')">
+        <form method="POST" action="{{ route('cms.banners.destroy', hid($b)) }}" onsubmit="return confirm('Hapus banner?')">
           @csrf @method('DELETE')<button class="btn btn-sm btn-danger btn-icon"><i class="ti ti-trash" style="font-size:13px;"></i></button>
         </form>
       </div>

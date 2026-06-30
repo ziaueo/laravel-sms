@@ -45,14 +45,14 @@
           </div>
         </div>
         <div style="display:flex;gap:5px;flex-shrink:0;">
-          <form method="POST" action="{{ route('announcements.toggle-publish', $a->id) }}">
+          <form method="POST" action="{{ route('announcements.toggle-publish', hid($a)) }}">
             @csrf
             <button class="btn btn-sm btn-outline btn-icon" title="{{ $a->is_published ? 'Jadikan draft' : 'Terbitkan' }}">
               <i class="ti {{ $a->is_published ? 'ti-eye-off' : 'ti-send' }}" style="font-size:13px;"></i>
             </button>
           </form>
-          <a href="{{ route('announcements.edit', $a->id) }}" class="btn btn-sm btn-outline btn-icon" title="Edit"><i class="ti ti-edit" style="font-size:13px;"></i></a>
-          <form method="POST" action="{{ route('announcements.destroy', $a->id) }}" onsubmit="return confirm('Hapus pengumuman ini?')">
+          <a href="{{ route('announcements.edit', hid($a)) }}" class="btn btn-sm btn-outline btn-icon" title="Edit"><i class="ti ti-edit" style="font-size:13px;"></i></a>
+          <form method="POST" action="{{ route('announcements.destroy', hid($a)) }}" onsubmit="return confirm('Hapus pengumuman ini?')">
             @csrf @method('DELETE')
             <button class="btn btn-sm btn-danger btn-icon" title="Hapus"><i class="ti ti-trash" style="font-size:13px;"></i></button>
           </form>

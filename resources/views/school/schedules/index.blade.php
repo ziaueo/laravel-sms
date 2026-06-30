@@ -61,7 +61,7 @@
               <div style="font-size:11px;font-weight:700;color:var(--color-primary-dark);">
                 {{ \Illuminate\Support\Str::of($s->start_time)->substr(0,5) }}–{{ \Illuminate\Support\Str::of($s->end_time)->substr(0,5) }}
               </div>
-              <form method="POST" action="{{ route('schedules.destroy', $s->id) }}" onsubmit="return confirm('Hapus slot ini?')">
+              <form method="POST" action="{{ route('schedules.destroy', hid($s)) }}" onsubmit="return confirm('Hapus slot ini?')">
                 @csrf @method('DELETE')
                 <button class="schedule-del" title="Hapus"><i class="ti ti-x"></i></button>
               </form>

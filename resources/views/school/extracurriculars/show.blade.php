@@ -18,7 +18,7 @@
     <div class="card-header"><div class="card-title"><i class="ti ti-user-plus"></i> Tambah Anggota</div></div>
     <div class="card-body">
       @if($activeYear)
-        <form method="POST" action="{{ route('extracurriculars.members.add', $extracurricular->id) }}" style="display:flex;gap:8px;">
+        <form method="POST" action="{{ route('extracurriculars.members.add', hid($extracurricular)) }}" style="display:flex;gap:8px;">
           @csrf
           <select name="student_id" class="form-control" required>
             <option value="">-- Pilih siswa --</option>
@@ -44,7 +44,7 @@
                 <td>{{ $i + 1 }}</td>
                 <td>{{ $m->student->full_name ?? '-' }}</td>
                 <td style="text-align:right;">
-                  <form method="POST" action="{{ route('extracurriculars.members.remove', $m->id) }}" onsubmit="return confirm('Hapus anggota?')">@csrf @method('DELETE')
+                  <form method="POST" action="{{ route('extracurriculars.members.remove', hid($m)) }}" onsubmit="return confirm('Hapus anggota?')">@csrf @method('DELETE')
                     <button class="btn btn-sm btn-danger btn-icon"><i class="ti ti-trash" style="font-size:13px;"></i></button>
                   </form>
                 </td>

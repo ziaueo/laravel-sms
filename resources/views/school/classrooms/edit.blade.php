@@ -19,7 +19,7 @@
 
 <div class="card" style="max-width:600px;">
   <div class="card-body">
-    <form method="POST" action="{{ route('classrooms.update', $classroom->id) }}">
+    <form method="POST" action="{{ route('classrooms.update', hid($classroom)) }}">
       @csrf @method('PUT')
 
       <div class="form-group">

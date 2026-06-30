@@ -67,8 +67,10 @@ class SchoolController extends Controller
         }
     }
 
-    public function update(UpdateSchoolRequest $request, School $school)
+    public function update(UpdateSchoolRequest $request, string $school)
     {
+        $school = $this->findSchool($school);
+
         DB::beginTransaction();
         try {
             $school->update([
@@ -116,16 +118,18 @@ class SchoolController extends Controller
         }
     }
 
-    public function toggleActive(School $school)
+    public function toggleActive(string $school)
     {
+        $school = $this->findSchool($school);
         $school->update(['is_active' => !$school->is_active]);
 
         $status = $school->is_active ? 'diaktifkan' : 'dinonaktifkan';
         return back()->with('success', "Sekolah \"{$school->name}\" berhasil {$status}.");
     }
 
-    public function destroy(School $school)
+    public function destroy(string $school)
     {
+        $school = $this->findSchool($school);
         $name = $school->name;
         $school->delete();
 
@@ -145,18 +149,18 @@ class SchoolController extends Controller
         return view('super-admin.schools.trash', compact('schools'));
     }
 
-    public function restore($id)
+    public function restore(string $id)
     {
-        $school = School::onlyTrashed()->findOrFail($id);
+        $school = School::onlyTrashed()->findOrFail(hashid_decode_or_404($id, School::class));
         $school->restore();
         $school->update(['is_active' => true]);
 
         return back()->with('success', "Sekolah \"{$school->name}\" berhasil dipulihkan.");
     }
 
-    public function forceDelete($id)
+    public function forceDelete(string $id)
     {
-        $school = School::onlyTrashed()->findOrFail($id);
+        $school = School::onlyTrashed()->findOrFail(hashid_decode_or_404($id, School::class));
         $name = $school->name;
 
         FileHelper::delete($school->logo);
@@ -167,6 +171,11 @@ class SchoolController extends Controller
     }
 
     // ── Helper ──────────────────────────────────────────
+    protected function findSchool(string $hash): School
+    {
+        return School::findOrFail(hashid_decode_or_404($hash, School::class));
+    }
+
     protected function generateUniqueSlug(string $name): string
     {
         $slug = Str::slug($name);

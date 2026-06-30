@@ -44,7 +44,7 @@
         <div style="margin-bottom:12px;">Status saat ini: {!! $registration->status_badge !!}
           @if($registration->reviewed_at)<span style="font-size:11px;color:var(--color-text-muted);"> · direview {{ time_ago($registration->reviewed_at) }} oleh {{ $registration->reviewedBy->name ?? '-' }}</span>@endif
         </div>
-        <form method="POST" action="{{ route('ppdb.update-status', $registration->id) }}">
+        <form method="POST" action="{{ route('ppdb.update-status', hid($registration)) }}">
           @csrf @method('PUT')
           <div class="form-group">
             <label class="form-label required">Ubah Status</label>

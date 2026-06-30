@@ -139,7 +139,7 @@
     @can('schools.view')
     <a href="{{ route('master.index') }}"
        class="sb-menu-item {{ request()->routeIs('master.*') ? 'active' : '' }}">
-      <i class="ti ti-building-school"></i>
+      <i class="ti ti-books"></i>
       <span class="sb-menu-label">Master Data</span>
     </a>
     @endcan

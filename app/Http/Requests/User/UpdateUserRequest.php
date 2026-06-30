@@ -13,7 +13,7 @@ class UpdateUserRequest extends FormRequest
 
     public function rules(): array
     {
-        $userId = $this->route('user')->id ?? $this->route('user');
+        $userId = hashid_decode($this->route('user'), \App\Models\User::class);
 
         return [
             'name'         => 'required|string|max:255',

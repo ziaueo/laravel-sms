@@ -121,7 +121,7 @@ class StudentController extends Controller
 
             DB::commit();
 
-            return redirect()->route('students.show', $student->id)
+            return redirect()->route('students.show', hashid_encode($student->id, Student::class))
                 ->with('success', "Data siswa \"{$student->full_name}\" berhasil ditambahkan.");
         } catch (\Exception $e) {
             DB::rollBack();
@@ -129,9 +129,9 @@ class StudentController extends Controller
         }
     }
 
-    public function show(Student $student)
+    public function show(string $student)
     {
-        $this->authorizeSchool($student);
+        $student = $this->findStudent($student);
 
         $student->load(['user', 'school', 'parents', 'activeClassroom.classroom.gradeLevel']);
 
@@ -154,9 +154,9 @@ class StudentController extends Controller
         ));
     }
 
-    public function edit(Student $student)
+    public function edit(string $student)
     {
-        $this->authorizeSchool($student);
+        $student = $this->findStudent($student);
 
         $school     = active_school();
         $activeYear = $school->activeSchoolYear;
@@ -170,9 +170,9 @@ class StudentController extends Controller
         return view('school.students.edit', compact('student', 'classrooms', 'school', 'activeYear'));
     }
 
-    public function update(UpdateStudentRequest $request, Student $student)
+    public function update(UpdateStudentRequest $request, string $student)
     {
-        $this->authorizeSchool($student);
+        $student = $this->findStudent($student);
 
         DB::beginTransaction();
         try {
@@ -202,7 +202,7 @@ class StudentController extends Controller
 
             DB::commit();
 
-            return redirect()->route('students.show', $student->id)
+            return redirect()->route('students.show', hashid_encode($student->id, Student::class))
                 ->with('success', "Data siswa \"{$student->full_name}\" berhasil diperbarui.");
         } catch (\Exception $e) {
             DB::rollBack();
@@ -210,9 +210,9 @@ class StudentController extends Controller
         }
     }
 
-    public function destroy(Student $student)
+    public function destroy(string $student)
     {
-        $this->authorizeSchool($student);
+        $student = $this->findStudent($student);
 
         $name = $student->full_name;
         FileHelper::delete($student->photo);
@@ -223,9 +223,9 @@ class StudentController extends Controller
     }
 
     // ── Buat Akun Login Siswa ──────────────────────────
-    public function createAccount(Student $student)
+    public function createAccount(string $student)
     {
-        $this->authorizeSchool($student);
+        $student = $this->findStudent($student);
 
         if ($student->user_id) {
             return back()->with('error', 'Siswa ini sudah memiliki akun login.');
@@ -272,9 +272,9 @@ class StudentController extends Controller
     }
 
     // ── Penempatan Kelas ───────────────────────────────
-    public function assignClassroom(Request $request, Student $student)
+    public function assignClassroom(Request $request, string $student)
     {
-        $this->authorizeSchool($student);
+        $student = $this->findStudent($student);
 
         $request->validate([
             'classroom_id'   => 'required|exists:classrooms,id',
@@ -302,9 +302,9 @@ class StudentController extends Controller
     }
 
     // ── Manajemen Orang Tua / Wali ─────────────────────
-    public function storeParent(Request $request, Student $student)
+    public function storeParent(Request $request, string $student)
     {
-        $this->authorizeSchool($student);
+        $student = $this->findStudent($student);
 
         $request->validate([
             'full_name' => 'required|string|max:255',
@@ -334,10 +334,29 @@ class StudentController extends Controller
         return back()->with('success', 'Data orang tua/wali berhasil ditambahkan.');
     }
 
-    public function destroyParent(StudentParent $parent)
+    public function destroyParent(string $parent)
     {
+        $parent = $this->findParent($parent);
         $parent->delete();
         return back()->with('success', 'Data orang tua/wali berhasil dihapus.');
+    }
+
+    // ── Helper: decode hashid → Student milik sekolah aktif ─────
+    protected function findStudent(string $hash): Student
+    {
+        $student = Student::findOrFail(hashid_decode_or_404($hash, Student::class));
+        $this->authorizeSchool($student);
+        return $student;
+    }
+
+    // ── Helper: decode hashid → StudentParent milik sekolah aktif ─────
+    protected function findParent(string $hash): StudentParent
+    {
+        $parent = StudentParent::with('student')
+            ->findOrFail(hashid_decode_or_404($hash, StudentParent::class));
+        $school = active_school();
+        abort_if(!$school || !$parent->student || $parent->student->school_id !== $school->id, 403);
+        return $parent;
     }
 
     // ── Helper: pastikan siswa milik sekolah aktif ─────

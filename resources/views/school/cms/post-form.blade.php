@@ -12,7 +12,7 @@
   </div>
 </div>
 
-<form method="POST" action="{{ $post ? route('cms.posts.update', $post->id) : route('cms.posts.store') }}" enctype="multipart/form-data">
+<form method="POST" action="{{ $post ? route('cms.posts.update', hid($post)) : route('cms.posts.store') }}" enctype="multipart/form-data">
   @csrf
   @if($post) @method('PUT') @endif
   <div class="form-page-grid">

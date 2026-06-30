@@ -42,10 +42,10 @@
               <td style="text-align:right;">
                 @if($r->status == \App\Constants\RegistrationConstant::PENDING)
                   <div style="display:inline-flex;gap:5px;">
-                    <form method="POST" action="{{ route('registrations.approve', $r->id) }}" onsubmit="return confirm('Setujui & buat akun?')">@csrf
+                    <form method="POST" action="{{ route('registrations.approve', hid($r)) }}" onsubmit="return confirm('Setujui & buat akun?')">@csrf
                       <button class="btn btn-sm btn-primary"><i class="ti ti-check" style="font-size:13px;"></i> Setujui</button>
                     </form>
-                    <form method="POST" action="{{ route('registrations.reject', $r->id) }}" onsubmit="return confirm('Tolak pendaftaran ini?')">@csrf
+                    <form method="POST" action="{{ route('registrations.reject', hid($r)) }}" onsubmit="return confirm('Tolak pendaftaran ini?')">@csrf
                       <button class="btn btn-sm btn-danger btn-icon"><i class="ti ti-x" style="font-size:13px;"></i></button>
                     </form>
                   </div>

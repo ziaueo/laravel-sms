@@ -105,8 +105,9 @@ class ClassroomController extends Controller
             ->with('success', "Kelas \"{$request->name}\" berhasil ditambahkan.");
     }
 
-    public function edit(Classroom $classroom)
+    public function edit(string $classroom)
     {
+        $classroom = $this->findClassroom($classroom);
         $school = active_school();
 
         $schoolYears = SchoolYear::where('school_id', $school->id)
@@ -131,8 +132,10 @@ class ClassroomController extends Controller
         ));
     }
 
-    public function update(ClassroomRequest $request, Classroom $classroom)
+    public function update(ClassroomRequest $request, string $classroom)
     {
+        $classroom = $this->findClassroom($classroom);
+
         $classroom->update([
             'school_year_id'      => $request->school_year_id,
             'grade_level_id'      => $request->grade_level_id,
@@ -147,12 +150,22 @@ class ClassroomController extends Controller
             ->with('success', "Kelas \"{$classroom->name}\" berhasil diperbarui.");
     }
 
-    public function destroy(Classroom $classroom)
+    public function destroy(string $classroom)
     {
+        $classroom = $this->findClassroom($classroom);
         $name = $classroom->name;
         $classroom->delete();
 
         return redirect()->route('classrooms.index')
             ->with('success', "Kelas \"{$name}\" berhasil dihapus.");
+    }
+
+    // ── Helper: decode hashid → Classroom milik sekolah aktif ─────
+    protected function findClassroom(string $hash): Classroom
+    {
+        $classroom = Classroom::findOrFail(hashid_decode_or_404($hash, Classroom::class));
+        $school = active_school();
+        abort_if(!$school || $classroom->school_id !== $school->id, 403, 'Kelas ini bukan bagian dari sekolah aktif.');
+        return $classroom;
     }
 }

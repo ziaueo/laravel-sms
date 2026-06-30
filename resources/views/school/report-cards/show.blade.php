@@ -13,8 +13,8 @@
     <div class="page-title">Rapot {{ $student->full_name }}</div>
   </div>
   <div class="page-actions" style="display:flex;gap:8px;">
-    <a href="{{ route('report-cards.pdf', $reportCard->id) }}" class="btn btn-outline"><i class="ti ti-file-type-pdf"></i> Unduh PDF</a>
-    <form method="POST" action="{{ route('report-cards.toggle-publish', $reportCard->id) }}">
+    <a href="{{ route('report-cards.pdf', hid($reportCard)) }}" class="btn btn-outline"><i class="ti ti-file-type-pdf"></i> Unduh PDF</a>
+    <form method="POST" action="{{ route('report-cards.toggle-publish', hid($reportCard)) }}">
       @csrf
       <button class="btn {{ $reportCard->is_published ? 'btn-outline' : 'btn-primary' }}">
         <i class="ti {{ $reportCard->is_published ? 'ti-eye-off' : 'ti-send' }}"></i>
@@ -77,7 +77,7 @@
     <div class="card">
       <div class="card-header"><div class="card-title"><i class="ti ti-message"></i> Catatan</div></div>
       <div class="card-body">
-        <form method="POST" action="{{ route('report-cards.update-notes', $reportCard->id) }}">
+        <form method="POST" action="{{ route('report-cards.update-notes', hid($reportCard)) }}">
           @csrf
           <div class="form-group">
             <label class="form-label">Catatan Wali Kelas</label>

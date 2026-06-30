@@ -107,15 +107,15 @@
       </div>
 
       <div class="teacher-card-actions">
-        <a href="{{ route('teachers.show', $teacher->id) }}"
+        <a href="{{ route('teachers.show', hid($teacher)) }}"
            class="btn btn-sm btn-outline" style="flex:1;justify-content:center;">
           <i class="ti ti-eye" style="font-size:13px;"></i> Detail
         </a>
-        <a href="{{ route('teachers.edit', $teacher->id) }}"
+        <a href="{{ route('teachers.edit', hid($teacher)) }}"
            class="btn btn-sm btn-outline btn-icon" title="Edit">
           <i class="ti ti-edit" style="font-size:13px;"></i>
         </a>
-        <form method="POST" action="{{ route('teachers.toggle-active', $teacher->id) }}" style="display:inline;">
+        <form method="POST" action="{{ route('teachers.toggle-active', hid($teacher)) }}" style="display:inline;">
           @csrf @method('PATCH')
           <button type="submit" class="btn btn-sm btn-outline btn-icon"
                   title="{{ $teacher->is_active ? 'Nonaktifkan' : 'Aktifkan' }}">
@@ -124,7 +124,7 @@
           </button>
         </form>
         <button class="btn btn-sm btn-danger btn-icon" title="Hapus"
-                onclick="openDeleteModal({{ $teacher->id }}, '{{ $teacher->full_name }}')">
+                onclick="openDeleteModal('{{ hid($teacher) }}', '{{ $teacher->full_name }}')">
           <i class="ti ti-trash" style="font-size:13px;"></i>
         </button>
       </div>
