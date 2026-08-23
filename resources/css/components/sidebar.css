@@ -200,6 +200,15 @@
   background: var(--grad-success);
 }
 
+/* Tanpa href = user cuma punya satu sekolah, kartunya bukan tombol */
+.sb-school-card:not([href]) {
+  cursor: default;
+}
+
+.sb-school-card:not([href]):hover {
+  background: var(--grad-soft);
+}
+
 .sb-school-icon {
   width: 30px;
   height: 30px;

@@ -103,12 +103,16 @@ satunya bagian yang dikembalikan endpoint dan ditukar berulang kali selama user 
 |---|---|
 | `app/Http/Controllers/Web/Auth/SchoolSwitchController.php` | Tambah `list()`, tarik `accessibleSchools()`, perketat `store()` |
 | `app/Helpers/helpers.php` | Tambah `can_switch_school()` |
+| `app/Models/School.php` | Tambah trait `HasFactory` (prasyarat factory) |
+| `app/Models/SchoolType.php` | Tambah trait `HasFactory` (prasyarat factory) |
 | `routes/web.php` | Tambah `GET /select-school/list` |
 | `resources/views/layouts/app.blade.php` | Include modal |
 | `resources/views/components/navbar.blade.php` | Tombol jadi pemicu modal |
 | `resources/views/components/sidebar.blade.php` | Kartu sekolah jadi pemicu modal |
+| `resources/css/components/sidebar.css` | Kartu sekolah tanpa `href` jadi non-interaktif |
 | `resources/js/app.js` | Import komponen baru |
 | `resources/css/app.css` | Import CSS baru |
+| `phpunit.xml` | Setel `APP_URL` supaya `route()` bisa diuji |
 
 Kedua berkas view `school-switcher-*` diletakkan di `resources/views/components/` mengikuti pola
 `navbar.blade.php` dan `sidebar.blade.php` — partial biasa yang di-`@include`, bukan komponen
@@ -179,6 +183,10 @@ if (! $allowed) {
 Karena `accessibleSchools()` sudah menyaring `is_active`, pengecekan ini sekaligus menutup
 perpindahan ke sekolah yang sudah dinonaktifkan.
 
+Nilai yang disimpan di-cast ke `int`. Input form selalu berupa string, sedangkan
+`LoginController` menyimpan `$userSchool->school_id` yang sudah integer — tanpa cast, tipe isi
+session berbeda tergantung dari mana ia ditulis.
+
 ### Rute
 
 ```php
@@ -209,6 +217,12 @@ memicu modal yang tidak pernah dirender. Satu helper menjaga ketiganya sinkron.
 
 Untuk user dengan satu sekolah, kartu sidebar tetap tampil sebagai informasi tapi bukan tombol,
 dan panah `sb-school-arrow` disembunyikan.
+
+Kartu sidebar tetap berupa `<a>`, bukan diubah jadi `<button>`. Dua alasan: isinya `<div>`, yang
+tidak sah di dalam `<button>`; dan `href` yang tetap menunjuk ke `/select-school` berfungsi sebagai
+jalan mundur kalau JavaScript gagal dimuat. Saat user tidak berhak berpindah, atribut `href`-nya
+tidak dirender sama sekali — `<a>` tanpa `href` memang tidak interaktif menurut spesifikasi HTML,
+dan CSS `.sb-school-card:not([href])` menyesuaikan kursor serta hover-nya.
 
 ## Alur
 
@@ -278,7 +292,18 @@ dikonfigurasi di `phpunit.xml:26`.
 6. `store()` dengan sekolah sah → session terisi, redirect ke dashboard
 7. `store()` dengan sekolah nonaktif → 403
 
-Nomor 5 dan 7 adalah inti perbaikan otorisasi.
+Nomor 5 dan 7 adalah inti perbaikan otorisasi. Keduanya sudah diverifikasi punya gigi: dengan
+penjagaan di `store()` dinonaktifkan sementara, keduanya gagal dengan 302 — yaitu perpindahan
+berhasil, persis celah yang diperbaiki.
+
+### Dua hal yang harus disiapkan agar test bisa jalan
+
+`APP_URL` di `.env` menunjuk ke subfolder XAMPP (`http://localhost/laravel-sms/public`). Saat diuji,
+`route()` ikut memakai prefix itu sehingga tidak ada rute yang cocok dan semua request menjadi 404.
+Karena itu `phpunit.xml` menyetel `APP_URL=http://localhost` khusus untuk lingkungan test.
+
+Ekstensi `pdo_sqlite` dan `sqlite3` harus aktif di `php.ini`. Pada instalasi XAMPP bawaan keduanya
+masih dikomentari meski DLL-nya tersedia di `php/ext/`. Ini konfigurasi lingkungan, di luar repo.
 
 Proyek baru punya `UserFactory`, sedangkan test ini butuh `School` (wajib `school_type_id`, `name`,
 dan `slug` yang unik), `SchoolType`, serta baris `user_schools` (kolom `role` bertipe smallInteger).

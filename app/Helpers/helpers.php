@@ -203,6 +203,19 @@ if (!function_exists('active_school')) {
     }
 }
 
+if (!function_exists('can_switch_school')) {
+    /**
+     * Apakah user saat ini punya pilihan sekolah untuk dipindah.
+     * Dipakai bersama oleh tombol navbar, kartu sidebar, dan modal itu sendiri —
+     * ketiganya harus sepakat, kalau tidak tombolnya memicu modal yang tak pernah dirender.
+     */
+    function can_switch_school(): bool {
+        $user = auth()->user();
+        if (!$user) return false;
+        return $user->hasRole('super_admin') || $user->userSchools()->count() > 1;
+    }
+}
+
 if (!function_exists('initials')) {
     function initials(string $name): string {
         $words = explode(' ', trim($name));

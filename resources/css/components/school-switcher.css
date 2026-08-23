@@ -1,0 +1,213 @@
+/* ── SCHOOL SWITCHER MODAL ── */
+
+/* Kotak pencarian */
+.ss-search {
+  position: relative;
+  margin-bottom: 12px;
+}
+
+.ss-search i {
+  position: absolute;
+  left: 11px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 15px;
+  color: var(--color-text-muted);
+  pointer-events: none;
+}
+
+.ss-search input {
+  width: 100%;
+  padding: 9px 12px 9px 34px;
+  font-family: var(--font-family);
+  font-size: var(--font-size-md);
+  color: var(--color-text-primary);
+  background: var(--color-bg-soft);
+  border: 0.5px solid var(--color-border-solid);
+  border-radius: var(--radius-md);
+  outline: none;
+  transition: var(--transition-fast);
+}
+
+.ss-search input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.ss-search input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-muted);
+}
+
+/* Wadah daftar */
+.ss-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 46vh;
+  overflow-y: auto;
+  transition: opacity 0.15s ease;
+}
+
+.ss-list.is-loading {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.ss-list.is-submitting {
+  pointer-events: none;
+}
+
+/* Kartu sekolah */
+.ss-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  font-family: var(--font-family);
+  text-align: left;
+  background: var(--color-bg-card);
+  border: 0.5px solid var(--color-border-solid);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: var(--transition-base);
+}
+
+.ss-item:hover:not(:disabled) {
+  background: var(--grad-soft);
+  border-color: var(--color-primary);
+  transform: translateX(2px);
+}
+
+.ss-item:disabled {
+  cursor: default;
+}
+
+.ss-item.is-active {
+  background: var(--grad-success);
+  border-color: var(--color-primary);
+}
+
+.ss-item-icon {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border-radius: var(--radius-md);
+  background: var(--grad-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 16px;
+  overflow: hidden;
+}
+
+.ss-item-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ss-item-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.ss-item-name {
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ss-item-type {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ss-item-badge {
+  margin-left: auto;
+  flex-shrink: 0;
+  padding: 3px 8px;
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: var(--color-success);
+  background: var(--color-bg-card);
+  border-radius: var(--radius-pill);
+}
+
+.ss-item-arrow {
+  margin-left: auto;
+  flex-shrink: 0;
+  font-size: 15px;
+  color: var(--color-text-muted);
+}
+
+.ss-item:hover:not(:disabled) .ss-item-arrow {
+  color: var(--color-primary);
+}
+
+/* Kartu yang sedang diproses setelah diklik */
+.ss-item.is-switching {
+  opacity: 0.6;
+}
+
+/* Placeholder saat memuat */
+.ss-skeleton {
+  height: 56px;
+  border-radius: var(--radius-lg);
+  background: var(--color-bg-soft);
+  animation: ssPulse 1.2s ease-in-out infinite;
+}
+
+@keyframes ssPulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.5; }
+}
+
+/* Keadaan kosong & gagal */
+.ss-empty,
+.ss-error {
+  padding: 28px 16px;
+  text-align: center;
+  color: var(--color-text-secondary);
+}
+
+.ss-empty i,
+.ss-error i {
+  font-size: 30px;
+  color: var(--color-text-muted);
+  margin-bottom: 8px;
+  display: block;
+}
+
+.ss-empty-title,
+.ss-error-title {
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.ss-empty-hint {
+  font-size: var(--font-size-base);
+  margin-top: 3px;
+}
+
+.ss-error button {
+  margin-top: 12px;
+}
+
+.ss-hint {
+  padding: 8px 4px 2px;
+  text-align: center;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}

@@ -78,6 +78,13 @@
 </div>
 
 {{-- ═══════════════════════════════════════════════ --}}
+{{-- MODAL GANTI SEKOLAH --}}
+{{-- ═══════════════════════════════════════════════ --}}
+@if(can_switch_school())
+  @include('components.school-switcher-modal')
+@endif
+
+{{-- ═══════════════════════════════════════════════ --}}
 {{-- MODAL KONFIRMASI SIMPAN (GLOBAL) --}}
 {{-- ═══════════════════════════════════════════════ --}}
 <div class="modal-backdrop" id="globalConfirmModal">

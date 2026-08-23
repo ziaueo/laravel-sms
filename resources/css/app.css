@@ -6,6 +6,7 @@
 @import 'components/badge.css';
 @import 'components/table.css';
 @import 'components/form.css';
+@import 'components/school-switcher.css';
 @import 'layouts/app.css';
 @import 'layouts/auth.css';
 @import 'layouts/public.css';

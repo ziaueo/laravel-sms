@@ -32,8 +32,8 @@
 
   <div class="nb-r">
     {{-- Ganti Sekolah (jika punya lebih dari 1) --}}
-    @if(auth()->user()->userSchools->count() > 1 || auth()->user()->hasRole('super_admin'))
-      <button class="nb-switcher" onclick="window.location='{{ route('select.school') }}'">
+    @if(can_switch_school())
+      <button type="button" class="nb-switcher" data-ss-open>
         <i class="ti ti-switch-horizontal" style="font-size:11px;"></i>
         Ganti Sekolah
       </button>

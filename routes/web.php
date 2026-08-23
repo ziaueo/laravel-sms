@@ -53,6 +53,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Select School
     Route::get('/select-school', [SchoolSwitchController::class, 'index'])->name('select.school');
+    Route::get('/select-school/list', [SchoolSwitchController::class, 'list'])->name('select.school.list');
     Route::post('/select-school', [SchoolSwitchController::class, 'store']);
 
     // Dashboard

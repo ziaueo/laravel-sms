@@ -179,7 +179,9 @@
 
   {{-- School Switcher Card --}}
   @if(active_school())
-  <a href="{{ route('select.school') }}" class="sb-school-card">
+  {{-- Tanpa href saat user cuma punya satu sekolah: kartu jadi informasi, bukan tombol.
+       href tetap dipasang sebagai jalan mundur kalau JavaScript gagal dimuat. --}}
+  <a @if(can_switch_school()) href="{{ route('select.school') }}" data-ss-open @endif class="sb-school-card">
     <div class="sb-school-icon">
       <i class="ti ti-building-school"></i>
     </div>
@@ -187,7 +189,9 @@
       <div class="sb-school-name">{{ active_school()->name }}</div>
       <div class="sb-school-type">{{ active_school()->schoolType->name }}</div>
     </div>
-    <i class="ti ti-chevron-right sb-school-arrow"></i>
+    @if(can_switch_school())
+      <i class="ti ti-chevron-right sb-school-arrow"></i>
+    @endif
   </a>
   @endif
 
