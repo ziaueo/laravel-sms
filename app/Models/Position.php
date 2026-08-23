@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Constants\PositionConstant;
 
 class Position extends Model
 {
-    protected $fillable = ['name', 'type'];
+    use HasFactory;
+
+    protected $fillable = ['name', 'type', 'order'];
 
     public function teachers()
     {

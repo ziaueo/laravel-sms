@@ -67,6 +67,7 @@
       <div class="pnav-links">
         <a href="{{ route('public.home', $school->slug) }}" class="{{ request()->routeIs('public.home') ? 'active' : '' }}">Beranda</a>
         <a href="{{ route('public.profil', $school->slug) }}" class="{{ request()->routeIs('public.profil') ? 'active' : '' }}">Profil</a>
+        <a href="{{ route('public.guru', $school->slug) }}" class="{{ request()->routeIs('public.guru') ? 'active' : '' }}">Guru &amp; Staf</a>
         <a href="{{ route('public.berita', $school->slug) }}" class="{{ request()->routeIs('public.berita*') ? 'active' : '' }}">Berita</a>
         <a href="{{ route('public.galeri', $school->slug) }}" class="{{ request()->routeIs('public.galeri') ? 'active' : '' }}">Galeri</a>
         <a href="{{ route('public.kontak', $school->slug) }}" class="{{ request()->routeIs('public.kontak') ? 'active' : '' }}">Kontak</a>
@@ -89,6 +90,7 @@
           <h4>Tautan</h4>
           <p style="font-size:13.5px;line-height:2;">
             <a href="{{ route('public.profil', $school->slug) }}">Profil</a><br>
+            <a href="{{ route('public.guru', $school->slug) }}">Guru &amp; Staf</a><br>
             <a href="{{ route('public.berita', $school->slug) }}">Berita</a><br>
             <a href="{{ route('public.ppdb', $school->slug) }}">PPDB Online</a><br>
             <a href="{{ route('auth.login') }}">Login Sistem</a>

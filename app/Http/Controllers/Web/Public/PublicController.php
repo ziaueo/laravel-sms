@@ -10,7 +10,9 @@ use App\Models\Banner;
 use App\Models\Announcement;
 use App\Models\PpdbPeriod;
 use App\Models\PpdbRegistration;
+use App\Models\Teacher;
 use App\Constants\PpdbConstant;
+use App\Constants\PositionConstant;
 use Illuminate\Http\Request;
 
 class PublicController extends Controller
@@ -46,6 +48,38 @@ class PublicController extends Controller
         $school = $this->resolveSchool($slug);
         $school->load('profile', 'schoolType');
         return view('public.profil', compact('school'));
+    }
+
+    public function guru(string $slug)
+    {
+        $school = $this->resolveSchool($slug);
+        $school->load('profile');
+
+        $teachers = Teacher::where('school_id', $school->id)
+            ->where('is_active', true)
+            ->with('position')
+            ->get()
+            // Kunci gabungan: urutan jabatan dulu, lalu nama. Digabung jadi satu
+            // string supaya hasilnya tidak bergantung pada kestabilan sort PHP.
+            ->sortBy(fn ($t) => sprintf('%03d|%s', $t->position?->order ?? 999, $t->full_name))
+            ->values();
+
+        $byType     = $teachers->groupBy(fn ($t) => $t->position?->type ?? 0);
+        $leadership = $byType->get(PositionConstant::PIMPINAN, collect());
+
+        // Pemegang jabatan dengan order terkecil — bukan dicocokkan dari nama jabatan,
+        // supaya tidak patah kalau penamaannya berubah.
+        $headmaster = $leadership->first();
+
+        $sections = [
+            ['title' => 'Pimpinan Sekolah',    'people' => $leadership->skip(1)->values()],
+            ['title' => 'Guru',                'people' => $byType->get(PositionConstant::GURU, collect())],
+            ['title' => 'Tenaga Kependidikan', 'people' => $byType->get(PositionConstant::STAFF, collect())],
+            // Jabatan belum diisi — teachers.position_id memang nullable.
+            ['title' => 'Lainnya',             'people' => $byType->get(0, collect())],
+        ];
+
+        return view('public.guru', compact('school', 'teachers', 'headmaster', 'sections'));
     }
 
     public function berita(string $slug)

@@ -10,21 +10,22 @@ class PositionSeeder extends Seeder
 {
     public function run(): void
     {
+        // Urutan diberi jarak supaya jabatan baru bisa disisipkan tanpa menomori ulang.
         $positions = [
-            ['name' => 'Guru Kelas',        'type' => PositionConstant::GURU],
-            ['name' => 'Guru Mata Pelajaran','type' => PositionConstant::GURU],
-            ['name' => 'Guru BK',           'type' => PositionConstant::GURU],
-            ['name' => 'Kepala Sekolah',     'type' => PositionConstant::STAFF],
-            ['name' => 'Wakil Kepala Sekolah','type' => PositionConstant::STAFF],
-            ['name' => 'Staff TU',           'type' => PositionConstant::STAFF],
-            ['name' => 'Bendahara',          'type' => PositionConstant::STAFF],
-            ['name' => 'Pustakawan',         'type' => PositionConstant::STAFF],
-            ['name' => 'Satpam',             'type' => PositionConstant::STAFF],
-            ['name' => 'Penjaga Sekolah',    'type' => PositionConstant::STAFF],
+            ['name' => 'Kepala Sekolah',       'type' => PositionConstant::PIMPINAN, 'order' => 1],
+            ['name' => 'Wakil Kepala Sekolah', 'type' => PositionConstant::PIMPINAN, 'order' => 2],
+            ['name' => 'Guru Kelas',           'type' => PositionConstant::GURU,     'order' => 10],
+            ['name' => 'Guru Mata Pelajaran',  'type' => PositionConstant::GURU,     'order' => 11],
+            ['name' => 'Guru BK',              'type' => PositionConstant::GURU,     'order' => 12],
+            ['name' => 'Staff TU',             'type' => PositionConstant::STAFF,    'order' => 20],
+            ['name' => 'Bendahara',            'type' => PositionConstant::STAFF,    'order' => 21],
+            ['name' => 'Pustakawan',           'type' => PositionConstant::STAFF,    'order' => 22],
+            ['name' => 'Satpam',               'type' => PositionConstant::STAFF,    'order' => 23],
+            ['name' => 'Penjaga Sekolah',      'type' => PositionConstant::STAFF,    'order' => 24],
         ];
 
         foreach ($positions as $position) {
-            Position::firstOrCreate(
+            Position::updateOrCreate(
                 ['name' => $position['name']],
                 $position
             );

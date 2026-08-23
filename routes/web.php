@@ -15,6 +15,7 @@ use App\Http\Controllers\Web\Public\PublicController;
 Route::prefix('s/{slug}')->name('public.')->group(function () {
     Route::get('/', [PublicController::class, 'home'])->name('home');
     Route::get('/profil', [PublicController::class, 'profil'])->name('profil');
+    Route::get('/guru', [PublicController::class, 'guru'])->name('guru');
     Route::get('/berita', [PublicController::class, 'berita'])->name('berita');
     Route::get('/berita/{postSlug}', [PublicController::class, 'beritaDetail'])->name('berita.detail');
     Route::get('/galeri', [PublicController::class, 'galeri'])->name('galeri');
