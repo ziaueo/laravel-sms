@@ -19,6 +19,7 @@ Route::prefix('s/{slug}')->name('public.')->group(function () {
     Route::get('/berita', [PublicController::class, 'berita'])->name('berita');
     Route::get('/berita/{postSlug}', [PublicController::class, 'beritaDetail'])->name('berita.detail');
     Route::get('/galeri', [PublicController::class, 'galeri'])->name('galeri');
+    Route::get('/galeri/{gallery}', [PublicController::class, 'galeriDetail'])->name('galeri.detail');
     Route::get('/kontak', [PublicController::class, 'kontak'])->name('kontak');
     Route::get('/ppdb', [PublicController::class, 'ppdb'])->name('ppdb');
     Route::post('/ppdb', [PublicController::class, 'ppdbStore'])->name('ppdb.store');

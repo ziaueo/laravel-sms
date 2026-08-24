@@ -120,6 +120,19 @@ class PublicController extends Controller
         return view('public.galeri', compact('school', 'galleries'));
     }
 
+    public function galeriDetail(string $slug, string $gallery)
+    {
+        $school = $this->resolveSchool($slug);
+        $school->load('profile');
+
+        $album = Gallery::where('school_id', $school->id)
+            ->where('is_published', true)
+            ->with('items')
+            ->findOrFail(hashid_decode_or_404($gallery, Gallery::class));
+
+        return view('public.galeri-detail', compact('school', 'album'));
+    }
+
     public function kontak(string $slug)
     {
         $school = $this->resolveSchool($slug);

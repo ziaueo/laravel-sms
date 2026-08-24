@@ -59,7 +59,7 @@
     <div class="sec-sub">Momen kegiatan sekolah</div>
     <div class="grid grid-3">
       @foreach($galleries as $g)
-        <a href="{{ route('public.galeri', $school->slug) }}" class="pcard">
+        <a href="{{ route('public.galeri.detail', [$school->slug, hid($g)]) }}" class="pcard">
           <img class="thumb" src="{{ $g->thumbnail ? asset($g->thumbnail) : 'https://placehold.co/600x400/e8f5ec/1a7a3c?text=Galeri' }}" alt="">
           <div class="body"><h3 style="font-size:14px;">{{ $g->title }}</h3></div>
         </a>

@@ -12,7 +12,11 @@
   <div class="container">
     @forelse($galleries as $g)
       <div style="margin-bottom:34px;">
-        <div class="sec-title" style="font-size:20px;">{{ $g->title }}</div>
+        <div class="sec-title" style="font-size:20px;">
+          <a href="{{ route('public.galeri.detail', [$school->slug, hid($g)]) }}">
+            {{ $g->title }} <i class="ti ti-chevron-right" style="font-size:16px;color:var(--pri);"></i>
+          </a>
+        </div>
         @if($g->description)<div class="sec-sub">{{ $g->description }}</div>@endif
         <div class="grid grid-3">
           @forelse($g->items as $item)

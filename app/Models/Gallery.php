@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Gallery extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'school_id', 'title', 'description', 'type',
         'thumbnail', 'is_published', 'published_at', 'created_by',
