@@ -10,29 +10,31 @@
 
 <section class="sec">
   <div class="container">
-    @forelse($galleries as $g)
-      <div style="margin-bottom:34px;">
-        <div class="sec-title" style="font-size:20px;">
-          <a href="{{ route('public.galeri.detail', [$school->slug, hid($g)]) }}">
-            {{ $g->title }} <i class="ti ti-chevron-right" style="font-size:16px;color:var(--pri);"></i>
-          </a>
-        </div>
-        @if($g->description)<div class="sec-sub">{{ $g->description }}</div>@endif
-        <div class="grid grid-3">
-          @forelse($g->items as $item)
-            @if($item->file_path)
-              <img class="galimg" src="{{ asset($item->file_path) }}" alt="{{ $item->caption }}"
-                   data-lightbox="galeri-{{ hid($g) }}">
-            @endif
-          @empty
-            @if($g->thumbnail)<img class="galimg" src="{{ asset($g->thumbnail) }}" alt="{{ $g->title }}" data-lightbox="galeri-{{ hid($g) }}">@endif
-          @endforelse
-        </div>
-      </div>
-    @empty
-      <p style="color:var(--muted);">Belum ada galeri.</p>
-    @endforelse
-    <div>{{ $galleries->links() }}</div>
+    <div class="grid grid-3">
+      @forelse($galleries as $g)
+        @php $cover = $g->thumbnail ?: $g->items->first()?->file_path; @endphp
+
+        <a href="{{ route('public.galeri.detail', [$school->slug, hid($g)]) }}" class="pcard">
+          @if($cover)
+            <img class="thumb" src="{{ asset($cover) }}" alt="{{ $g->title }}">
+          @else
+            <div style="height:180px;display:flex;align-items:center;justify-content:center;
+                        background:#e8f5ec;color:var(--pri-d);font-size:34px;">
+              <i class="ti ti-photo"></i>
+            </div>
+          @endif
+
+          <div class="body">
+            <h3 style="font-size:15px;">{{ $g->title }}</h3>
+            <div class="meta" style="margin-bottom:0;">{{ $g->items_count }} foto</div>
+          </div>
+        </a>
+      @empty
+        <p style="color:var(--muted);">Belum ada galeri.</p>
+      @endforelse
+    </div>
+
+    <div style="margin-top:24px;">{{ $galleries->links() }}</div>
   </div>
 </section>
 

@@ -86,8 +86,7 @@ menunjuk versi besar.
 
 | Berkas | Gambar | Grup |
 |---|---|---|
-| `public/galeri.blade.php` | Foto album | `galeri-{id album}` |
-| `public/galeri.blade.php` | Cover album (saat album kosong) | `galeri-{id album}` |
+| `public/galeri-detail.blade.php` | Foto album | `galeri-{hashid album}` |
 | `public/berita-detail.blade.php` | Cover berita | `berita` |
 | `public/guru.blade.php` | Foto kepala sekolah dan tiap pegawai | `staf` |
 
@@ -118,6 +117,9 @@ menuju artikel atau albumnya. Klik di situ harus membuka halamannya, bukan mempe
 
 **Cover album di `school/cms/galleries.blade.php`.** Punya gambar cadangan dari `placehold.co` saat
 album belum bercover, dan petaknya berfungsi sebagai jalan masuk ke album.
+
+**Kartu album di `public/galeri.blade.php`.** Halaman itu kini hanya berisi daftar album; kartunya
+adalah tautan menuju halaman album, jadi kliknya harus membuka album, bukan memperbesar cover.
 
 ## Pengujian
 

@@ -114,8 +114,12 @@ class PublicController extends Controller
         $school = $this->resolveSchool($slug);
         $school->load('profile');
 
+        // Halaman ini hanya menampilkan kartu album, jadi yang dibutuhkan cuma
+        // jumlah foto dan satu gambar untuk cover — bukan seluruh isi tiap album.
         $galleries = Gallery::where('school_id', $school->id)->where('is_published', true)
-            ->with('items')->latest()->paginate(12);
+            ->withCount('items')
+            ->with('items:id,gallery_id,file_path,order')
+            ->latest()->paginate(12);
 
         return view('public.galeri', compact('school', 'galleries'));
     }

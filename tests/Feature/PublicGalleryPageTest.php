@@ -62,14 +62,21 @@ class PublicGalleryPageTest extends TestCase
             ->assertSee('data-lightbox="galeri-' . hid($album) . '"', false);
     }
 
-    public function test_judul_album_di_halaman_galeri_menaut_ke_albumnya(): void
+    public function test_halaman_galeri_menampilkan_kartu_album_bukan_tumpukan_foto(): void
     {
         $school = School::factory()->create();
         $album  = Gallery::factory()->titled('ALBUM A')->create(['school_id' => $school->id]);
+        GalleryItem::factory()->captioned('Foto Album A')->create(['gallery_id' => $album->id]);
 
-        $this->get(route('public.galeri', $school->slug))
-            ->assertOk()
-            ->assertSee($this->albumUrl($school, $album), false);
+        $response = $this->get(route('public.galeri', $school->slug))->assertOk();
+
+        $response->assertSee('ALBUM A');
+        $response->assertSee('1 foto');
+        $response->assertSee($this->albumUrl($school, $album), false);
+
+        // Fotonya hanya muncul setelah masuk ke albumnya.
+        $response->assertDontSee('Foto Album A');
+        $response->assertDontSee('data-lightbox="galeri-', false);
     }
 
     public function test_album_sekolah_lain_menghasilkan_404(): void
