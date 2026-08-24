@@ -6,10 +6,6 @@
 
 <section class="hero" style="padding:50px 0;">
   <div class="container">
-    <a href="{{ route('public.galeri', $school->slug) }}"
-       style="display:inline-flex;align-items:center;gap:6px;font-size:14px;opacity:.9;margin-bottom:12px;">
-      <i class="ti ti-arrow-left"></i> Semua Galeri
-    </a>
     <h1 style="font-size:30px;">{{ $album->title }}</h1>
     @if($album->description)
       <p>{{ $album->description }}</p>
