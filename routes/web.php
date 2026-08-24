@@ -54,9 +54,11 @@ Route::controller(\App\Http\Controllers\Web\Auth\PasswordResetController::class)
 Route::middleware(['auth'])->group(function () {
 
     // Select School
-    Route::get('/select-school', [SchoolSwitchController::class, 'index'])->name('select.school');
+    // Pemilihan sekolah sepenuhnya lewat modal — tidak ada lagi halaman tersendiri.
+    // GET dipertahankan sebagai pengalih supaya tautan lama tidak berujung 405.
+    Route::get('/select-school', fn () => redirect()->route('dashboard'));
     Route::get('/select-school/list', [SchoolSwitchController::class, 'list'])->name('select.school.list');
-    Route::post('/select-school', [SchoolSwitchController::class, 'store']);
+    Route::post('/select-school', [SchoolSwitchController::class, 'store'])->name('select.school.store');
 
     // Dashboard
     Route::middleware(['check.school.access', 'must.change.password'])->group(function () {

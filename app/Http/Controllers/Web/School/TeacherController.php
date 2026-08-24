@@ -26,7 +26,7 @@ class TeacherController extends Controller
     public function index(Request $request)
     {
         $school = active_school();
-        if (!$school) return redirect()->route('select.school');
+        if (!$school) return redirect()->route('dashboard')->with('warning', 'Pilih sekolah dulu untuk membuka halaman itu.');
 
         $query = Teacher::where('school_id', $school->id)
             ->with(['position', 'user'])
@@ -56,7 +56,7 @@ class TeacherController extends Controller
     public function create()
     {
         $school = active_school();
-        if (!$school) return redirect()->route('select.school');
+        if (!$school) return redirect()->route('dashboard')->with('warning', 'Pilih sekolah dulu untuk membuka halaman itu.');
 
         $positions = Position::orderBy('name')->get();
 
@@ -66,7 +66,7 @@ class TeacherController extends Controller
     public function store(StoreTeacherRequest $request)
     {
         $school = active_school();
-        if (!$school) return redirect()->route('select.school');
+        if (!$school) return redirect()->route('dashboard')->with('warning', 'Pilih sekolah dulu untuk membuka halaman itu.');
 
         DB::beginTransaction();
         try {

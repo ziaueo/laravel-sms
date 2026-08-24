@@ -32,7 +32,17 @@ class CheckActiveSchool
                 $userSchool = $user->userSchools()->first();
                 session(['active_school_id' => $userSchool->school_id]);
             } else {
-                return redirect()->route('select.school');
+                // Pemilih sekolah berupa modal, dan modal butuh halaman induk.
+                // Dashboard memang dibangun tahan tanpa sekolah aktif; halaman
+                // lain akan menjalankan query dengan school_id null, jadi
+                // semuanya diarahkan ke dashboard lebih dulu.
+                if ($request->routeIs('dashboard')) {
+                    view()->share('lockSchoolPicker', true);
+
+                    return $next($request);
+                }
+
+                return redirect()->route('dashboard');
             }
         }
 

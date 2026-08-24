@@ -15,7 +15,7 @@ class ScheduleController extends Controller
     public function index(Request $request)
     {
         $school = active_school();
-        if (!$school) return redirect()->route('select.school');
+        if (!$school) return redirect()->route('dashboard')->with('warning', 'Pilih sekolah dulu untuk membuka halaman itu.');
 
         $activeYear = $school->activeSchoolYear;
 
@@ -67,7 +67,7 @@ class ScheduleController extends Controller
     public function store(Request $request)
     {
         $school = active_school();
-        if (!$school) return redirect()->route('select.school');
+        if (!$school) return redirect()->route('dashboard')->with('warning', 'Pilih sekolah dulu untuk membuka halaman itu.');
 
         $activeYear = $school->activeSchoolYear;
         if (!$activeYear) {

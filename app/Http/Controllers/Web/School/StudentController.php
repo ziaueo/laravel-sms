@@ -24,7 +24,7 @@ class StudentController extends Controller
     public function index(Request $request)
     {
         $school = active_school();
-        if (!$school) return redirect()->route('select.school');
+        if (!$school) return redirect()->route('dashboard')->with('warning', 'Pilih sekolah dulu untuk membuka halaman itu.');
 
         $activeYear = $school->activeSchoolYear;
 
@@ -66,7 +66,7 @@ class StudentController extends Controller
     public function create()
     {
         $school = active_school();
-        if (!$school) return redirect()->route('select.school');
+        if (!$school) return redirect()->route('dashboard')->with('warning', 'Pilih sekolah dulu untuk membuka halaman itu.');
 
         $activeYear = $school->activeSchoolYear;
 
@@ -82,7 +82,7 @@ class StudentController extends Controller
     public function store(StoreStudentRequest $request)
     {
         $school = active_school();
-        if (!$school) return redirect()->route('select.school');
+        if (!$school) return redirect()->route('dashboard')->with('warning', 'Pilih sekolah dulu untuk membuka halaman itu.');
 
         DB::beginTransaction();
         try {

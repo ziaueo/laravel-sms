@@ -14,7 +14,7 @@ class ExtracurricularController extends Controller
     public function index()
     {
         $school = active_school();
-        if (!$school) return redirect()->route('select.school');
+        if (!$school) return redirect()->route('dashboard')->with('warning', 'Pilih sekolah dulu untuk membuka halaman itu.');
 
         $extracurriculars = Extracurricular::where('school_id', $school->id)
             ->orderBy('name')->get();
@@ -25,7 +25,7 @@ class ExtracurricularController extends Controller
     public function store(Request $request)
     {
         $school = active_school();
-        if (!$school) return redirect()->route('select.school');
+        if (!$school) return redirect()->route('dashboard')->with('warning', 'Pilih sekolah dulu untuk membuka halaman itu.');
 
         $request->validate([
             'name'        => 'required|string|max:255',

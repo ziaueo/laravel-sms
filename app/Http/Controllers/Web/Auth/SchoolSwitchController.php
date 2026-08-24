@@ -18,16 +18,6 @@ class SchoolSwitchController extends Controller
      */
     private const LIST_LIMIT = 50;
 
-    public function index(): View
-    {
-        $schools = $this->accessibleSchools()
-            ->with('schoolType')
-            ->orderBy('name')
-            ->get();
-
-        return view('auth.select-school', compact('schools'));
-    }
-
     /**
      * Potongan HTML daftar sekolah untuk modal ganti sekolah.
      * Sengaja mengembalikan view, bukan JSON, supaya markup kartu sekolah

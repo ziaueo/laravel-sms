@@ -181,7 +181,7 @@
   @if(active_school())
   {{-- Tanpa href saat user cuma punya satu sekolah: kartu jadi informasi, bukan tombol.
        href tetap dipasang sebagai jalan mundur kalau JavaScript gagal dimuat. --}}
-  <a @if(can_switch_school()) href="{{ route('select.school') }}" data-ss-open @endif class="sb-school-card">
+  <a @if(can_switch_school()) data-ss-open role="button" tabindex="0" @endif class="sb-school-card">
     <div class="sb-school-icon">
       <i class="ti ti-building-school"></i>
     </div>

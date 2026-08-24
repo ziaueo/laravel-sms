@@ -89,7 +89,8 @@ class LoginController extends Controller
         }
 
         if ($schoolCount > 1) {
-            return redirect()->route('select.school');
+            // Sekolah dipilih lewat modal yang dipaksa terbuka di dashboard.
+            return redirect()->route('dashboard');
         }
 
         // Siswa / Orang tua — biasanya terhubung ke 1 sekolah via student/parent

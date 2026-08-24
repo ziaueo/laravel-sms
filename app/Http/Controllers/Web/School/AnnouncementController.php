@@ -12,7 +12,7 @@ class AnnouncementController extends Controller
     public function index(Request $request)
     {
         $school = active_school();
-        if (!$school) return redirect()->route('select.school');
+        if (!$school) return redirect()->route('dashboard')->with('warning', 'Pilih sekolah dulu untuk membuka halaman itu.');
 
         $query = Announcement::where('school_id', $school->id)
             ->with('createdBy')
@@ -30,7 +30,7 @@ class AnnouncementController extends Controller
     public function create()
     {
         $school = active_school();
-        if (!$school) return redirect()->route('select.school');
+        if (!$school) return redirect()->route('dashboard')->with('warning', 'Pilih sekolah dulu untuk membuka halaman itu.');
 
         return view('school.announcements.create', compact('school'));
     }
@@ -38,7 +38,7 @@ class AnnouncementController extends Controller
     public function store(Request $request)
     {
         $school = active_school();
-        if (!$school) return redirect()->route('select.school');
+        if (!$school) return redirect()->route('dashboard')->with('warning', 'Pilih sekolah dulu untuk membuka halaman itu.');
 
         $data = $this->validateData($request);
 

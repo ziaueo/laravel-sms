@@ -18,7 +18,7 @@ class CmsController extends Controller
     public function index()
     {
         $school = active_school();
-        if (!$school) return redirect()->route('select.school');
+        if (!$school) return redirect()->route('dashboard')->with('warning', 'Pilih sekolah dulu untuk membuka halaman itu.');
 
         $stats = [
             'posts'     => Post::where('school_id', $school->id)->count(),
@@ -33,7 +33,7 @@ class CmsController extends Controller
     public function profile()
     {
         $school = active_school();
-        if (!$school) return redirect()->route('select.school');
+        if (!$school) return redirect()->route('dashboard')->with('warning', 'Pilih sekolah dulu untuk membuka halaman itu.');
 
         $profile = SchoolProfile::firstOrNew(['school_id' => $school->id]);
         return view('school.cms.profile', compact('school', 'profile'));
@@ -42,7 +42,7 @@ class CmsController extends Controller
     public function profileUpdate(Request $request)
     {
         $school = active_school();
-        if (!$school) return redirect()->route('select.school');
+        if (!$school) return redirect()->route('dashboard')->with('warning', 'Pilih sekolah dulu untuk membuka halaman itu.');
 
         $data = $request->validate([
             'tagline'        => 'nullable|string|max:255',
@@ -66,7 +66,7 @@ class CmsController extends Controller
     public function posts()
     {
         $school = active_school();
-        if (!$school) return redirect()->route('select.school');
+        if (!$school) return redirect()->route('dashboard')->with('warning', 'Pilih sekolah dulu untuk membuka halaman itu.');
 
         $posts = Post::where('school_id', $school->id)->with('category')
             ->orderByDesc('created_at')->paginate(12);
@@ -78,7 +78,7 @@ class CmsController extends Controller
     public function postCreate()
     {
         $school = active_school();
-        if (!$school) return redirect()->route('select.school');
+        if (!$school) return redirect()->route('dashboard')->with('warning', 'Pilih sekolah dulu untuk membuka halaman itu.');
         $categories = PostCategory::where('school_id', $school->id)->orderBy('name')->get();
         $post = null;
         return view('school.cms.post-form', compact('school', 'categories', 'post'));
@@ -87,7 +87,7 @@ class CmsController extends Controller
     public function postStore(Request $request)
     {
         $school = active_school();
-        if (!$school) return redirect()->route('select.school');
+        if (!$school) return redirect()->route('dashboard')->with('warning', 'Pilih sekolah dulu untuk membuka halaman itu.');
 
         $data = $this->validatePost($request);
         $post = Post::create([
@@ -152,7 +152,7 @@ class CmsController extends Controller
     public function categoryStore(Request $request)
     {
         $school = active_school();
-        if (!$school) return redirect()->route('select.school');
+        if (!$school) return redirect()->route('dashboard')->with('warning', 'Pilih sekolah dulu untuk membuka halaman itu.');
         $request->validate(['name' => 'required|string|max:100']);
         PostCategory::create([
             'school_id' => $school->id,
@@ -166,7 +166,7 @@ class CmsController extends Controller
     public function banners()
     {
         $school = active_school();
-        if (!$school) return redirect()->route('select.school');
+        if (!$school) return redirect()->route('dashboard')->with('warning', 'Pilih sekolah dulu untuk membuka halaman itu.');
         $banners = Banner::where('school_id', $school->id)->orderBy('order')->get();
         return view('school.cms.banners', compact('school', 'banners'));
     }
@@ -174,7 +174,7 @@ class CmsController extends Controller
     public function bannerStore(Request $request)
     {
         $school = active_school();
-        if (!$school) return redirect()->route('select.school');
+        if (!$school) return redirect()->route('dashboard')->with('warning', 'Pilih sekolah dulu untuk membuka halaman itu.');
 
         $request->validate([
             'title'       => 'nullable|string|max:255',
@@ -211,7 +211,7 @@ class CmsController extends Controller
     public function galleries()
     {
         $school = active_school();
-        if (!$school) return redirect()->route('select.school');
+        if (!$school) return redirect()->route('dashboard')->with('warning', 'Pilih sekolah dulu untuk membuka halaman itu.');
         $galleries = Gallery::where('school_id', $school->id)->withCount('items')->latest()->get();
         return view('school.cms.galleries', compact('school', 'galleries'));
     }
@@ -219,7 +219,7 @@ class CmsController extends Controller
     public function galleryStore(Request $request)
     {
         $school = active_school();
-        if (!$school) return redirect()->route('select.school');
+        if (!$school) return redirect()->route('dashboard')->with('warning', 'Pilih sekolah dulu untuk membuka halaman itu.');
         $request->validate(['title' => 'required|string|max:255', 'description' => 'nullable|string']);
         Gallery::create([
             'school_id'    => $school->id,

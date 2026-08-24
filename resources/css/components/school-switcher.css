@@ -211,3 +211,15 @@
   font-size: var(--font-size-sm);
   color: var(--color-text-muted);
 }
+
+/* Keterangan mode terkunci — user belum punya sekolah aktif */
+.ss-note {
+  margin: 0 0 14px;
+  padding: 11px 13px;
+  border-radius: var(--radius-md);
+  background: var(--grad-soft);
+  border: 0.5px solid var(--color-border-solid);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-md);
+  line-height: 1.5;
+}

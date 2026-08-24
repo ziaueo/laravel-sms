@@ -11,6 +11,10 @@ if (modal) {
   const inputEl  = document.getElementById('schoolSwitcherInput');
   const listUrl  = modal.dataset.listUrl;
 
+  // Mode terkunci: user belum punya sekolah aktif padahal punya lebih dari
+  // satu. Modal tidak boleh ditutup sampai satu sekolah dipilih.
+  const locked = modal.hasAttribute('data-locked');
+
   const DEBOUNCE_MS = 250;
 
   let controller = null;  // request daftar yang sedang berjalan
@@ -64,6 +68,7 @@ if (modal) {
   }
 
   function close() {
+    if (locked) return;
     modal.classList.remove('show');
     clearTimeout(debounceId);
     if (controller) controller.abort();
@@ -74,6 +79,14 @@ if (modal) {
     el.addEventListener('click', (e) => {
       e.preventDefault();
       open();
+    });
+
+    // Kartu sidebar bukan tombol asli, jadi Enter/Spasi ditangani sendiri.
+    el.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        open();
+      }
     });
   });
 
@@ -116,4 +129,10 @@ if (modal) {
     inputEl.value = item.dataset.schoolId;
     formEl.submit();
   });
+
+  // Mode terkunci sudah dirender terbuka oleh Blade; tinggal isi daftarnya.
+  if (locked) {
+    load('');
+    setTimeout(() => searchEl.focus(), 50);
+  }
 }

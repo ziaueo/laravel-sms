@@ -17,7 +17,7 @@ class ScoreController extends Controller
     public function index(Request $request)
     {
         $school = active_school();
-        if (!$school) return redirect()->route('select.school');
+        if (!$school) return redirect()->route('dashboard')->with('warning', 'Pilih sekolah dulu untuk membuka halaman itu.');
 
         $activeYear = $school->activeSchoolYear;
 
@@ -73,7 +73,7 @@ class ScoreController extends Controller
     public function store(Request $request)
     {
         $school = active_school();
-        if (!$school) return redirect()->route('select.school');
+        if (!$school) return redirect()->route('dashboard')->with('warning', 'Pilih sekolah dulu untuk membuka halaman itu.');
 
         $activeYear = $school->activeSchoolYear;
         if (!$activeYear) return back()->with('error', 'Belum ada tahun ajaran aktif.');
@@ -124,7 +124,7 @@ class ScoreController extends Controller
     public function storeAssessmentType(Request $request)
     {
         $school = active_school();
-        if (!$school) return redirect()->route('select.school');
+        if (!$school) return redirect()->route('dashboard')->with('warning', 'Pilih sekolah dulu untuk membuka halaman itu.');
 
         $request->validate([
             'name'   => 'required|string|max:100',
