@@ -152,7 +152,7 @@
               </div>
             </div>
             <form method="POST" action="{{ route('students.parents.destroy', hid($parent)) }}"
-                  onsubmit="return confirm('Hapus data orang tua/wali ini?')">
+                  data-confirm="Hapus data orang tua/wali ini?">
               @csrf @method('DELETE')
               <button class="btn btn-sm btn-danger btn-icon"><i class="ti ti-trash" style="font-size:13px;"></i></button>
             </form>

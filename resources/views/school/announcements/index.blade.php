@@ -52,7 +52,7 @@
             </button>
           </form>
           <a href="{{ route('announcements.edit', hid($a)) }}" class="btn btn-sm btn-outline btn-icon" title="Edit"><i class="ti ti-edit" style="font-size:13px;"></i></a>
-          <form method="POST" action="{{ route('announcements.destroy', hid($a)) }}" onsubmit="return confirm('Hapus pengumuman ini?')">
+          <form method="POST" action="{{ route('announcements.destroy', hid($a)) }}" data-confirm="Hapus pengumuman ini?">
             @csrf @method('DELETE')
             <button class="btn btn-sm btn-danger btn-icon" title="Hapus"><i class="ti ti-trash" style="font-size:13px;"></i></button>
           </form>

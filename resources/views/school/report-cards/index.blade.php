@@ -14,7 +14,7 @@
   </div>
   @if($classroom && $activeYear)
   <div class="page-actions">
-    <form method="POST" action="{{ route('report-cards.generate') }}" onsubmit="return confirm('Generate/perbarui rapot semua siswa di kelas ini? Nilai akhir akan dihitung ulang dari data penilaian & absensi.')">
+    <form method="POST" action="{{ route('report-cards.generate') }}" data-confirm="Generate/perbarui rapot semua siswa di kelas ini? Nilai akhir akan dihitung ulang dari data penilaian &amp; absensi.">
       @csrf
       <input type="hidden" name="classroom_id" value="{{ $classroom->id }}">
       <button type="submit" class="btn btn-primary"><i class="ti ti-refresh"></i> Generate Rapot</button>

@@ -90,12 +90,23 @@
 @endif
 
 {{-- ═══════════════════════════════════════════════ --}}
-{{-- MODAL KONFIRMASI SIMPAN (GLOBAL) --}}
+{{-- MODAL KONFIRMASI (GLOBAL) --}}
+{{--
+  Satu modal untuk semua konfirmasi di aplikasi. Dipicu otomatis oleh:
+  - tombol .btn-primary (aksi simpan), atau
+  - atribut data-confirm pada tombol maupun form.
+
+  Aksi berbahaya (.btn-danger) memakai warna merah dan ikon berbeda.
+  Pasang data-no-confirm untuk melewatinya.
+--}}
 {{-- ═══════════════════════════════════════════════ --}}
 <div class="modal-backdrop" id="globalConfirmModal">
-  <div class="modal-box" style="max-width:380px;">
+  <div class="modal-box" style="max-width:400px;">
     <div class="modal-header">
-      <div class="modal-title"><i class="ti ti-help-circle"></i> Konfirmasi</div>
+      <div class="modal-title">
+        <i class="ti ti-help-circle" id="globalConfirmIcon"></i>
+        <span id="globalConfirmTitle">Konfirmasi</span>
+      </div>
       <button type="button" class="modal-close" id="globalConfirmClose"><i class="ti ti-x"></i></button>
     </div>
     <div class="modal-body">
@@ -105,7 +116,9 @@
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-outline" id="globalConfirmCancel">Batal</button>
-      <button type="button" class="btn btn-primary" id="globalConfirmOk"><i class="ti ti-check"></i> Lanjutkan</button>
+      <button type="button" class="btn btn-primary" id="globalConfirmOk">
+        <i class="ti ti-check" id="globalConfirmOkIcon"></i> <span id="globalConfirmOkText">Lanjutkan</span>
+      </button>
     </div>
   </div>
 </div>
@@ -117,7 +130,34 @@
   const cancelBtn = document.getElementById('globalConfirmCancel');
   const closeBtn  = document.getElementById('globalConfirmClose');
   const textEl    = document.getElementById('globalConfirmText');
+  const iconEl    = document.getElementById('globalConfirmIcon');
+  const titleEl   = document.getElementById('globalConfirmTitle');
+  const okIconEl  = document.getElementById('globalConfirmOkIcon');
+  const okTextEl  = document.getElementById('globalConfirmOkText');
   let pending = null;
+
+  const PRESET = {
+    normal: {
+      icon: 'ti ti-help-circle', title: 'Konfirmasi',
+      okClass: 'btn btn-primary', okIcon: 'ti ti-check', okText: 'Lanjutkan',
+      message: 'Apakah Anda yakin ingin menyimpan data ini?',
+    },
+    danger: {
+      icon: 'ti ti-alert-triangle', title: 'Tindakan Berbahaya',
+      okClass: 'btn btn-danger', okIcon: 'ti ti-trash', okText: 'Ya, Lanjutkan',
+      message: 'Tindakan ini tidak bisa dibatalkan. Lanjutkan?',
+    },
+  };
+
+  function applyPreset(kind, message) {
+    const p = PRESET[kind];
+    iconEl.className   = p.icon;
+    titleEl.textContent = p.title;
+    okBtn.className    = p.okClass;
+    okIconEl.className = p.okIcon;
+    okTextEl.textContent = p.okText;
+    textEl.textContent = message || p.message;
+  }
 
   function openModal()  { modal.classList.add('show'); }
   function closeModal() { modal.classList.remove('show'); pending = null; }
@@ -136,7 +176,8 @@
     else form.submit();
   });
 
-  // Tangkap submit yang dipicu tombol "Simpan" (btn-primary)
+  // Tangkap submit dari tombol "Simpan" (btn-primary) atau apa pun yang
+  // membawa data-confirm — pada tombolnya sendiri maupun pada form.
   document.addEventListener('submit', function (e) {
     const form = e.target;
 
@@ -145,8 +186,12 @@
 
     const btn = e.submitter;
     if (!btn || btn.tagName !== 'BUTTON' || btn.type !== 'submit') return;
-    if (!btn.classList.contains('btn-primary')) return;             // hanya tombol Simpan
     if (btn.hasAttribute('data-no-confirm') || form.hasAttribute('data-no-confirm')) return;
+
+    const message = btn.getAttribute('data-confirm') || form.getAttribute('data-confirm');
+
+    // Tanpa pesan eksplisit, hanya tombol simpan yang dikonfirmasi.
+    if (!message && !btn.classList.contains('btn-primary')) return;
 
     // Validasi HTML5 dulu — jika tidak valid, biarkan browser yang menandai
     if (typeof form.reportValidity === 'function' && !form.reportValidity()) {
@@ -156,8 +201,13 @@
 
     e.preventDefault();
     pending = { form, submitter: btn };
-    textEl.textContent = btn.getAttribute('data-confirm') || 'Apakah Anda yakin ingin menyimpan data ini?';
+    applyPreset(btn.classList.contains('btn-danger') ? 'danger' : 'normal', message);
     openModal();
+  });
+
+  // Esc menutup modal, seperti modal lain di aplikasi.
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && modal.classList.contains('show')) closeModal();
   });
 })();
 </script>

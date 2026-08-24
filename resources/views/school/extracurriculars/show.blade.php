@@ -44,7 +44,7 @@
                 <td>{{ $i + 1 }}</td>
                 <td>{{ $m->student->full_name ?? '-' }}</td>
                 <td style="text-align:right;">
-                  <form method="POST" action="{{ route('extracurriculars.members.remove', hid($m)) }}" onsubmit="return confirm('Hapus anggota?')">@csrf @method('DELETE')
+                  <form method="POST" action="{{ route('extracurriculars.members.remove', hid($m)) }}" data-confirm="Hapus anggota?">@csrf @method('DELETE')
                     <button class="btn btn-sm btn-danger btn-icon"><i class="ti ti-trash" style="font-size:13px;"></i></button>
                   </form>
                 </td>
