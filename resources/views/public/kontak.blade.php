@@ -54,10 +54,37 @@
       </div>
 
       <div>
-        @if($school->profile?->maps_embed)
-          <div style="border-radius:var(--radius-xl);overflow:hidden;border:1px solid var(--color-border-solid);box-shadow:var(--shadow-card);">
-            {!! $school->profile->maps_embed !!}
+        @php
+          $embedSrc = $school->profile?->maps_embed_src;
+          $mapsLink = $school->profile?->maps_link;
+        @endphp
+
+        @if($embedSrc)
+          {{-- iframe dibangun di sini, bukan diambil mentah dari isian admin --}}
+          <div class="pmap">
+            <iframe src="{{ $embedSrc }}" title="Peta lokasi {{ $school->name }}"
+                    loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
           </div>
+
+          @if($mapsLink)
+            <a href="{{ $mapsLink }}" target="_blank" rel="noopener noreferrer"
+               class="pbtn pbtn-outline" style="margin-top:14px;">
+              <i class="ti ti-map-pin"></i> Buka di Google Maps <i class="ti ti-external-link"></i>
+            </a>
+          @endif
+
+        @elseif($mapsLink)
+          <a href="{{ $mapsLink }}" target="_blank" rel="noopener noreferrer" class="pmap-card">
+            <div class="pmap-card-icon"><i class="ti ti-map-pin"></i></div>
+            <div class="pmap-card-title">Lokasi {{ $school->name }}</div>
+            @if($school->address)
+              <div class="pmap-card-addr">{{ $school->address }}</div>
+            @endif
+            <span class="pbtn pbtn-sm" style="margin-top:18px;">
+              Buka di Google Maps <i class="ti ti-external-link"></i>
+            </span>
+          </a>
+
         @else
           <div class="pempty" style="padding:56px 20px;">
             <i class="ti ti-map-2" style="font-size:42px;display:block;margin-bottom:12px;"></i>

@@ -30,7 +30,7 @@
           <div class="form-group"><label class="form-label">Facebook URL</label><input type="text" name="facebook_url" class="form-control" value="{{ old('facebook_url', $profile->facebook_url) }}"></div>
           <div class="form-group"><label class="form-label">Instagram URL</label><input type="text" name="instagram_url" class="form-control" value="{{ old('instagram_url', $profile->instagram_url) }}"></div>
           <div class="form-group"><label class="form-label">YouTube URL</label><input type="text" name="youtube_url" class="form-control" value="{{ old('youtube_url', $profile->youtube_url) }}"></div>
-          <div class="form-group"><label class="form-label">Embed Google Maps (iframe)</label><textarea name="maps_embed" class="form-control" rows="3">{{ old('maps_embed', $profile->maps_embed) }}</textarea></div>
+          <div class="form-group"><label class="form-label">Google Maps</label><textarea name="maps_embed" class="form-control" rows="3" placeholder="Tempel tautan Google Maps (contoh: https://maps.app.goo.gl/...) atau kode embed <iframe> dari menu Bagikan → Sematkan peta">{{ old('maps_embed', $profile->maps_embed) }}</textarea><div style="font-size:11.5px;color:var(--color-text-secondary);margin-top:5px;">Tautan biasa akan tampil sebagai kartu lokasi yang membuka Google Maps di tab baru. Kode embed akan tampil sebagai peta langsung di halaman kontak.</div></div>
         </div>
       </div>
     </div>

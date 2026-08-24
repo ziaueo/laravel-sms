@@ -245,3 +245,69 @@ a.pcard:hover .pcard-media img { transform: scale(1.04); }
 
 .pinfo h3 { font-size: var(--font-size-lg); font-weight: 700; margin-bottom: 5px; }
 .pinfo p { color: var(--color-text-secondary); font-size: var(--font-size-md); }
+
+/* ── PETA LOKASI ── */
+.pmap {
+  overflow: hidden;
+  border: 1px solid var(--color-border-solid);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+  line-height: 0;
+}
+
+.pmap iframe {
+  width: 100%;
+  height: 340px;
+  border: 0;
+  display: block;
+}
+
+/* Kartu pengganti saat yang tersimpan hanya tautan — maps.app.goo.gl
+   tidak bisa di-frame, jadi yang ditawarkan adalah membukanya di tab baru. */
+.pmap-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 340px;
+  padding: 34px 26px;
+  text-align: center;
+  border: 1px solid var(--color-border-solid);
+  border-radius: var(--radius-xl);
+  background: var(--grad-soft);
+  box-shadow: var(--shadow-card);
+  transition: var(--transition-base);
+}
+
+.pmap-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--color-primary);
+}
+
+.pmap-card-icon {
+  width: 62px;
+  height: 62px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--grad-primary);
+  color: #fff;
+  font-size: 28px;
+  box-shadow: var(--shadow-primary);
+}
+
+.pmap-card-title {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.pmap-card-addr {
+  margin-top: 6px;
+  max-width: 34ch;
+  font-size: var(--font-size-md);
+  color: var(--color-text-secondary);
+}
