@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Constants\CurriculumConstant;
 
 class SchoolYear extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'school_id', 'curriculum_id', 'name',
         'year', 'semester', 'start_date', 'end_date', 'is_active',

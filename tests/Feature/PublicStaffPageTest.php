@@ -74,7 +74,7 @@ class PublicStaffPageTest extends TestCase
         $content  = $response->getContent();
 
         // Kepala sekolah tampil di blok utama, bukan ikut lagi di daftar kelompok.
-        $this->assertStringContainsString('lead-name', $content);
+        $this->assertStringContainsString('class="plead-name"', $content);
         $this->assertSame(1, substr_count($content, 'Ahmad Hidayat'));
 
         // Wakilnya tetap muncul, di seksi Pimpinan Sekolah.

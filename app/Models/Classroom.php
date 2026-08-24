@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Classroom extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'school_id', 'school_year_id', 'grade_level_id',
         'homeroom_teacher_id', 'name', 'capacity', 'is_active',

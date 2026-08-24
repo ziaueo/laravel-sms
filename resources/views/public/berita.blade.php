@@ -4,28 +4,44 @@
 
 @section('content')
 
-<section class="hero" style="padding:50px 0;">
-  <div class="container"><h1 style="font-size:30px;">Berita & Kegiatan</h1></div>
+<section class="phead">
+  <div class="pcontainer">
+    <h1>Berita &amp; Kegiatan</h1>
+    <p>Kabar dan dokumentasi kegiatan {{ $school->name }}.</p>
+  </div>
 </section>
 
-<section class="sec">
-  <div class="container">
+<section class="psec">
+  <div class="pcontainer">
     @if($posts->count())
-      <div class="grid grid-3">
+      <div class="pgrid pgrid-3">
         @foreach($posts as $post)
           <a href="{{ route('public.berita.detail', [$school->slug, $post->slug]) }}" class="pcard">
-            <img class="thumb" src="{{ $post->thumbnail ? asset($post->thumbnail) : 'https://placehold.co/600x400/e8f5ec/1a7a3c?text=Berita' }}" alt="">
-            <div class="body">
-              <div class="meta"><i class="ti ti-calendar"></i> {{ format_date($post->published_at ?? $post->created_at) }} @if($post->category) · {{ $post->category->name }} @endif</div>
-              <h3>{{ $post->title }}</h3>
-              <div class="ex">{{ \Illuminate\Support\Str::limit($post->excerpt ?? strip_tags($post->content), 90) }}</div>
+            <div class="pcard-media">
+              @if($post->thumbnail)
+                <img src="{{ asset($post->thumbnail) }}" alt="{{ $post->title }}">
+              @else
+                <div class="pcard-media-blank"><i class="ti ti-news"></i></div>
+              @endif
+              @if($post->category)
+                <span class="pcard-badge">{{ $post->category->name }}</span>
+              @endif
+            </div>
+            <div class="pcard-body">
+              <div class="pcard-meta">
+                <i class="ti ti-calendar"></i> {{ format_date($post->published_at ?? $post->created_at) }}
+              </div>
+              <div class="pcard-title">{{ $post->title }}</div>
+              <div class="pcard-text">{{ \Illuminate\Support\Str::limit($post->excerpt ?? strip_tags($post->content), 95) }}</div>
+              <span class="pcard-more">Baca selengkapnya <i class="ti ti-arrow-right"></i></span>
             </div>
           </a>
         @endforeach
       </div>
-      <div style="margin-top:30px;">{{ $posts->links() }}</div>
+
+      <div class="ppagination">{{ $posts->links() }}</div>
     @else
-      <p style="color:var(--muted);">Belum ada berita.</p>
+      <div class="pempty">Belum ada berita.</div>
     @endif
   </div>
 </section>

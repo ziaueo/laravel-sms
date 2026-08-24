@@ -1,0 +1,205 @@
+/* ── NAVBAR SITUS PUBLIK ── */
+.pnav {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  background: var(--color-bg-card);
+  border-bottom: 1px solid var(--color-border);
+  transition: box-shadow 0.2s ease;
+}
+
+/* Bayangan baru muncul setelah halaman digulir — dipasang oleh public.js */
+.pnav.is-stuck { box-shadow: var(--shadow-md); }
+
+.pnav-in {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: 70px;
+}
+
+.pnav-brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 0;
+}
+
+.pnav-brand img {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+}
+
+.pnav-brand-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.pnav-brand-name {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--color-primary-dark);
+  line-height: 1.25;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pnav-brand-sub {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pnav-links {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.pnav-links a {
+  position: relative;
+  padding: 9px 14px;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-md);
+  font-weight: 500;
+  color: var(--color-text-primary);
+  transition: var(--transition-fast);
+}
+
+.pnav-links a:hover { color: var(--color-primary-dark); }
+
+/* Menu aktif ditandai garis bawah, bukan kotak berlatar */
+.pnav-links a.active { color: var(--color-primary-dark); font-weight: 600; }
+
+.pnav-links a.active::after {
+  content: '';
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 2px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--grad-primary);
+}
+
+.pnav-links a.pbtn,
+.pnav-links a.pbtn:hover { color: #fff; }
+.pnav-links a.pbtn::after { display: none; }
+
+/* ── HAMBURGER ── */
+.pnav-toggle {
+  display: none;
+  width: 42px;
+  height: 42px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-border-solid);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-card);
+  color: var(--color-primary-dark);
+  font-size: 20px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.pnav-toggle:hover { background: var(--color-bg-soft); }
+
+/* ── PANEL MENU MOBILE ── */
+.pnav-panel {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  background: rgba(15, 45, 30, .45);
+  backdrop-filter: blur(2px);
+}
+
+.pnav-panel.is-open { display: block; }
+
+.pnav-panel-inner {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: min(320px, 86vw);
+  height: 100%;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: var(--color-bg-card);
+  box-shadow: var(--shadow-lg);
+  animation: pnavSlide .22s ease;
+  overflow-y: auto;
+}
+
+@keyframes pnavSlide {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0); }
+}
+
+.pnav-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 14px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.pnav-panel-title {
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  color: var(--color-primary-dark);
+}
+
+.pnav-panel-close {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-soft);
+  color: var(--color-text-secondary);
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.pnav-panel-close:hover { background: var(--grad-danger); color: var(--color-danger); }
+
+.pnav-panel-inner a {
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-md);
+  font-weight: 500;
+  transition: var(--transition-fast);
+}
+
+.pnav-panel-inner a:hover { background: var(--color-bg-soft); }
+
+.pnav-panel-inner a.active {
+  background: var(--grad-soft);
+  color: var(--color-primary-dark);
+  font-weight: 700;
+}
+
+.pnav-panel-inner a.pbtn {
+  justify-content: center;
+  margin-top: 12px;
+  color: #fff;
+}
+
+@media (max-width: 900px) {
+  .pnav-links { display: none; }
+  .pnav-toggle { display: flex; }
+  .pnav-in { height: 62px; }
+}

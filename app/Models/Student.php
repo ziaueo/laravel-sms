@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Constants\GenderConstant;
 use App\Constants\StudentStatusConstant;
 
 class Student extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'user_id', 'school_id', 'nisn', 'nis',
         'full_name', 'gender', 'birth_place', 'birth_date',

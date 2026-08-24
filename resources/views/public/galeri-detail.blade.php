@@ -4,29 +4,34 @@
 
 @section('content')
 
-<section class="hero" style="padding:50px 0;">
-  <div class="container">
-    <h1 style="font-size:30px;">{{ $album->title }}</h1>
+<section class="phead">
+  <div class="pcontainer">
+    <h1>{{ $album->title }}</h1>
     @if($album->description)
       <p>{{ $album->description }}</p>
     @endif
   </div>
 </section>
 
-<section class="sec">
-  <div class="container">
-    <div class="sec-sub">{{ $album->items->count() }} foto</div>
-
-    <div class="grid grid-3">
-      @forelse($album->items as $item)
-        @if($item->file_path)
-          <img class="galimg" src="{{ asset($item->file_path) }}" alt="{{ $item->caption }}"
-               data-lightbox="galeri-{{ hid($album) }}">
-        @endif
-      @empty
-        <p style="color:var(--muted);">Album ini belum berisi foto.</p>
-      @endforelse
+<section class="psec">
+  <div class="pcontainer">
+    <div class="psec-head">
+      <div class="psec-sub" style="margin:0;">{{ $album->items->count() }} foto</div>
     </div>
+
+    @if($album->items->count())
+      <div class="pgrid pgrid-4">
+        @foreach($album->items as $item)
+          @if($item->file_path)
+            <img src="{{ asset($item->file_path) }}" alt="{{ $item->caption }}"
+                 style="width:100%;height:200px;object-fit:cover;border-radius:var(--radius-lg);box-shadow:var(--shadow-card);"
+                 data-lightbox="galeri-{{ hid($album) }}">
+          @endif
+        @endforeach
+      </div>
+    @else
+      <div class="pempty">Album ini belum berisi foto.</div>
+    @endif
   </div>
 </section>
 

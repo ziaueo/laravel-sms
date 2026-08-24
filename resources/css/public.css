@@ -1,0 +1,150 @@
+/* Situs publik sekolah.
+   Token diimpor dari variables.css milik aplikasi supaya situs dan dashboard
+   tidak bisa berbeda warna diam-diam. Blok [data-theme="dark"] ikut terbawa
+   tapi tidak pernah aktif — layout publik tidak punya pengalih tema. */
+@import 'variables.css';
+
+@import 'public/nav.css';
+@import 'public/hero.css';
+@import 'public/sections.css';
+@import 'public/cards.css';
+@import 'public/footer.css';
+
+/* ── DASAR ── */
+body {
+  font-family: var(--font-family);
+  color: var(--color-text-primary);
+  background: var(--color-bg-page);
+  line-height: 1.65;
+}
+
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+
+.pcontainer {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ── TOMBOL ── */
+.pbtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
+  border: none;
+  border-radius: var(--radius-md);
+  background: var(--grad-primary);
+  color: #fff;
+  font-family: var(--font-family);
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--shadow-primary);
+  transition: var(--transition-base);
+}
+
+.pbtn:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+
+.pbtn-ghost {
+  background: transparent;
+  color: var(--color-text-white);
+  border: 1.5px solid rgba(255,255,255,.55);
+  box-shadow: none;
+}
+
+.pbtn-ghost:hover { background: rgba(255,255,255,.14); border-color: #fff; }
+
+.pbtn-outline {
+  background: transparent;
+  color: var(--color-primary-dark);
+  border: 1.5px solid var(--color-border-solid);
+  box-shadow: none;
+}
+
+.pbtn-outline:hover { background: var(--color-bg-soft); border-color: var(--color-primary); }
+
+.pbtn-sm { padding: 9px 16px; font-size: var(--font-size-base); }
+
+/* ── PEMBERITAHUAN ── */
+.palert {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  border: 1px solid var(--color-border-solid);
+  border-left: 3px solid var(--color-primary);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-card);
+  box-shadow: var(--shadow-sm);
+  font-size: var(--font-size-md);
+}
+
+.palert i { color: var(--color-primary); font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+
+.palert-err {
+  border-left-color: var(--color-danger);
+  background: var(--color-danger-bg);
+  color: var(--color-danger);
+}
+
+.palert-err i { color: var(--color-danger); }
+
+/* ── FORMULIR ── */
+.pform-row { margin-bottom: 16px; }
+
+.pform-row label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.pform-row input,
+.pform-row select,
+.pform-row textarea {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid var(--color-border-solid);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-card);
+  color: var(--color-text-primary);
+  font-family: var(--font-family);
+  font-size: var(--font-size-md);
+  outline: none;
+  transition: var(--transition-fast);
+}
+
+.pform-row input:focus,
+.pform-row select:focus,
+.pform-row textarea:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-muted);
+}
+
+/* ── PAGINASI ── */
+.ppagination {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 36px;
+  font-size: var(--font-size-md);
+}
+
+.ppagination a,
+.ppagination span {
+  padding: 8px 13px;
+  border: 1px solid var(--color-border-solid);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-card);
+}
+
+.ppagination .active span,
+.ppagination span[aria-current] {
+  background: var(--grad-primary);
+  border-color: transparent;
+  color: #fff;
+}

@@ -11,8 +11,12 @@ use App\Models\Announcement;
 use App\Models\PpdbPeriod;
 use App\Models\PpdbRegistration;
 use App\Models\Teacher;
+use App\Models\Student;
+use App\Models\Classroom;
+use App\Models\Extracurricular;
 use App\Constants\PpdbConstant;
 use App\Constants\PositionConstant;
+use App\Constants\StudentStatusConstant;
 use Illuminate\Http\Request;
 
 class PublicController extends Controller
@@ -20,6 +24,30 @@ class PublicController extends Controller
     protected function resolveSchool(string $slug): School
     {
         return School::where('slug', $slug)->where('is_active', true)->firstOrFail();
+    }
+
+    /**
+     * Angka ringkas sekolah untuk seksi statistik di beranda.
+     */
+    protected function schoolStats(School $school): array
+    {
+        // Kelas wajib dibatasi ke tahun ajaran aktif. Tabel classrooms terikat
+        // school_year_id, jadi menghitung semua barisnya akan menjumlahkan kelas
+        // dari tahun-tahun sebelumnya dan menggelembung tiap tahun ajaran berganti.
+        $activeYearId = $school->activeSchoolYear?->id;
+
+        return [
+            'siswa'  => Student::where('school_id', $school->id)
+                            ->where('status', StudentStatusConstant::AKTIF)->count(),
+            'guru'   => Teacher::where('school_id', $school->id)
+                            ->where('is_active', true)->count(),
+            'kelas'  => $activeYearId
+                            ? Classroom::where('school_id', $school->id)
+                                ->where('school_year_id', $activeYearId)->count()
+                            : 0,
+            'ekskul' => Extracurricular::where('school_id', $school->id)
+                            ->where('is_active', true)->count(),
+        ];
     }
 
     public function home(string $slug)
@@ -40,7 +68,14 @@ class PublicController extends Controller
             ->where('is_published', true)->where('is_public', true)
             ->orderByDesc('published_at')->limit(3)->get();
 
-        return view('public.home', compact('school', 'banners', 'posts', 'galleries', 'announcements'));
+        $extracurriculars = Extracurricular::where('school_id', $school->id)
+            ->where('is_active', true)->orderBy('name')->get();
+
+        $stats = $this->schoolStats($school);
+
+        return view('public.home', compact(
+            'school', 'banners', 'posts', 'galleries', 'announcements', 'extracurriculars', 'stats'
+        ));
     }
 
     public function profil(string $slug)

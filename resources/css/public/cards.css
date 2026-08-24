@@ -1,0 +1,247 @@
+/* ── KARTU DASAR ── */
+.pcard {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--color-border-solid);
+  border-radius: var(--radius-xl);
+  background: var(--color-bg-card);
+  box-shadow: var(--shadow-card);
+  transition: var(--transition-base);
+}
+
+a.pcard:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--color-primary-lighter);
+}
+
+.pcard-media {
+  position: relative;
+  height: 190px;
+  overflow: hidden;
+  background: var(--color-bg-soft);
+}
+
+.pcard-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .35s ease;
+}
+
+a.pcard:hover .pcard-media img { transform: scale(1.04); }
+
+/* Pengganti saat gambar tidak ada — tanpa memanggil layanan luar */
+.pcard-media-blank {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--grad-soft);
+  color: var(--color-primary-light);
+  font-size: 34px;
+}
+
+.pcard-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 5px 11px;
+  border-radius: var(--radius-pill);
+  background: rgba(255,255,255,.94);
+  color: var(--color-primary-dark);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  box-shadow: var(--shadow-sm);
+}
+
+.pcard-body { padding: 18px; display: flex; flex-direction: column; gap: 7px; flex: 1; }
+
+.pcard-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--font-size-base);
+  color: var(--color-text-muted);
+}
+
+.pcard-title {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--color-text-primary);
+}
+
+.pcard-text {
+  font-size: var(--font-size-md);
+  color: var(--color-text-secondary);
+}
+
+.pcard-more {
+  margin-top: auto;
+  padding-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+/* ── KARTU ORANG (guru & staf) ── */
+.pperson {
+  padding: 22px 16px;
+  text-align: center;
+  border: 1px solid var(--color-border-solid);
+  border-radius: var(--radius-xl);
+  background: var(--color-bg-card);
+  box-shadow: var(--shadow-card);
+  transition: var(--transition-base);
+}
+
+.pperson:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+
+.pperson-photo {
+  width: 92px;
+  height: 92px;
+  margin: 0 auto 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--grad-soft);
+  color: var(--color-primary-dark);
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  box-shadow: 0 0 0 3px var(--color-bg-card), 0 0 0 5px var(--color-primary-soft);
+}
+
+.pperson-photo img { width: 100%; height: 100%; object-fit: cover; }
+
+.pperson-name {
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--color-text-primary);
+}
+
+.pperson-role {
+  margin-top: 3px;
+  font-size: var(--font-size-base);
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.pperson-nip {
+  margin-top: 5px;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+/* ── KARTU PIMPINAN ── */
+.plead {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 30px;
+  border: 1px solid var(--color-border-solid);
+  border-radius: var(--radius-xl);
+  background: var(--color-bg-card);
+  box-shadow: var(--shadow-md);
+}
+
+.plead .pperson-photo { width: 118px; height: 118px; margin: 0; font-size: 36px; flex-shrink: 0; }
+
+.plead-name {
+  font-size: var(--font-size-2xl);
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--color-text-primary);
+}
+
+.plead-role {
+  display: inline-block;
+  margin-top: 9px;
+  padding: 5px 14px;
+  border-radius: var(--radius-pill);
+  background: var(--grad-soft);
+  color: var(--color-primary-dark);
+  font-size: var(--font-size-md);
+  font-weight: 600;
+}
+
+.plead-nip { margin-top: 10px; font-size: var(--font-size-base); color: var(--color-text-muted); }
+
+@media (max-width: 560px) {
+  .plead { flex-direction: column; text-align: center; gap: 18px; padding: 24px; }
+}
+
+/* ── KARTU EKSTRAKURIKULER ── */
+.pekskul {
+  display: flex;
+  gap: 14px;
+  padding: 20px;
+  border: 1px solid var(--color-border-solid);
+  border-radius: var(--radius-xl);
+  background: var(--color-bg-card);
+  box-shadow: var(--shadow-card);
+  transition: var(--transition-base);
+}
+
+.pekskul:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+
+.pekskul-icon {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  background: var(--grad-primary);
+  color: #fff;
+  font-size: 20px;
+}
+
+.pekskul-name {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.pekskul-desc {
+  margin-top: 3px;
+  font-size: var(--font-size-md);
+  color: var(--color-text-secondary);
+}
+
+/* ── PETAK INFO ── */
+.pinfo {
+  padding: 26px;
+  border: 1px solid var(--color-border-solid);
+  border-radius: var(--radius-xl);
+  background: var(--color-bg-card);
+  box-shadow: var(--shadow-card);
+}
+
+.pinfo-icon {
+  width: 46px;
+  height: 46px;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-lg);
+  background: var(--grad-soft);
+  color: var(--color-primary-dark);
+  font-size: 21px;
+}
+
+.pinfo h3 { font-size: var(--font-size-lg); font-weight: 700; margin-bottom: 5px; }
+.pinfo p { color: var(--color-text-secondary); font-size: var(--font-size-md); }
