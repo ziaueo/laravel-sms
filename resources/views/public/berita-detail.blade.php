@@ -14,7 +14,8 @@
       @if($post->createdBy) · oleh {{ $post->createdBy->name }} @endif
     </div>
     @if($post->thumbnail)
-      <img src="{{ asset($post->thumbnail) }}" style="width:100%;border-radius:14px;margin-bottom:20px;">
+      <img src="{{ asset($post->thumbnail) }}" alt="{{ $post->title }}"
+           style="width:100%;border-radius:14px;margin-bottom:20px;" data-lightbox="berita">
     @endif
     <div style="font-size:15.5px;line-height:1.8;color:#374151;">{!! nl2br(e($post->content)) !!}</div>
   </div>

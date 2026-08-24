@@ -27,7 +27,8 @@
 <div class="form-page-grid" style="grid-template-columns:repeat(4,1fr);margin-top:14px;">
   @forelse($gallery->items as $item)
     <div class="card">
-      <img src="{{ asset($item->file_path) }}" style="width:100%;height:130px;object-fit:cover;">
+      <img src="{{ asset($item->file_path) }}" alt="{{ $item->caption }}"
+           style="width:100%;height:130px;object-fit:cover;" data-lightbox="galeri-item">
       <div class="card-body" style="text-align:center;padding:8px;">
         <form method="POST" action="{{ route('cms.galleries.items.destroy', hid($item)) }}" onsubmit="return confirm('Hapus foto?')">
           @csrf @method('DELETE')<button class="btn btn-sm btn-danger" style="width:100%;justify-content:center;"><i class="ti ti-trash" style="font-size:13px;"></i> Hapus</button>

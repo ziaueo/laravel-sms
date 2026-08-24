@@ -65,7 +65,9 @@
         <div class="lead" style="margin-bottom:48px;">
           <div class="person-ph">
             @if($headmaster->photo)
-              <img src="{{ asset($headmaster->photo) }}" alt="{{ $headmaster->full_name }}">
+              <img src="{{ asset($headmaster->photo) }}" alt="{{ $headmaster->full_name }}"
+                   data-lightbox="staf"
+                   data-caption="{{ $headmaster->full_name }} — {{ $headmaster->position?->name ?? 'Pimpinan Sekolah' }}">
             @else
               {{ $headmaster->initials }}
             @endif
@@ -92,7 +94,9 @@
               <div class="person">
                 <div class="person-ph">
                   @if($person->photo)
-                    <img src="{{ asset($person->photo) }}" alt="{{ $person->full_name }}">
+                    <img src="{{ asset($person->photo) }}" alt="{{ $person->full_name }}"
+                         data-lightbox="staf"
+                         data-caption="{{ $person->full_name }} — {{ $person->position?->name ?? 'Belum ditentukan' }}">
                   @else
                     {{ $person->initials }}
                   @endif

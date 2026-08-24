@@ -16,7 +16,8 @@
 <div class="form-page-grid" style="grid-template-columns:repeat(2,1fr);">
   @forelse($banners as $b)
     <div class="card">
-      <img src="{{ asset($b->image) }}" style="width:100%;height:160px;object-fit:cover;">
+      <img src="{{ asset($b->image) }}" alt="{{ $b->title }}"
+           style="width:100%;height:160px;object-fit:cover;" data-lightbox="banner">
       <div class="card-body" style="display:flex;justify-content:space-between;align-items:center;">
         <div><div style="font-weight:600;">{{ $b->title ?? 'Tanpa judul' }}</div><div style="font-size:12px;color:var(--color-text-secondary);">{{ $b->subtitle }}</div></div>
         <form method="POST" action="{{ route('cms.banners.destroy', hid($b)) }}" onsubmit="return confirm('Hapus banner?')">

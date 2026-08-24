@@ -26,7 +26,9 @@
       <div class="card-body" style="text-align:center;">
         <div class="photo-preview" style="margin:0 auto;">
           @if($student->photo)
-            <img src="{{ asset($student->photo) }}" style="width:100%;height:100%;object-fit:cover;border-radius:var(--radius-full);">
+            <img src="{{ asset($student->photo) }}" alt="{{ $student->full_name }}"
+                 style="width:100%;height:100%;object-fit:cover;border-radius:var(--radius-full);"
+                 data-lightbox="foto">
           @else
             <span style="font-size:28px;font-weight:700;color:var(--color-primary-dark);">{{ $student->initials }}</span>
           @endif

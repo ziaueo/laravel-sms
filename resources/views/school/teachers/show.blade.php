@@ -38,7 +38,7 @@
       <div class="card-body" style="text-align:center;padding:24px 16px;">
         <div class="teacher-avatar-lg">
           @if($teacher->photo)
-            <img src="{{ asset($teacher->photo) }}" alt="{{ $teacher->full_name }}">
+            <img src="{{ asset($teacher->photo) }}" alt="{{ $teacher->full_name }}" data-lightbox="foto">
           @else
             <span>{{ $teacher->initials }}</span>
           @endif

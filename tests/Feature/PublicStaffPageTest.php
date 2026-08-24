@@ -129,6 +129,21 @@ class PublicStaffPageTest extends TestCase
         $response->assertDontSee('1980-07-15');
     }
 
+    public function test_foto_pegawai_bisa_dibuka_lightbox(): void
+    {
+        $school = School::factory()->create();
+        Teacher::factory()->named('Budi Santoso')->create([
+            'school_id'   => $school->id,
+            'photo'       => 'uploads/teachers/budi.jpg',
+            'position_id' => Position::factory()->guru('Guru Kelas')->create()->id,
+        ]);
+
+        $response = $this->get($this->url($school))->assertOk();
+
+        $response->assertSee('data-lightbox="staf"', false);
+        $response->assertSee('data-caption="Budi Santoso — Guru Kelas"', false);
+    }
+
     public function test_halaman_kosong_saat_belum_ada_pegawai(): void
     {
         $school = School::factory()->create();

@@ -108,5 +108,7 @@
     </div>
   </footer>
 
+  @include('components.lightbox')
+
 </body>
 </html>

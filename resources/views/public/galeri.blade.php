@@ -17,10 +17,11 @@
         <div class="grid grid-3">
           @forelse($g->items as $item)
             @if($item->file_path)
-              <img class="galimg" src="{{ asset($item->file_path) }}" alt="{{ $item->caption }}">
+              <img class="galimg" src="{{ asset($item->file_path) }}" alt="{{ $item->caption }}"
+                   data-lightbox="galeri-{{ hid($g) }}">
             @endif
           @empty
-            @if($g->thumbnail)<img class="galimg" src="{{ asset($g->thumbnail) }}">@endif
+            @if($g->thumbnail)<img class="galimg" src="{{ asset($g->thumbnail) }}" alt="{{ $g->title }}" data-lightbox="galeri-{{ hid($g) }}">@endif
           @endforelse
         </div>
       </div>
