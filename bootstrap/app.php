@@ -16,6 +16,12 @@ return Application::configure(basePath: dirname(__DIR__))
             'check.school.access' => \App\Http\Middleware\CheckActiveSchool::class,
             'must.change.password' => \App\Http\Middleware\MustChangePassword::class,
         ]);
+
+        // Halaman login proyek ini bernama auth.login, sedangkan Laravel
+        // mencari rute bernama 'login' persis. Tanpa arahan ini, tamu yang
+        // membuka halaman aplikasi mendapat 500 "Route [login] not defined"
+        // alih-alih dilempar ke halaman login.
+        $middleware->redirectGuestsTo(fn () => route('auth.login'));
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
