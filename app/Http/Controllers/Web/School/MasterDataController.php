@@ -21,6 +21,7 @@ class MasterDataController extends Controller
     public function index(Request $request)
     {
         $school     = active_school();
+        if (!$school) return redirect()->route('dashboard')->with('warning', 'Pilih sekolah dulu untuk membuka halaman itu.');
         $activeTab  = $request->get('tab', 'tahun-ajaran');
         $curriculums = Curriculum::where('is_active', true)->get();
 
@@ -58,6 +59,7 @@ class MasterDataController extends Controller
     public function storeSchoolYear(SchoolYearRequest $request)
     {
         $school = active_school();
+        if (!$school) return redirect()->route('dashboard')->with('warning', 'Pilih sekolah dulu untuk membuka halaman itu.');
 
         SchoolYear::create([
             'school_id'     => $school->id,
@@ -93,6 +95,7 @@ class MasterDataController extends Controller
     {
         $schoolYear = $this->findSchoolYear($schoolYear);
         $school = active_school();
+        if (!$school) return redirect()->route('dashboard')->with('warning', 'Pilih sekolah dulu untuk membuka halaman itu.');
 
         DB::transaction(function () use ($school, $schoolYear) {
             SchoolYear::where('school_id', $school->id)->update(['is_active' => false]);
@@ -113,6 +116,7 @@ class MasterDataController extends Controller
     public function storeGradeLevel(GradeLevelRequest $request)
     {
         $school = active_school();
+        if (!$school) return redirect()->route('dashboard')->with('warning', 'Pilih sekolah dulu untuk membuka halaman itu.');
 
         GradeLevel::create([
             'school_id' => $school->id,
@@ -146,6 +150,7 @@ class MasterDataController extends Controller
     public function storeSubject(SubjectRequest $request)
     {
         $school = active_school();
+        if (!$school) return redirect()->route('dashboard')->with('warning', 'Pilih sekolah dulu untuk membuka halaman itu.');
 
         Subject::create([
             'school_id'      => $school->id,
@@ -207,6 +212,7 @@ class MasterDataController extends Controller
     {
         $schoolYear = SchoolYear::findOrFail(hashid_decode_or_404($hash, SchoolYear::class));
         $school = active_school();
+        if (!$school) return redirect()->route('dashboard')->with('warning', 'Pilih sekolah dulu untuk membuka halaman itu.');
         abort_if(!$school || $schoolYear->school_id !== $school->id, 403);
         return $schoolYear;
     }
@@ -215,6 +221,7 @@ class MasterDataController extends Controller
     {
         $gradeLevel = GradeLevel::findOrFail(hashid_decode_or_404($hash, GradeLevel::class));
         $school = active_school();
+        if (!$school) return redirect()->route('dashboard')->with('warning', 'Pilih sekolah dulu untuk membuka halaman itu.');
         abort_if(!$school || $gradeLevel->school_id !== $school->id, 403);
         return $gradeLevel;
     }
@@ -223,6 +230,7 @@ class MasterDataController extends Controller
     {
         $subject = Subject::findOrFail(hashid_decode_or_404($hash, Subject::class));
         $school = active_school();
+        if (!$school) return redirect()->route('dashboard')->with('warning', 'Pilih sekolah dulu untuk membuka halaman itu.');
         abort_if(!$school || $subject->school_id !== $school->id, 403);
         return $subject;
     }
@@ -231,6 +239,7 @@ class MasterDataController extends Controller
     {
         $kkm = SubjectKkm::with('subject')->findOrFail(hashid_decode_or_404($hash, SubjectKkm::class));
         $school = active_school();
+        if (!$school) return redirect()->route('dashboard')->with('warning', 'Pilih sekolah dulu untuk membuka halaman itu.');
         abort_if(!$school || !$kkm->subject || $kkm->subject->school_id !== $school->id, 403);
         return $kkm;
     }

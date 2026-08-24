@@ -16,6 +16,7 @@ class ClassroomController extends Controller
     public function index(Request $request)
     {
         $school = active_school();
+        if (!$school) return redirect()->route('dashboard')->with('warning', 'Pilih sekolah dulu untuk membuka halaman itu.');
 
         $activeYearId = $request->get(
             'school_year_id',
@@ -58,6 +59,7 @@ class ClassroomController extends Controller
     public function create()
     {
         $school = active_school();
+        if (!$school) return redirect()->route('dashboard')->with('warning', 'Pilih sekolah dulu untuk membuka halaman itu.');
 
         $schoolYears = SchoolYear::where('school_id', $school->id)
             ->orderBy('year', 'desc')
@@ -89,6 +91,7 @@ class ClassroomController extends Controller
     public function store(ClassroomRequest $request)
     {
         $school = active_school();
+        if (!$school) return redirect()->route('dashboard')->with('warning', 'Pilih sekolah dulu untuk membuka halaman itu.');
 
         Classroom::create([
             'school_id'           => $school->id,
@@ -109,6 +112,7 @@ class ClassroomController extends Controller
     {
         $classroom = $this->findClassroom($classroom);
         $school = active_school();
+        if (!$school) return redirect()->route('dashboard')->with('warning', 'Pilih sekolah dulu untuk membuka halaman itu.');
 
         $schoolYears = SchoolYear::where('school_id', $school->id)
             ->orderBy('year', 'desc')
@@ -165,6 +169,7 @@ class ClassroomController extends Controller
     {
         $classroom = Classroom::findOrFail(hashid_decode_or_404($hash, Classroom::class));
         $school = active_school();
+        if (!$school) return redirect()->route('dashboard')->with('warning', 'Pilih sekolah dulu untuk membuka halaman itu.');
         abort_if(!$school || $classroom->school_id !== $school->id, 403, 'Kelas ini bukan bagian dari sekolah aktif.');
         return $classroom;
     }
